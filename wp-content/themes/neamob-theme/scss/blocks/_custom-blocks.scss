@@ -1,0 +1,417 @@
+// ==========================================================================
+// Custom Blocks
+// ==========================================================================
+
+.custom-block {
+  padding: $spacing-16 $spacing-10;
+  border-radius: $radius-lg;
+  margin-bottom: $spacing-8;
+  @include fade-in;
+
+  @include max-md {
+    padding: $spacing-10 $spacing-6;
+  }
+
+  // Variants
+  &--primary {
+    @include gradient-primary;
+    color: $bg-white;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: $bg-white;
+    }
+
+    a:not(.btn) {
+      color: $bg-white;
+      text-decoration: underline;
+    }
+  }
+
+  &--accent {
+    @include gradient-accent;
+    color: $bg-white;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: $bg-white;
+    }
+  }
+
+  &--dark {
+    @include gradient-dark;
+    color: $bg-white;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: $bg-white;
+    }
+  }
+
+  &--light {
+    background: $bg-light;
+    border: 1px solid $border-color;
+  }
+
+  &--white {
+    background: $bg-white;
+    box-shadow: $shadow-lg;
+  }
+}
+
+// ==========================================================================
+// CTA Block
+// ==========================================================================
+
+.cta-block {
+  text-align: center;
+  padding: $spacing-20 $spacing-10;
+  @include gradient-dark;
+  border-radius: $radius-lg;
+  color: $bg-white;
+
+  @include max-md {
+    padding: $spacing-12 $spacing-6;
+  }
+
+  h2 {
+    color: $bg-white;
+    margin-bottom: $spacing-5;
+  }
+
+  p {
+    font-size: $font-size-xl;
+    opacity: 0.9;
+    margin-bottom: $spacing-8;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include max-md {
+      font-size: $font-size-lg;
+    }
+  }
+}
+
+// ==========================================================================
+// Two Column Block
+// ==========================================================================
+
+.two-column-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-16;
+  align-items: center;
+
+  @include max-md {
+    grid-template-columns: 1fr;
+    gap: $spacing-8;
+  }
+
+  &--reverse {
+    direction: rtl;
+
+    > * {
+      direction: ltr;
+    }
+
+    @include max-md {
+      direction: ltr;
+    }
+  }
+}
+
+.two-column-block__image {
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-lg;
+  }
+}
+
+.two-column-block__content {
+  h2 {
+    margin-bottom: $spacing-5;
+  }
+
+  p {
+    margin-bottom: $spacing-6;
+    color: $text-color;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: $spacing-6;
+
+    li {
+      padding: $spacing-2 0;
+      padding-left: $spacing-6;
+      position: relative;
+
+      &::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: $primary-color;
+        font-weight: $font-weight-bold;
+      }
+    }
+  }
+}
+
+// ==========================================================================
+// Stats Block
+// ==========================================================================
+
+.stats-block {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-8;
+  text-align: center;
+  padding: $spacing-16 $spacing-10;
+  background: $bg-light;
+  border-radius: $radius-lg;
+
+  @include max-md {
+    padding: $spacing-10 $spacing-6;
+  }
+}
+
+.stat-item {
+  &__number {
+    font-size: $font-size-5xl;
+    font-weight: $font-weight-bold;
+    color: $primary-color;
+    line-height: 1;
+    margin-bottom: $spacing-2;
+
+    @include max-md {
+      font-size: $font-size-4xl;
+    }
+  }
+
+  &__label {
+    color: $text-light;
+    font-size: $font-size-base;
+  }
+}
+
+// ==========================================================================
+// Testimonial Block
+// ==========================================================================
+
+.testimonial-card {
+  @include card;
+  padding: $spacing-10;
+  position: relative;
+
+  &::before {
+    content: '"';
+    font-size: 6rem;
+    color: $primary-color;
+    opacity: 0.15;
+    position: absolute;
+    top: $spacing-4;
+    left: $spacing-6;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+}
+
+.testimonial-card__content {
+  position: relative;
+  z-index: 1;
+  font-size: $font-size-lg;
+  font-style: italic;
+  margin-bottom: $spacing-6;
+  line-height: $line-height-relaxed;
+}
+
+.testimonial-card__author {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+}
+
+.testimonial-card__avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: $radius-full;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.testimonial-card__name {
+  font-weight: $font-weight-semibold;
+  color: $secondary-color;
+  margin-bottom: $spacing-1;
+}
+
+.testimonial-card__role {
+  font-size: $font-size-sm;
+  color: $text-light;
+}
+
+// ==========================================================================
+// FAQ Block
+// ==========================================================================
+
+.faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: $bg-white;
+  border-radius: $radius;
+  margin-bottom: $spacing-4;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+
+  &.is-open {
+    box-shadow: $shadow;
+  }
+}
+
+.faq-item__question {
+  padding: $spacing-5 $spacing-6;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: $font-weight-semibold;
+  transition: $transition;
+  user-select: none;
+
+  &:hover {
+    background: $bg-light;
+  }
+}
+
+.faq-item__icon {
+  width: 24px;
+  height: 24px;
+  @include flex-center;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: $spacing-4;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: $text-light;
+  }
+
+  .faq-item.is-open & {
+    transform: rotate(180deg);
+  }
+}
+
+.faq-item__answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+
+  .faq-item.is-open & {
+    max-height: 500px;
+  }
+}
+
+.faq-item__answer-inner {
+  padding: 0 $spacing-6 $spacing-5;
+  color: $text-color;
+  line-height: $line-height-relaxed;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// ==========================================================================
+// Image Gallery Block
+// ==========================================================================
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-4;
+}
+
+.image-gallery__item {
+  overflow: hidden;
+  border-radius: $radius-lg;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+}
+
+// ==========================================================================
+// Video Block
+// ==========================================================================
+
+.video-block {
+  position: relative;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+
+  iframe,
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.video-block__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($secondary-color, 0.4);
+  @include flex-center;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background: rgba($secondary-color, 0.3);
+  }
+}
+
+.video-block__play {
+  width: 80px;
+  height: 80px;
+  background: $primary-color;
+  border-radius: $radius-full;
+  @include flex-center;
+  transition: $transition;
+
+  &:hover {
+    transform: scale(1.1);
+    background: $primary-dark;
+  }
+
+  svg {
+    width: 30px;
+    height: 30px;
+    fill: $bg-white;
+    margin-left: 5px;
+  }
+}
+

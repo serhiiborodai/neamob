@@ -1,0 +1,246 @@
+// ==========================================================================
+// Case Studies Section
+// ==========================================================================
+
+.case-studies-section {
+  background: $bg-white;
+  padding: $spacing-20 0;
+
+  @include max-md {
+    padding: $spacing-12 0;
+  }
+}
+
+.case-studies-section__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: $spacing-10;
+  gap: $spacing-6;
+
+  @include max-sm {
+    flex-direction: column;
+  }
+}
+
+.case-studies-section__title {
+  font-family: $font-family-heading;
+  font-size: 3rem;
+  font-weight: $font-weight-bold;
+  color: $text-dark;
+  margin: 0;
+
+  @include max-md {
+    font-size: 2.5rem;
+  }
+
+  @include max-sm {
+    font-size: 2rem;
+  }
+}
+
+.case-studies-section__link {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-family: $font-family;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: $text-dark;
+  text-decoration: none;
+  transition: $transition;
+  white-space: nowrap;
+  margin-top: $spacing-3;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: $primary-color;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+// ==========================================================================
+// Case Studies Grid
+// ==========================================================================
+
+.case-studies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-8;
+
+  @include max-md {
+    grid-template-columns: 1fr;
+    gap: $spacing-6;
+  }
+}
+
+// ==========================================================================
+// Case Study Card
+// ==========================================================================
+
+.case-card {
+  background: $secondary-color;
+  border-radius: $radius-lg;
+  padding: $spacing-8;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: $transition;
+
+  @include max-md {
+    padding: $spacing-6;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba($secondary-color, 0.3);
+  }
+}
+
+.case-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: $spacing-6;
+  gap: $spacing-4;
+}
+
+.case-card__logo {
+  height: 28px;
+  width: auto;
+  max-width: 140px;
+
+  img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  // For SVG logos
+  svg {
+    height: 100%;
+    width: auto;
+    fill: $bg-white;
+  }
+}
+
+.case-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-2 $spacing-3;
+  background: #22C55E;
+  border-radius: $radius;
+  font-family: $font-family;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $bg-white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.case-card__content {
+  flex-grow: 1;
+  margin-bottom: $spacing-6;
+}
+
+.case-card__text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.7;
+  color: rgba($bg-white, 0.8);
+  margin: 0;
+
+  @include max-md {
+    font-size: $font-size-sm;
+  }
+
+  // Second paragraph styling
+  & + & {
+    margin-top: $spacing-4;
+  }
+}
+
+.case-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-family: $font-family;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $bg-white;
+  text-decoration: none;
+  transition: $transition;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: $primary-color;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+// ==========================================================================
+// Case Studies Page Grid (for archive page)
+// ==========================================================================
+
+.case-studies-page-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-8;
+
+  @include max-lg {
+    gap: $spacing-6;
+  }
+
+  @include max-md {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Featured case study (larger)
+.case-card--featured {
+  grid-column: span 2;
+  
+  @include max-md {
+    grid-column: span 1;
+  }
+
+  .case-card__content {
+    max-width: 600px;
+  }
+}
+
+// Light variant for variety
+.case-card--light {
+  background: #F1F5F9;
+
+  .case-card__logo img {
+    filter: none;
+  }
+
+  .case-card__text {
+    color: $text-color;
+  }
+
+  .case-card__link {
+    color: $text-dark;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+

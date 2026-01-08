@@ -1,0 +1,111 @@
+// ==========================================================================
+// Reset / Base
+// ==========================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: $line-height-relaxed;
+  color: $text-color;
+  background-color: $bg-white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Remove default margins
+h1, h2, h3, h4, h5, h6,
+p, figure, blockquote, dl, dd {
+  margin: 0;
+}
+
+// Remove list styles
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Links
+a {
+  color: $primary-color;
+  text-decoration: none;
+  transition: $transition;
+
+  &:hover {
+    color: $primary-dark;
+  }
+}
+
+// Images
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+// Form elements
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+// Remove animations for people who prefer not to see them
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Screen reader only
+.screen-reader-text {
+  @include visually-hidden;
+}
+
+// Skip link
+.skip-link {
+  @include visually-hidden;
+
+  &:focus {
+    position: fixed;
+    top: $spacing-2;
+    left: $spacing-2;
+    z-index: $z-tooltip;
+    width: auto;
+    height: auto;
+    padding: $spacing-3 $spacing-4;
+    background: $secondary-color;
+    color: $bg-white;
+    clip: auto;
+    border-radius: $radius;
+  }
+}
+

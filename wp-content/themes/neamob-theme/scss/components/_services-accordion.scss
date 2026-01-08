@@ -1,0 +1,238 @@
+// ==========================================================================
+// Services Accordion - What We Do Section
+// ==========================================================================
+
+.services-section {
+  background: $bg-white;
+  padding: $spacing-20 0;
+
+  @include max-md {
+    padding: $spacing-12 0;
+  }
+}
+
+.services-section__label {
+  font-family: $font-family;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: $text-color;
+  margin-bottom: $spacing-10;
+
+  @include max-md {
+    margin-bottom: $spacing-6;
+  }
+}
+
+.services-section__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-16;
+  align-items: start;
+
+  @include max-lg {
+    gap: $spacing-10;
+  }
+
+  @include max-md {
+    grid-template-columns: 1fr;
+    gap: $spacing-8;
+  }
+}
+
+.services-section__content {
+  @include max-md {
+    order: 1;
+  }
+}
+
+.services-section__media {
+  position: sticky;
+  top: 100px;
+
+  @include max-md {
+    position: relative;
+    top: 0;
+    order: 2;
+  }
+}
+
+.services-section__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #E8EAED;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // Placeholder with avatars (like in design)
+  .media-placeholder {
+    display: flex;
+    align-items: center;
+    gap: -8px;
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid $bg-white;
+      margin-left: -10px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+// ==========================================================================
+// Accordion Items
+// ==========================================================================
+
+.services-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.services-accordion__item {
+  border-bottom: 1px solid rgba($text-color, 0.1);
+
+  &:first-child {
+    border-top: 1px solid rgba($text-color, 0.1);
+  }
+}
+
+.services-accordion__header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+  padding: $spacing-5 0;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    .services-accordion__icon {
+      background: $primary-dark;
+    }
+  }
+}
+
+.services-accordion__icon {
+  width: 40px;
+  height: 40px;
+  background: $primary-color;
+  border-radius: $radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: $transition;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: $bg-white;
+    transition: transform 0.3s ease;
+  }
+
+  // Rotated arrow for open state
+  .services-accordion__item.is-active & {
+    svg {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.services-accordion__title {
+  font-family: $font-family-heading;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $text-dark;
+  margin: 0;
+  flex-grow: 1;
+
+  @include max-md {
+    font-size: $font-size-lg;
+  }
+}
+
+// Accordion Body
+.services-accordion__body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  padding-left: 56px; // icon width + gap
+
+  @include max-md {
+    padding-left: 52px;
+  }
+
+  .services-accordion__item.is-active & {
+    max-height: 300px;
+    padding-bottom: $spacing-6;
+  }
+}
+
+.services-accordion__text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.7;
+  color: $text-color;
+  margin-bottom: $spacing-5;
+  max-width: 480px;
+
+  @include max-md {
+    font-size: $font-size-sm;
+  }
+}
+
+.services-accordion__link {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-family: $font-family;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $text-dark;
+  text-decoration: none;
+  transition: $transition;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: $primary-color;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+// ==========================================================================
+// Animation variants
+// ==========================================================================
+
+// Fade in content
+.services-accordion__body-inner {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+
+  .services-accordion__item.is-active & {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

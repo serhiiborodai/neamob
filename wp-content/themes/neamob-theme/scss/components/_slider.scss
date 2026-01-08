@@ -1,0 +1,328 @@
+// ==========================================================================
+// Swiper Slider Styles
+// ==========================================================================
+
+.neamob-slider {
+  width: 100%;
+  position: relative;
+}
+
+.neamob-slider .swiper {
+  width: 100%;
+  padding-bottom: 50px;
+}
+
+.neamob-slider .swiper-slide {
+  background: $bg-white;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow;
+  transition: $transition;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $shadow-lg;
+  }
+
+  img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+}
+
+.slide-content {
+  padding: $spacing-6;
+
+  h3 {
+    margin-bottom: $spacing-3;
+  }
+
+  p {
+    color: $text-light;
+    margin-bottom: 0;
+  }
+}
+
+// ==========================================================================
+// Hero Slider
+// ==========================================================================
+
+.hero-slider {
+  height: 600px;
+  margin-bottom: 0;
+
+  @include max-md {
+    height: 500px;
+  }
+
+  @include max-sm {
+    height: 450px;
+  }
+
+  .swiper {
+    height: 100%;
+    padding-bottom: 0;
+  }
+
+  .swiper-slide {
+    @include flex-center;
+    background-size: cover;
+    background-position: center;
+    border-radius: 0;
+    box-shadow: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .slide-overlay {
+    @include overlay(0.6);
+    background: linear-gradient(135deg, rgba($secondary-color, 0.8), rgba($primary-color, 0.6));
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: $bg-white;
+    max-width: 800px;
+    padding: 0 $container-padding;
+
+    h1 {
+      color: $bg-white;
+      font-size: $font-size-6xl;
+      margin-bottom: $spacing-5;
+
+      @include max-md {
+        font-size: $font-size-4xl;
+      }
+
+      @include max-sm {
+        font-size: $font-size-3xl;
+      }
+    }
+
+    p {
+      font-size: $font-size-xl;
+      opacity: 0.9;
+      margin-bottom: $spacing-8;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+
+      @include max-md {
+        font-size: $font-size-lg;
+      }
+    }
+
+    .btn {
+      margin: 0 $spacing-2;
+
+      @include max-sm {
+        margin-bottom: $spacing-2;
+      }
+    }
+  }
+}
+
+// ==========================================================================
+// Cards Slider
+// ==========================================================================
+
+.cards-slider {
+  .swiper-slide {
+    height: auto;
+  }
+}
+
+// ==========================================================================
+// Testimonials Slider
+// ==========================================================================
+
+.testimonials-slider {
+  .swiper-slide {
+    height: auto;
+    background: $bg-white;
+    padding: $spacing-10;
+    border-radius: $radius-lg;
+    box-shadow: $shadow;
+
+    &:hover {
+      transform: none;
+      box-shadow: $shadow-lg;
+    }
+  }
+
+  .testimonial-quote {
+    position: relative;
+    margin-bottom: $spacing-6;
+    padding-left: $spacing-8;
+
+    &::before {
+      content: '"';
+      position: absolute;
+      left: 0;
+      top: -10px;
+      font-size: 5rem;
+      color: $primary-color;
+      opacity: 0.2;
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    p {
+      font-size: $font-size-lg;
+      font-style: italic;
+      color: $text-color;
+      line-height: $line-height-relaxed;
+    }
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+  }
+
+  .testimonial-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: $radius-full;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .testimonial-info {
+    h4 {
+      font-size: $font-size-base;
+      margin-bottom: $spacing-1;
+    }
+
+    p {
+      font-size: $font-size-sm;
+      color: $text-light;
+      margin: 0;
+    }
+  }
+}
+
+// ==========================================================================
+// Gallery Slider
+// ==========================================================================
+
+.gallery-slider {
+  .swiper-slide {
+    border-radius: $radius-lg;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ==========================================================================
+// Swiper Navigation & Pagination
+// ==========================================================================
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: $primary-color;
+  background: $bg-white;
+  width: 50px;
+  height: 50px;
+  border-radius: $radius-full;
+  box-shadow: $shadow;
+  transition: $transition;
+
+  &::after {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &:hover {
+    background: $primary-color;
+    color: $bg-white;
+  }
+
+  @include max-md {
+    width: 40px;
+    height: 40px;
+
+    &::after {
+      font-size: 14px;
+    }
+  }
+}
+
+// Hero slider navigation
+.hero-slider {
+  .swiper-button-next,
+  .swiper-button-prev {
+    background: rgba($bg-white, 0.2);
+    color: $bg-white;
+    backdrop-filter: blur(10px);
+
+    &:hover {
+      background: $bg-white;
+      color: $primary-color;
+    }
+  }
+}
+
+.swiper-pagination {
+  bottom: 0 !important;
+}
+
+.swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: $border-color;
+  opacity: 1;
+  transition: $transition;
+
+  &:hover {
+    background: $text-light;
+  }
+}
+
+.swiper-pagination-bullet-active {
+  background: $primary-color;
+  width: 30px;
+  border-radius: $radius;
+}
+
+// Hero slider pagination
+.hero-slider {
+  .swiper-pagination {
+    bottom: 30px !important;
+  }
+
+  .swiper-pagination-bullet {
+    background: rgba($bg-white, 0.5);
+
+    &:hover {
+      background: rgba($bg-white, 0.8);
+    }
+  }
+
+  .swiper-pagination-bullet-active {
+    background: $bg-white;
+  }
+}
+

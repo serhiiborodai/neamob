@@ -1,0 +1,270 @@
+// ==========================================================================
+// Value Section - Focus on what brings value
+// ==========================================================================
+
+.value-section {
+  background: $secondary-color;
+  padding: $spacing-20 0;
+  overflow: hidden;
+
+  @include max-md {
+    padding: $spacing-12 0;
+  }
+}
+
+.value-section__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: $spacing-12;
+  align-items: center;
+  margin-bottom: $spacing-16;
+
+  @include max-lg {
+    gap: $spacing-8;
+  }
+
+  @include max-md {
+    grid-template-columns: 1fr;
+    gap: $spacing-10;
+    margin-bottom: $spacing-12;
+  }
+}
+
+.value-section__content {
+  @include max-md {
+    order: 1;
+  }
+}
+
+.value-section__title {
+  font-family: $font-family-heading;
+  font-size: 3.25rem;
+  font-weight: $font-weight-bold;
+  line-height: 1.15;
+  color: $bg-white;
+  margin-bottom: $spacing-6;
+
+  @include max-lg {
+    font-size: 2.75rem;
+  }
+
+  @include max-md {
+    font-size: 2.25rem;
+  }
+
+  @include max-sm {
+    font-size: 2rem;
+  }
+}
+
+.value-section__text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.7;
+  color: rgba($bg-white, 0.7);
+  margin-bottom: $spacing-8;
+  max-width: 420px;
+
+  @include max-md {
+    max-width: 100%;
+  }
+}
+
+// ==========================================================================
+// Visual Block with Laptop
+// ==========================================================================
+
+.value-section__visual {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+
+  @include max-md {
+    order: 2;
+    justify-content: center;
+  }
+}
+
+// Stats card overlay
+.value-stats-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: $primary-color;
+  border-radius: $radius-lg;
+  padding: $spacing-6;
+  max-width: 220px;
+  z-index: 2;
+
+  @include max-lg {
+    padding: $spacing-4;
+    max-width: 180px;
+  }
+
+  @include max-sm {
+    position: relative;
+    max-width: 100%;
+    margin-bottom: $spacing-4;
+  }
+}
+
+.value-stats-card__text {
+  font-family: $font-family;
+  font-size: $font-size-sm;
+  line-height: 1.5;
+  color: rgba($bg-white, 0.9);
+  margin-bottom: $spacing-4;
+
+  @include max-lg {
+    font-size: $font-size-xs;
+  }
+}
+
+.value-stats-card__number {
+  font-family: $font-family-heading;
+  font-size: 3rem;
+  font-weight: $font-weight-bold;
+  color: $bg-white;
+  line-height: 1;
+  margin-bottom: $spacing-1;
+
+  @include max-lg {
+    font-size: 2.5rem;
+  }
+}
+
+.value-stats-card__label {
+  font-family: $font-family;
+  font-size: $font-size-sm;
+  color: rgba($bg-white, 0.8);
+}
+
+// Laptop image
+.value-laptop {
+  position: relative;
+  margin-left: 100px;
+  max-width: 100%;
+
+  @include max-lg {
+    margin-left: 60px;
+  }
+
+  @include max-sm {
+    margin-left: 0;
+  }
+
+  img {
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    display: block;
+
+    @include max-md {
+      max-width: 100%;
+    }
+  }
+
+  // Placeholder when no image
+  &--placeholder {
+    width: 100%;
+    max-width: 550px;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, #1a2a3a 0%, #0d1a2a 100%);
+    border-radius: $radius-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba($bg-white, 0.3);
+    font-size: $font-size-sm;
+
+    @include max-md {
+      max-width: 100%;
+    }
+  }
+}
+
+// ==========================================================================
+// Reports Tags Section
+// ==========================================================================
+
+.value-reports {
+  border-top: 1px solid rgba($bg-white, 0.1);
+  padding-top: $spacing-10;
+}
+
+.value-reports__label {
+  font-family: $font-family;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba($bg-white, 0.5);
+  margin-bottom: $spacing-6;
+}
+
+.value-reports__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-3;
+}
+
+.report-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-3 $spacing-5;
+  background: transparent;
+  border: 1px solid rgba($bg-white, 0.2);
+  border-radius: 100px;
+  font-family: $font-family;
+  font-size: $font-size-sm;
+  color: rgba($bg-white, 0.85);
+  text-decoration: none;
+  transition: $transition;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: $primary-color;
+    color: $bg-white;
+    background: rgba($primary-color, 0.1);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: $primary-color;
+  }
+}
+
+// Icon-only tag
+.report-tag--icon {
+  padding: $spacing-3;
+  background: $primary-color;
+  border-color: $primary-color;
+
+  &:hover {
+    background: $primary-dark;
+    border-color: $primary-dark;
+  }
+
+  svg {
+    color: $bg-white;
+  }
+}
+
+// Alt color icon tag
+.report-tag--icon-alt {
+  padding: $spacing-3;
+  background: #4ADE80;
+  border-color: #4ADE80;
+
+  &:hover {
+    background: darken(#4ADE80, 10%);
+    border-color: darken(#4ADE80, 10%);
+  }
+
+  svg {
+    color: $secondary-color;
+  }
+}
+

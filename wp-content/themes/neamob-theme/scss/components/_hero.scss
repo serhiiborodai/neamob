@@ -1,0 +1,215 @@
+// ==========================================================================
+// Hero Section - Neamob Style
+// ==========================================================================
+
+.hero-section {
+  position: relative;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  background: $secondary-color;
+  overflow: hidden;
+  padding: $spacing-20 0;
+
+  @include max-md {
+    min-height: 500px;
+    padding: $spacing-16 0;
+  }
+
+  @include max-sm {
+    min-height: 450px;
+    padding: $spacing-12 0;
+  }
+}
+
+// Background with gradient overlay
+.hero-section__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba($primary-color, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba($primary-color, 0.1) 0%, transparent 40%),
+    radial-gradient(ellipse at 40% 20%, rgba(#0066cc, 0.08) 0%, transparent 30%),
+    linear-gradient(180deg, $secondary-color 0%, darken($secondary-color, 3%) 100%);
+  z-index: 1;
+
+  // Subtle grid pattern
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      linear-gradient(rgba($bg-white, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($bg-white, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.5;
+  }
+}
+
+.hero-section__content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+
+  @include max-md {
+    max-width: 100%;
+  }
+}
+
+.hero-section__title {
+  font-family: $font-family-heading;
+  font-size: 4rem;
+  font-weight: $font-weight-bold;
+  line-height: 1.1;
+  color: $bg-white;
+  margin-bottom: $spacing-6;
+  letter-spacing: -1px;
+
+  @include max-lg {
+    font-size: 3.25rem;
+  }
+
+  @include max-md {
+    font-size: 2.75rem;
+  }
+
+  @include max-sm {
+    font-size: 2.25rem;
+    br {
+      display: none;
+    }
+  }
+}
+
+.hero-section__text {
+  font-family: $font-family;
+  font-size: $font-size-lg;
+  line-height: 1.7;
+  color: rgba($bg-white, 0.75);
+  margin-bottom: $spacing-10;
+  max-width: 540px;
+
+  @include max-md {
+    font-size: $font-size-base;
+    margin-bottom: $spacing-8;
+  }
+}
+
+// Hero Button with dot
+.btn--hero {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-4 $spacing-8;
+  background: $primary-color;
+  color: $bg-white;
+  font-family: $font-family;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  text-decoration: none;
+  border-radius: $radius;
+  border: none;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background: $primary-dark;
+    color: $bg-white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary-color, 0.35);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn__dot {
+  width: 8px;
+  height: 8px;
+  background: $bg-white;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+// ==========================================================================
+// Hero Variants
+// ==========================================================================
+
+// Centered hero
+.hero-section--centered {
+  text-align: center;
+
+  .hero-section__content {
+    margin: 0 auto;
+  }
+
+  .hero-section__text {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+// With image on right
+.hero-section--split {
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-16;
+    align-items: center;
+
+    @include max-lg {
+      grid-template-columns: 1fr;
+      gap: $spacing-10;
+    }
+  }
+
+  .hero-section__image {
+    position: relative;
+    z-index: 2;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: $radius-lg;
+      box-shadow: $shadow-xl;
+    }
+
+    @include max-lg {
+      order: -1;
+    }
+  }
+}
+
+// Taller hero
+.hero-section--tall {
+  min-height: 80vh;
+
+  @include max-md {
+    min-height: 70vh;
+  }
+}
+
+// With video background
+.hero-section--video {
+  .hero-section__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .hero-section__bg {
+    background: rgba($secondary-color, 0.85);
+  }
+}
+

@@ -1,0 +1,495 @@
+// ==========================================================================
+// About Us Page Styles
+// ==========================================================================
+
+// ==========================================================================
+// About Hero
+// ==========================================================================
+
+.about-hero {
+  padding: $spacing-20 0 $spacing-12;
+  text-align: center;
+  background: linear-gradient(180deg, #F8FAFC 0%, $bg-white 100%);
+
+  @include max-md {
+    padding: $spacing-12 0 $spacing-8;
+  }
+}
+
+.about-hero__title {
+  font-family: $font-family-heading;
+  font-size: 4rem;
+  font-weight: $font-weight-bold;
+  color: $text-dark;
+  margin-bottom: $spacing-6;
+
+  @include max-md {
+    font-size: 2.5rem;
+  }
+}
+
+.about-hero__text {
+  font-family: $font-family;
+  font-size: $font-size-lg;
+  line-height: 1.7;
+  color: $text-color;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+// ==========================================================================
+// About Gallery
+// ==========================================================================
+
+.about-gallery {
+  padding: $spacing-8 0;
+  background: linear-gradient(180deg, $bg-white 0%, #F8FAFC 100%);
+  overflow: hidden;
+}
+
+.about-gallery__track {
+  width: 100%;
+}
+
+.about-gallery__slider {
+  overflow: visible;
+
+  .swiper-wrapper {
+    transition-timing-function: linear !important;
+  }
+
+  .swiper-slide {
+    width: auto;
+  }
+}
+
+.about-gallery__item {
+  width: 350px;
+  height: 260px;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  @include max-md {
+    width: 280px;
+    height: 200px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// ==========================================================================
+// Who We Are Section
+// ==========================================================================
+
+.about-who {
+  padding: $spacing-20 0;
+  background: $bg-white;
+
+  @include max-md {
+    padding: $spacing-12 0;
+  }
+}
+
+.about-who__grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: $spacing-8;
+
+  @include max-md {
+    grid-template-columns: 1fr;
+    gap: $spacing-4;
+  }
+}
+
+.about-who__label {
+  font-family: $font-family;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $text-color;
+
+  @include max-md {
+    margin-bottom: $spacing-2;
+  }
+}
+
+.about-who__content {
+  max-width: 800px;
+}
+
+.about-who__title {
+  font-family: $font-family-heading;
+  font-size: 2.5rem;
+  font-weight: $font-weight-bold;
+  color: $text-dark;
+  line-height: 1.2;
+  margin-bottom: $spacing-6;
+
+  @include max-md {
+    font-size: 1.75rem;
+  }
+}
+
+.about-who__text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.8;
+  color: $text-color;
+  margin-bottom: $spacing-8;
+}
+
+.about-who__highlight {
+  background: $secondary-color;
+  border-radius: $radius-lg;
+  padding: $spacing-8;
+  border-left: 4px solid $primary-color;
+}
+
+.about-who__highlight-title {
+  font-family: $font-family-heading;
+  font-size: 1.25rem;
+  font-weight: $font-weight-semibold;
+  color: $bg-white;
+  margin-bottom: $spacing-4;
+}
+
+.about-who__highlight-text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.7;
+  color: rgba($bg-white, 0.8);
+  margin: 0;
+}
+
+// ==========================================================================
+// Beliefs Section
+// ==========================================================================
+
+.about-beliefs {
+  padding: $spacing-20 0;
+  background: #F8FAFC;
+
+  @include max-md {
+    padding: $spacing-12 0;
+  }
+}
+
+.about-beliefs__title {
+  font-family: $font-family-heading;
+  font-size: 2.5rem;
+  font-weight: $font-weight-bold;
+  color: $text-dark;
+  margin-bottom: $spacing-12;
+
+  @include max-md {
+    font-size: 1.75rem;
+    margin-bottom: $spacing-8;
+  }
+}
+
+.about-beliefs__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-beliefs__item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: $spacing-8;
+  padding: $spacing-8 0;
+  border-bottom: 1px solid rgba($text-color, 0.1);
+
+  @include max-md {
+    grid-template-columns: 40px 1fr;
+    gap: $spacing-4;
+    padding: $spacing-6 0;
+  }
+
+  &:first-child {
+    border-top: 1px solid rgba($text-color, 0.1);
+  }
+}
+
+.about-beliefs__number {
+  font-family: $font-family;
+  font-size: $font-size-sm;
+  color: $text-color;
+}
+
+.about-beliefs__content {
+  max-width: 700px;
+}
+
+.about-beliefs__item-title {
+  font-family: $font-family-heading;
+  font-size: 1.25rem;
+  font-weight: $font-weight-semibold;
+  color: $text-dark;
+  margin-bottom: $spacing-3;
+}
+
+.about-beliefs__item-text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.7;
+  color: $text-color;
+  margin: 0;
+}
+
+// ==========================================================================
+// Team Section
+// ==========================================================================
+
+.about-team {
+  padding: $spacing-20 0;
+  background: $bg-white;
+
+  @include max-md {
+    padding: $spacing-12 0;
+  }
+}
+
+.about-team__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-10;
+}
+
+.about-team__label {
+  font-family: $font-family;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $text-color;
+  line-height: 1.6;
+}
+
+.about-team__nav {
+  display: flex;
+  gap: $spacing-2;
+}
+
+.about-team__nav-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $secondary-color;
+  border: none;
+  border-radius: $radius;
+  color: $bg-white;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background: $primary-color;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.about-team__slider {
+  overflow: hidden;
+}
+
+// ==========================================================================
+// Team Card
+// ==========================================================================
+
+.team-card {
+  border: 2px solid transparent;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition: $transition;
+
+  &:hover {
+    border-color: $primary-color;
+  }
+}
+
+.team-card__image {
+  position: relative;
+  aspect-ratio: 1;
+  background: #F1F5F9;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+}
+
+.team-card__dept {
+  position: absolute;
+  bottom: $spacing-3;
+  left: $spacing-3;
+  padding: $spacing-1 $spacing-3;
+  border-radius: $radius;
+  font-family: $font-family;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &--green {
+    background: #DCFCE7;
+    color: #166534;
+  }
+
+  &--blue {
+    background: #DBEAFE;
+    color: #1E40AF;
+  }
+
+  &--purple {
+    background: #F3E8FF;
+    color: #7C3AED;
+  }
+
+  &--orange {
+    background: #FFEDD5;
+    color: #C2410C;
+  }
+}
+
+.team-card__location {
+  position: absolute;
+  bottom: $spacing-3;
+  right: $spacing-3;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-1;
+  font-family: $font-family;
+  font-size: $font-size-xs;
+  color: $text-color;
+
+  svg {
+    color: $primary-color;
+  }
+}
+
+.team-card__info {
+  padding: $spacing-4;
+}
+
+.team-card__name {
+  font-family: $font-family-heading;
+  font-size: 1.125rem;
+  font-weight: $font-weight-semibold;
+  color: $text-dark;
+  margin-bottom: $spacing-1;
+}
+
+.team-card__position {
+  font-family: $font-family;
+  font-size: $font-size-sm;
+  color: $text-color;
+  margin: 0;
+}
+
+// ==========================================================================
+// Join Us Section
+// ==========================================================================
+
+.about-join {
+  padding: $spacing-20 0;
+  background: #F8FAFC;
+
+  @include max-md {
+    padding: $spacing-12 0;
+  }
+}
+
+.about-join__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-16;
+  align-items: center;
+
+  @include max-lg {
+    gap: $spacing-10;
+  }
+
+  @include max-md {
+    grid-template-columns: 1fr;
+    gap: $spacing-8;
+  }
+}
+
+.about-join__image {
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.about-join__content {
+  max-width: 500px;
+
+  @include max-md {
+    max-width: 100%;
+  }
+}
+
+.about-join__title {
+  font-family: $font-family-heading;
+  font-size: 2.5rem;
+  font-weight: $font-weight-bold;
+  color: $text-dark;
+  margin-bottom: $spacing-5;
+
+  @include max-md {
+    font-size: 2rem;
+  }
+}
+
+.about-join__text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.7;
+  color: $text-color;
+  margin-bottom: $spacing-6;
+}
+
+.about-join__link {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  font-family: $font-family;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $text-dark;
+  text-decoration: none;
+  transition: $transition;
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+.about-join__link-dot {
+  width: 8px;
+  height: 8px;
+  background: $primary-color;
+  border-radius: 50%;
+}
+

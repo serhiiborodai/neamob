@@ -1,0 +1,303 @@
+// ==========================================================================
+// Contact Form Section - Get in Touch
+// ==========================================================================
+
+.contact-form-section {
+  background: $secondary-color;
+  padding: $spacing-20 0;
+  position: relative;
+  overflow: hidden;
+
+  @include max-md {
+    padding: $spacing-12 0;
+  }
+}
+
+.contact-form-section__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: $spacing-16;
+  align-items: center;
+
+  @include max-lg {
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-10;
+  }
+
+  @include max-md {
+    grid-template-columns: 1fr;
+    gap: $spacing-8;
+  }
+}
+
+// ==========================================================================
+// Left Side - Content & Image
+// ==========================================================================
+
+.contact-form-section__content {
+  @include max-md {
+    order: 1;
+  }
+}
+
+.contact-form-section__title {
+  font-family: $font-family-heading;
+  font-size: 3rem;
+  font-weight: $font-weight-bold;
+  color: $bg-white;
+  margin-bottom: $spacing-5;
+
+  @include max-md {
+    font-size: 2.25rem;
+  }
+}
+
+.contact-form-section__text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.7;
+  color: rgba($bg-white, 0.7);
+  margin-bottom: $spacing-10;
+  max-width: 320px;
+
+  @include max-md {
+    margin-bottom: $spacing-6;
+  }
+}
+
+.contact-form-section__image {
+  position: relative;
+  border-radius: $radius-lg;
+  overflow: visible;
+
+  // Purple gradient border
+  &::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 50%, #4F46E5 100%);
+    border-radius: calc($radius-lg + 3px);
+    z-index: 0;
+  }
+
+  img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    border-radius: $radius-lg;
+    display: block;
+  }
+
+  @include max-md {
+    max-width: 300px;
+  }
+}
+
+// ==========================================================================
+// Right Side - Form
+// ==========================================================================
+
+.contact-form-section__form {
+  @include max-md {
+    order: 2;
+  }
+}
+
+// ==========================================================================
+// Form Styles
+// ==========================================================================
+
+.neamob-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-5;
+}
+
+.neamob-contact-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-5;
+
+  @include max-sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.neamob-contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.neamob-contact-form__label {
+  font-family: $font-family;
+  font-size: $font-size-sm;
+  color: rgba($bg-white, 0.6);
+}
+
+.neamob-contact-form__input,
+.neamob-contact-form__select,
+.neamob-contact-form__textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba($bg-white, 0.2);
+  padding: $spacing-3 0;
+  font-family: $font-family;
+  font-size: $font-size-base;
+  color: $bg-white;
+  transition: $transition;
+  width: 100%;
+
+  &::placeholder {
+    color: rgba($bg-white, 0.4);
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom-color: $primary-color;
+  }
+}
+
+.neamob-contact-form__select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230094FF' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0 center;
+  padding-right: $spacing-6;
+  cursor: pointer;
+
+  option {
+    background: $secondary-color;
+    color: $bg-white;
+  }
+}
+
+.neamob-contact-form__textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.neamob-contact-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+  padding: $spacing-4 $spacing-8;
+  background: transparent;
+  border: 1px solid rgba($bg-white, 0.3);
+  border-radius: $radius;
+  font-family: $font-family;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $bg-white;
+  cursor: pointer;
+  transition: $transition;
+  margin-top: $spacing-4;
+  align-self: flex-start;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: $primary-color;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    background: $primary-color;
+    border-color: $primary-color;
+  }
+}
+
+// ==========================================================================
+// Contact Form 7 Overrides
+// ==========================================================================
+
+.contact-form-section {
+  .wpcf7 {
+    width: 100%;
+  }
+
+  .wpcf7-form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-5;
+  }
+
+  .wpcf7-form-control-wrap {
+    display: block;
+    width: 100%;
+  }
+
+  .wpcf7-text,
+  .wpcf7-email,
+  .wpcf7-tel,
+  .wpcf7-textarea,
+  .wpcf7-select {
+    @extend .neamob-contact-form__input;
+  }
+
+  .wpcf7-select {
+    @extend .neamob-contact-form__select;
+  }
+
+  .wpcf7-textarea {
+    @extend .neamob-contact-form__textarea;
+  }
+
+  .wpcf7-submit {
+    @extend .neamob-contact-form__submit;
+  }
+
+  .wpcf7-response-output {
+    margin: $spacing-4 0 0;
+    padding: $spacing-3;
+    border-radius: $radius;
+    font-size: $font-size-sm;
+  }
+
+  .wpcf7-validation-errors,
+  .wpcf7-acceptance-missing {
+    border-color: #EF4444;
+    background: rgba(#EF4444, 0.1);
+    color: #FCA5A5;
+  }
+
+  .wpcf7-mail-sent-ok {
+    border-color: #22C55E;
+    background: rgba(#22C55E, 0.1);
+    color: #86EFAC;
+  }
+
+  .wpcf7-not-valid-tip {
+    color: #FCA5A5;
+    font-size: $font-size-xs;
+    margin-top: $spacing-1;
+  }
+
+  // Labels
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+    font-family: $font-family;
+    font-size: $font-size-sm;
+    color: rgba($bg-white, 0.6);
+  }
+
+  // Two column layout for form
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-5;
+
+    @include max-sm {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+

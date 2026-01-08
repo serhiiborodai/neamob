@@ -1,0 +1,53 @@
+/*!
+Theme Name: Neamob Theme
+Theme URI: https://neamob.com
+Author: Developer
+Author URI: https://neamob.com
+Description: Custom WordPress theme for Neamob with custom HTML blocks and Swiper slider
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.9
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: neamob-theme
+Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments
+*/
+
+// ==========================================================================
+// IMPORTS
+// ==========================================================================
+
+@import 'base/variables';
+@import 'base/mixins';
+@import 'base/reset';
+@import 'base/typography';
+
+@import 'layout/grid';
+@import 'layout/header';
+@import 'layout/footer';
+
+@import 'components/buttons';
+@import 'components/forms';
+@import 'components/slider';
+@import 'components/cards';
+@import 'components/hero';
+@import 'components/logo-slider';
+@import 'components/services-accordion';
+@import 'components/value-section';
+@import 'components/case-studies';
+@import 'components/testimonials';
+@import 'components/comparison-table';
+@import 'components/blog-cards';
+@import 'components/partner-video';
+@import 'components/faq';
+@import 'components/contact-form';
+
+// Pages
+@import 'pages/careers';
+@import 'pages/about';
+@import 'pages/blog';
+
+@import 'blocks/custom-blocks';
+@import 'blocks/patterns';
+

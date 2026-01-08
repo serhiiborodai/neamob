@@ -1,0 +1,336 @@
+// ==========================================================================
+// WordPress Block Patterns & Gutenberg Styles
+// ==========================================================================
+
+// Alignments
+.alignwide {
+  margin-left: calc(-25vw + 50%);
+  margin-right: calc(-25vw + 50%);
+  max-width: 100vw;
+  width: 100vw;
+}
+
+.alignfull {
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  max-width: 100vw;
+  width: 100vw;
+}
+
+.aligncenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alignleft {
+  float: left;
+  margin-right: $spacing-6;
+  margin-bottom: $spacing-4;
+}
+
+.alignright {
+  float: right;
+  margin-left: $spacing-6;
+  margin-bottom: $spacing-4;
+}
+
+// ==========================================================================
+// WordPress Core Blocks
+// ==========================================================================
+
+// Cover block
+.wp-block-cover {
+  min-height: 400px;
+  @include flex-center;
+
+  &.has-background-dim {
+    &::before {
+      background-color: rgba($secondary-color, 0.5);
+    }
+  }
+
+  .wp-block-cover__inner-container {
+    max-width: $container-max-width;
+    padding: 0 $container-padding;
+    text-align: center;
+    color: $bg-white;
+
+    h1, h2, h3, h4 {
+      color: $bg-white;
+    }
+  }
+}
+
+// Columns block
+.wp-block-columns {
+  gap: $spacing-8;
+
+  @include max-md {
+    flex-direction: column;
+  }
+}
+
+.wp-block-column {
+  flex: 1;
+}
+
+// Group block
+.wp-block-group {
+  &.has-background {
+    padding: $spacing-8;
+    border-radius: $radius-lg;
+  }
+}
+
+// Image block
+.wp-block-image {
+  margin-bottom: $spacing-6;
+
+  img {
+    border-radius: $radius;
+  }
+
+  figcaption {
+    margin-top: $spacing-2;
+    font-size: $font-size-sm;
+    color: $text-light;
+    text-align: center;
+  }
+}
+
+// Gallery block
+.wp-block-gallery {
+  gap: $spacing-4;
+
+  .wp-block-image {
+    margin-bottom: 0;
+  }
+}
+
+// Quote block
+.wp-block-quote {
+  margin: $spacing-8 0;
+  padding: $spacing-6;
+  padding-left: $spacing-8;
+  background: $bg-light;
+  border-left: 4px solid $primary-color;
+  border-radius: 0 $radius $radius 0;
+
+  p {
+    font-size: $font-size-lg;
+    font-style: italic;
+    margin-bottom: $spacing-3;
+  }
+
+  cite {
+    font-size: $font-size-sm;
+    color: $text-light;
+    font-style: normal;
+  }
+
+  &.is-style-large {
+    padding: $spacing-10;
+
+    p {
+      font-size: $font-size-2xl;
+    }
+  }
+}
+
+// Pullquote block
+.wp-block-pullquote {
+  border-top: 4px solid $primary-color;
+  border-bottom: 4px solid $primary-color;
+  padding: $spacing-8 0;
+  text-align: center;
+
+  blockquote {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  p {
+    font-size: $font-size-2xl;
+    font-style: italic;
+  }
+
+  cite {
+    font-size: $font-size-sm;
+    color: $text-light;
+  }
+}
+
+// Separator block
+.wp-block-separator {
+  border: none;
+  border-top: 1px solid $border-color;
+  margin: $spacing-10 0;
+
+  &.is-style-wide {
+    border-top-width: 2px;
+  }
+
+  &.is-style-dots {
+    border: none;
+    text-align: center;
+
+    &::before {
+      content: '···';
+      color: $text-light;
+      font-size: $font-size-2xl;
+      letter-spacing: $spacing-4;
+    }
+  }
+}
+
+// Table block
+.wp-block-table {
+  margin-bottom: $spacing-6;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: $spacing-3 $spacing-4;
+    border: 1px solid $border-color;
+    text-align: left;
+  }
+
+  th {
+    background: $bg-light;
+    font-weight: $font-weight-semibold;
+  }
+
+  &.is-style-stripes {
+    tbody tr:nth-child(odd) {
+      background: $bg-light;
+    }
+  }
+}
+
+// List block
+.wp-block-list {
+  margin-bottom: $spacing-6;
+  padding-left: $spacing-6;
+
+  li {
+    margin-bottom: $spacing-2;
+  }
+}
+
+// Code block
+.wp-block-code {
+  padding: $spacing-6;
+  background: $secondary-color;
+  color: $bg-light;
+  border-radius: $radius;
+  overflow-x: auto;
+  font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-size: $font-size-sm;
+  @include custom-scrollbar;
+
+  code {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+}
+
+// Preformatted block
+.wp-block-preformatted {
+  padding: $spacing-6;
+  background: $bg-light;
+  border-radius: $radius;
+  overflow-x: auto;
+  font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-size: $font-size-sm;
+}
+
+// Video block
+.wp-block-video {
+  video {
+    width: 100%;
+    border-radius: $radius-lg;
+  }
+}
+
+// Embed block
+.wp-block-embed {
+  margin-bottom: $spacing-6;
+
+  .wp-block-embed__wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: $radius-lg;
+    }
+  }
+}
+
+// Media & Text block
+.wp-block-media-text {
+  gap: $spacing-8;
+
+  @include max-md {
+    grid-template-columns: 1fr !important;
+  }
+
+  .wp-block-media-text__media {
+    img {
+      border-radius: $radius-lg;
+    }
+  }
+
+  .wp-block-media-text__content {
+    padding: $spacing-6;
+
+    @include max-md {
+      padding: $spacing-4 0;
+    }
+  }
+}
+
+// File block
+.wp-block-file {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+  padding: $spacing-4;
+  background: $bg-light;
+  border-radius: $radius;
+  margin-bottom: $spacing-4;
+
+  a:first-child {
+    flex: 1;
+    font-weight: $font-weight-medium;
+  }
+
+  .wp-block-file__button {
+    @include button-primary;
+    padding: $spacing-2 $spacing-4;
+    font-size: $font-size-sm;
+  }
+}
+
+// ==========================================================================
+// Animation utilities for blocks
+// ==========================================================================
+
+.animate-on-scroll {
+  @include fade-in;
+}
+

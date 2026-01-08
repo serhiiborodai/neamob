@@ -1,0 +1,17 @@
+{
+  "name": "neamob-theme",
+  "version": "1.0.0",
+  "description": "Neamob WordPress Theme",
+  "scripts": {
+    "sass:dev": "sass scss/style.scss:style.css --source-map",
+    "sass:min": "sass scss/style.scss:css/style.min.css --style=compressed --no-source-map",
+    "sass:watch:dev": "sass --watch scss/style.scss:style.css --source-map",
+    "sass:watch:min": "sass --watch scss/style.scss:css/style.min.css --style=compressed --no-source-map",
+    "build": "npm run sass:dev && npm run sass:min",
+    "watch": "npm run sass:watch:dev & npm run sass:watch:min"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}
+

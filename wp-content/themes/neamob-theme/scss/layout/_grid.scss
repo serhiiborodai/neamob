@@ -1,0 +1,166 @@
+// ==========================================================================
+// Grid & Layout
+// ==========================================================================
+
+.container {
+  width: 100%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 $container-padding;
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+// Section
+.section {
+  padding: $spacing-20 0;
+
+  @include max-md {
+    padding: $spacing-16 0;
+  }
+}
+
+.section--sm {
+  padding: $spacing-12 0;
+}
+
+.section--lg {
+  padding: $spacing-24 0;
+}
+
+.section--gray {
+  background-color: $bg-light;
+}
+
+.section--dark {
+  background-color: $secondary-color;
+  color: $bg-white;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $bg-white;
+  }
+}
+
+// Grid system
+.grid {
+  display: grid;
+  gap: $spacing-8;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+
+  @include max-md {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+
+  @include max-lg {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include max-sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+
+  @include max-lg {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include max-sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Flex utilities
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.gap-1 { gap: $spacing-1; }
+.gap-2 { gap: $spacing-2; }
+.gap-3 { gap: $spacing-3; }
+.gap-4 { gap: $spacing-4; }
+.gap-6 { gap: $spacing-6; }
+.gap-8 { gap: $spacing-8; }
+.gap-10 { gap: $spacing-10; }
+
+// Spacing utilities
+.mt-0 { margin-top: 0; }
+.mt-4 { margin-top: $spacing-4; }
+.mt-6 { margin-top: $spacing-6; }
+.mt-8 { margin-top: $spacing-8; }
+.mt-10 { margin-top: $spacing-10; }
+
+.mb-0 { margin-bottom: 0; }
+.mb-4 { margin-bottom: $spacing-4; }
+.mb-6 { margin-bottom: $spacing-6; }
+.mb-8 { margin-bottom: $spacing-8; }
+.mb-10 { margin-bottom: $spacing-10; }
+
+.py-4 { padding-top: $spacing-4; padding-bottom: $spacing-4; }
+.py-6 { padding-top: $spacing-6; padding-bottom: $spacing-6; }
+.py-8 { padding-top: $spacing-8; padding-bottom: $spacing-8; }
+.py-10 { padding-top: $spacing-10; padding-bottom: $spacing-10; }
+
+.px-4 { padding-left: $spacing-4; padding-right: $spacing-4; }
+.px-6 { padding-left: $spacing-6; padding-right: $spacing-6; }
+
+// Width utilities
+.w-full { width: 100%; }
+.max-w-sm { max-width: 24rem; }
+.max-w-md { max-width: 28rem; }
+.max-w-lg { max-width: 32rem; }
+.max-w-xl { max-width: 36rem; }
+.max-w-2xl { max-width: 42rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+

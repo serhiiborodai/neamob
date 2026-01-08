@@ -1,0 +1,228 @@
+// ==========================================================================
+// Footer - Neamob Style
+// ==========================================================================
+
+.site-footer {
+  background: $bg-white;
+  border-top: 1px solid $border-color;
+}
+
+// ==========================================================================
+// Footer Main (Columns Section)
+// ==========================================================================
+
+.footer-main {
+  padding: $spacing-16 0;
+
+  @include max-md {
+    padding: $spacing-10 0;
+  }
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: $spacing-8;
+
+  @include max-lg {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-8 $spacing-6;
+  }
+
+  @include max-md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include max-sm {
+    grid-template-columns: 1fr;
+    gap: $spacing-8;
+  }
+}
+
+// ==========================================================================
+// Footer Column
+// ==========================================================================
+
+.footer-column {
+  &__title {
+    margin: 0 0 $spacing-5;
+    font-family: $font-family;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    a {
+      color: $secondary-color;
+      text-decoration: none;
+      transition: $transition;
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+
+  &__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: $spacing-3;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    a {
+      color: $text-color;
+      font-size: $font-size-sm;
+      text-decoration: none;
+      transition: $transition;
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+// ==========================================================================
+// Footer Bottom
+// ==========================================================================
+
+.footer-bottom {
+  padding: $spacing-6 0;
+  border-top: 1px solid $border-color;
+}
+
+.footer-bottom__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-4;
+
+  @include max-md {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.footer-copyright {
+  color: $text-color;
+  font-size: $font-size-sm;
+}
+
+.footer-legal {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+
+  a {
+    color: $text-color;
+    font-size: $font-size-sm;
+    text-decoration: none;
+    transition: $transition;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+
+  .separator {
+    color: $border-dark;
+    font-size: $font-size-sm;
+  }
+}
+
+// ==========================================================================
+// Footer with Logo (Alternative Layout)
+// ==========================================================================
+
+.footer-brand {
+  margin-bottom: $spacing-6;
+
+  .site-logo {
+    img {
+      height: 40px;
+      width: auto;
+    }
+  }
+
+  p {
+    margin-top: $spacing-4;
+    color: $text-light;
+    font-size: $font-size-sm;
+    max-width: 280px;
+  }
+}
+
+// Social links in footer
+.footer-social {
+  display: flex;
+  gap: $spacing-3;
+  margin-top: $spacing-5;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: $bg-light;
+    border-radius: $radius-full;
+    color: $text-color;
+    transition: $transition;
+
+    &:hover {
+      background: $primary-color;
+      color: $bg-white;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// ==========================================================================
+// Dark Footer Variant
+// ==========================================================================
+
+.site-footer--dark {
+  background: $secondary-color;
+  border-top: none;
+
+  .footer-column__title a {
+    color: $bg-white;
+  }
+
+  .footer-column__links a {
+    color: rgba($bg-white, 0.7);
+
+    &:hover {
+      color: $bg-white;
+    }
+  }
+
+  .footer-bottom {
+    border-top-color: rgba($bg-white, 0.1);
+  }
+
+  .footer-copyright,
+  .footer-legal a {
+    color: rgba($bg-white, 0.6);
+  }
+
+  .footer-legal a:hover {
+    color: $bg-white;
+  }
+
+  .footer-legal .separator {
+    color: rgba($bg-white, 0.3);
+  }
+}

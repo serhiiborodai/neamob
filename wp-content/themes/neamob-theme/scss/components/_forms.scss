@@ -1,0 +1,234 @@
+// ==========================================================================
+// Forms
+// ==========================================================================
+
+// Base form styles
+form {
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin-bottom: $spacing-2;
+  font-weight: $font-weight-medium;
+  color: $text-color;
+  font-size: $font-size-sm;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="url"],
+input[type="number"],
+input[type="search"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: $spacing-3 $spacing-4;
+  border: 2px solid $border-color;
+  border-radius: $radius;
+  font-size: $font-size-base;
+  font-family: $font-family;
+  color: $text-color;
+  background-color: $bg-white;
+  transition: $transition;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+
+  &::placeholder {
+    color: $text-light;
+  }
+
+  &:disabled {
+    background-color: $bg-light;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $spacing-3 center;
+  background-size: 20px;
+  padding-right: $spacing-10;
+}
+
+// Checkbox & Radio
+input[type="checkbox"],
+input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin-right: $spacing-2;
+  accent-color: $primary-color;
+  cursor: pointer;
+}
+
+// Form groups
+.form-group {
+  margin-bottom: $spacing-5;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-4;
+
+  @include max-sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Helper text
+.form-help {
+  margin-top: $spacing-1;
+  font-size: $font-size-sm;
+  color: $text-light;
+}
+
+// Error state
+.form-error {
+  input,
+  textarea,
+  select {
+    border-color: #ef4444;
+  }
+
+  .form-error-message {
+    margin-top: $spacing-1;
+    font-size: $font-size-sm;
+    color: #ef4444;
+  }
+}
+
+// Success state
+.form-success {
+  input,
+  textarea,
+  select {
+    border-color: #10b981;
+  }
+}
+
+// ==========================================================================
+// Contact Form 7 Styles
+// ==========================================================================
+
+.wpcf7 {
+  max-width: 600px;
+
+  .wpcf7-form-control-wrap {
+    display: block;
+    margin-bottom: $spacing-5;
+  }
+
+  .wpcf7-form-control {
+    width: 100%;
+  }
+
+  .wpcf7-text,
+  .wpcf7-email,
+  .wpcf7-tel,
+  .wpcf7-textarea {
+    width: 100%;
+    padding: $spacing-3 $spacing-4;
+    border: 2px solid $border-color;
+    border-radius: $radius;
+    font-size: $font-size-base;
+    transition: $transition;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    }
+  }
+
+  .wpcf7-textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  .wpcf7-submit {
+    @include button-primary;
+    padding: $spacing-4 $spacing-8;
+    font-size: $font-size-base;
+    width: auto;
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  // Validation
+  .wpcf7-not-valid-tip {
+    color: #ef4444;
+    font-size: $font-size-sm;
+    margin-top: $spacing-1;
+  }
+
+  .wpcf7-not-valid {
+    border-color: #ef4444 !important;
+  }
+
+  // Response messages
+  .wpcf7-response-output {
+    margin: $spacing-4 0 0;
+    padding: $spacing-4;
+    border-radius: $radius;
+    font-size: $font-size-sm;
+  }
+
+  .wpcf7-mail-sent-ok {
+    border: none;
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+
+  .wpcf7-mail-sent-ng,
+  .wpcf7-validation-errors,
+  .wpcf7-spam-blocked {
+    border: none;
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+
+  // Spinner
+  .wpcf7-spinner {
+    display: none;
+    margin-left: $spacing-3;
+  }
+
+  &.submitting .wpcf7-spinner {
+    display: inline-block;
+  }
+}
+
+// Search form
+.search-form {
+  display: flex;
+  gap: $spacing-2;
+
+  .search-field {
+    flex: 1;
+  }
+
+  .search-submit {
+    @include button-primary;
+    padding: $spacing-3 $spacing-5;
+  }
+}
+

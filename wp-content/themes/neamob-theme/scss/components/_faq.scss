@@ -1,0 +1,210 @@
+// ==========================================================================
+// FAQ Section
+// ==========================================================================
+
+.faq-section {
+  background: $bg-white;
+  padding: $spacing-20 0;
+
+  @include max-md {
+    padding: $spacing-12 0;
+  }
+}
+
+.faq-section__grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: $spacing-16;
+  align-items: start;
+
+  @include max-lg {
+    grid-template-columns: 240px 1fr;
+    gap: $spacing-10;
+  }
+
+  @include max-md {
+    grid-template-columns: 1fr;
+    gap: $spacing-8;
+  }
+}
+
+// ==========================================================================
+// Sidebar
+// ==========================================================================
+
+.faq-section__sidebar {
+  position: sticky;
+  top: 120px;
+
+  @include max-md {
+    position: static;
+  }
+}
+
+.faq-section__title {
+  font-family: $font-family-heading;
+  font-size: 3.5rem;
+  font-weight: $font-weight-bold;
+  color: $text-dark;
+  margin-bottom: $spacing-5;
+
+  @include max-md {
+    font-size: 2.5rem;
+  }
+}
+
+.faq-section__text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.6;
+  color: $text-color;
+  margin-bottom: $spacing-6;
+
+  @include max-md {
+    font-size: $font-size-sm;
+  }
+}
+
+.faq-section__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-3 $spacing-6;
+  background: transparent;
+  border: 1px solid rgba($text-dark, 0.2);
+  border-radius: $radius;
+  font-family: $font-family;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $text-dark;
+  text-decoration: none;
+  transition: $transition;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: $primary-color;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+}
+
+// ==========================================================================
+// FAQ Items
+// ==========================================================================
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.faq-item {
+  border-bottom: 1px solid rgba($text-color, 0.1);
+
+  &:first-child {
+    border-top: 1px solid rgba($text-color, 0.1);
+  }
+}
+
+.faq-item__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-4;
+  padding: $spacing-6 0;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    .faq-item__icon {
+      background: $primary-color;
+      border-color: $primary-color;
+      color: $bg-white;
+    }
+  }
+}
+
+.faq-item__question {
+  font-family: $font-family-heading;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $text-dark;
+  margin: 0;
+  flex-grow: 1;
+
+  @include max-md {
+    font-size: $font-size-base;
+  }
+}
+
+.faq-item__icon {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba($text-color, 0.2);
+  border-radius: $radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: $transition;
+  color: $text-dark;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  // Active state
+  .faq-item.is-active & {
+    background: $primary-color;
+    border-color: $primary-color;
+    color: $bg-white;
+
+    svg {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+// ==========================================================================
+// FAQ Answer
+// ==========================================================================
+
+.faq-item__body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+
+  .faq-item.is-active & {
+    max-height: 500px;
+  }
+}
+
+.faq-item__answer {
+  padding-bottom: $spacing-6;
+  padding-right: 52px;
+
+  @include max-md {
+    padding-right: 0;
+  }
+}
+
+.faq-item__answer-text {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.7;
+  color: $text-color;
+  margin: 0;
+
+  @include max-md {
+    font-size: $font-size-sm;
+  }
+}
+

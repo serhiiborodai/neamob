@@ -1,0 +1,109 @@
+// ==========================================================================
+// Variables
+// ==========================================================================
+
+// Colors - Neamob Brand
+$primary-color: #0094FF;        // Основной синий
+$primary-dark: #0078CC;         // Тёмный синий (hover)
+$primary-light: #33A9FF;        // Светлый синий
+$secondary-color: #061526;      // Тёмно-синий (основной тёмный)
+$accent-color: #0094FF;         // Акцент = основной
+$accent-dark: #0078CC;
+
+// Text colors
+$text-color: #495B75;           // Основной текст (серо-синий)
+$text-light: #6B7D94;           // Светлый текст
+$text-dark: #000A18;            // Тёмный текст (почти чёрный)
+
+// Background colors
+$bg-light: #F5F7FA;             // Светлый фон
+$bg-white: #FFFFFF;             // Белый
+$bg-dark: #061526;              // Тёмный фон
+
+// Additional brand colors
+$dark-blue: #000A18;            // Самый тёмный синий
+$navy: #061526;                 // Тёмно-синий
+
+// Border
+$border-color: #E1E8F0;
+$border-dark: #C5D0DC;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+$shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+// Border radius
+$radius-sm: 4px;
+$radius: 8px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+$radius-full: 9999px;
+
+// Transitions
+$transition-fast: all 0.15s ease;
+$transition: all 0.3s ease;
+$transition-slow: all 0.5s ease;
+
+// Typography - Neamob Fonts
+$font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-family-heading: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+// Font sizes
+$font-size-xs: 0.75rem;    // 12px
+$font-size-sm: 0.875rem;   // 14px
+$font-size-base: 1rem;     // 16px
+$font-size-lg: 1.125rem;   // 18px
+$font-size-xl: 1.25rem;    // 20px
+$font-size-2xl: 1.5rem;    // 24px
+$font-size-3xl: 1.875rem;  // 30px
+$font-size-4xl: 2.25rem;   // 36px
+$font-size-5xl: 3rem;      // 48px
+$font-size-6xl: 3.75rem;   // 60px
+
+// Font weights
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Line heights
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.625;
+
+// Spacing
+$spacing-1: 0.25rem;  // 4px
+$spacing-2: 0.5rem;   // 8px
+$spacing-3: 0.75rem;  // 12px
+$spacing-4: 1rem;     // 16px
+$spacing-5: 1.25rem;  // 20px
+$spacing-6: 1.5rem;   // 24px
+$spacing-8: 2rem;     // 32px
+$spacing-10: 2.5rem;  // 40px
+$spacing-12: 3rem;    // 48px
+$spacing-16: 4rem;    // 64px
+$spacing-20: 5rem;    // 80px
+$spacing-24: 6rem;    // 96px
+
+// Container
+$container-max-width: 1200px;
+$container-padding: 20px;
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// Z-index
+$z-dropdown: 100;
+$z-sticky: 500;
+$z-fixed: 1000;
+$z-modal-backdrop: 1100;
+$z-modal: 1200;
+$z-tooltip: 1300;
+

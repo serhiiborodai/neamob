@@ -1,0 +1,31 @@
+# WordPress
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+wp-content/backup*/
+wp-content/debug.log
+
+# SQLite Database
+wp-content/database/*.sqlite
+wp-content/database/.ht.sqlite
+
+# Environment
+.env
+wp-config-local.php
+
+# Node
+node_modules/
+wp-content/themes/neamob-theme/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log

@@ -1,0 +1,207 @@
+// ==========================================================================
+// Logo Slider - Infinite scroll marquee
+// ==========================================================================
+
+.logo-slider {
+  position: relative;
+  background: $secondary-color;
+  padding: $spacing-12 0;
+  overflow: hidden;
+
+  // Gradient overlay on sides for fade effect
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 150px;
+    z-index: 2;
+    pointer-events: none;
+
+    @include max-md {
+      width: 80px;
+    }
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(90deg, $secondary-color 0%, transparent 100%);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(270deg, $secondary-color 0%, transparent 100%);
+  }
+}
+
+// Background with gradient (continues from hero)
+.logo-slider__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 70% 0%, rgba($primary-color, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 50%, rgba($primary-color, 0.08) 0%, transparent 40%);
+  z-index: 0;
+}
+
+.logo-slider__track {
+  display: flex;
+  align-items: center;
+  gap: $spacing-16;
+  width: max-content;
+  animation: scroll-logos 30s linear infinite;
+
+  @include max-md {
+    gap: $spacing-10;
+    animation-duration: 20s;
+  }
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+.logo-slider__group {
+  display: flex;
+  align-items: center;
+  gap: $spacing-16;
+  flex-shrink: 0;
+
+  @include max-md {
+    gap: $spacing-10;
+  }
+}
+
+.logo-slider__item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  min-width: 120px;
+  opacity: 0.6;
+  filter: grayscale(100%) brightness(2);
+  transition: $transition;
+
+  @include max-md {
+    height: 32px;
+    min-width: 100px;
+  }
+
+  &:hover {
+    opacity: 1;
+    filter: grayscale(0%) brightness(1);
+  }
+
+  img {
+    max-height: 100%;
+    max-width: 150px;
+    width: auto;
+    object-fit: contain;
+
+    @include max-md {
+      max-width: 120px;
+    }
+  }
+
+  // For SVG logos
+  svg {
+    height: 100%;
+    width: auto;
+    max-width: 150px;
+    fill: currentColor;
+    color: rgba($bg-white, 0.7);
+  }
+}
+
+// Animation keyframes
+@keyframes scroll-logos {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+// ==========================================================================
+// Logo Slider Variants
+// ==========================================================================
+
+// Reverse direction
+.logo-slider--reverse {
+  .logo-slider__track {
+    animation-direction: reverse;
+  }
+}
+
+// Faster animation
+.logo-slider--fast {
+  .logo-slider__track {
+    animation-duration: 15s;
+
+    @include max-md {
+      animation-duration: 10s;
+    }
+  }
+}
+
+// Slower animation
+.logo-slider--slow {
+  .logo-slider__track {
+    animation-duration: 45s;
+
+    @include max-md {
+      animation-duration: 30s;
+    }
+  }
+}
+
+// With title
+.logo-slider--with-title {
+  padding-top: $spacing-16;
+
+  .logo-slider__title {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: rgba($bg-white, 0.5);
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: $spacing-10;
+  }
+}
+
+// Light background variant
+.logo-slider--light {
+  background: $bg-white;
+
+  &::before {
+    background: linear-gradient(90deg, $bg-white 0%, transparent 100%);
+  }
+
+  &::after {
+    background: linear-gradient(270deg, $bg-white 0%, transparent 100%);
+  }
+
+  .logo-slider__bg {
+    display: none;
+  }
+
+  .logo-slider__item {
+    filter: grayscale(100%) brightness(0.5);
+    opacity: 0.5;
+
+    &:hover {
+      filter: grayscale(0%) brightness(1);
+      opacity: 1;
+    }
+  }
+}
+

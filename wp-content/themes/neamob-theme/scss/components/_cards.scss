@@ -1,0 +1,338 @@
+// ==========================================================================
+// Cards
+// ==========================================================================
+
+// Base card
+.card {
+  @include card;
+  overflow: hidden;
+}
+
+.card__image {
+  img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.card__content {
+  padding: $spacing-6;
+}
+
+.card__title {
+  margin-bottom: $spacing-3;
+
+  a {
+    color: $secondary-color;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+.card__excerpt {
+  color: $text-light;
+  margin-bottom: $spacing-4;
+  @include line-clamp(3);
+}
+
+.card__meta {
+  font-size: $font-size-sm;
+  color: $text-light;
+  margin-bottom: $spacing-3;
+}
+
+// ==========================================================================
+// Feature Cards
+// ==========================================================================
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-8;
+}
+
+.feature-card {
+  @include card;
+  @include fade-in;
+  padding: $spacing-10;
+  text-align: center;
+
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      transition-delay: #{($i - 1) * 0.1}s;
+    }
+  }
+}
+
+.feature-card__icon {
+  width: 70px;
+  height: 70px;
+  @include gradient-primary;
+  border-radius: $radius;
+  @include flex-center;
+  margin: 0 auto $spacing-5;
+
+  svg {
+    width: 35px;
+    height: 35px;
+    color: $bg-white;
+    stroke: $bg-white;
+  }
+}
+
+.feature-card__title {
+  margin-bottom: $spacing-3;
+}
+
+.feature-card__text {
+  color: $text-light;
+  margin: 0;
+}
+
+// ==========================================================================
+// Post Cards
+// ==========================================================================
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: $spacing-8;
+}
+
+.post-card {
+  @include card;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card__image {
+  overflow: hidden;
+
+  a {
+    display: block;
+  }
+
+  img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.post-card__content {
+  padding: $spacing-6;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card__header {
+  margin-bottom: $spacing-4;
+}
+
+.post-card__title {
+  font-size: $font-size-xl;
+  margin-bottom: $spacing-2;
+
+  a {
+    color: $secondary-color;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+.post-card__meta {
+  font-size: $font-size-sm;
+  color: $text-light;
+
+  time {
+    display: inline-block;
+  }
+}
+
+.post-card__excerpt {
+  color: $text-color;
+  margin-bottom: $spacing-4;
+  flex: 1;
+
+  p {
+    margin: 0;
+    @include line-clamp(3);
+  }
+}
+
+.post-card__footer {
+  margin-top: auto;
+}
+
+// ==========================================================================
+// Team Cards
+// ==========================================================================
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: $spacing-8;
+}
+
+.team-card {
+  @include card;
+  text-align: center;
+  padding: $spacing-10 $spacing-6;
+}
+
+.team-card__image {
+  width: 150px;
+  height: 150px;
+  border-radius: $radius-full;
+  overflow: hidden;
+  margin: 0 auto $spacing-5;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.team-card__name {
+  margin-bottom: $spacing-1;
+}
+
+.team-card__role {
+  color: $text-light;
+  margin-bottom: $spacing-4;
+}
+
+.team-card__social {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-3;
+
+  a {
+    width: 36px;
+    height: 36px;
+    @include flex-center;
+    background: $bg-light;
+    border-radius: $radius-full;
+    color: $text-light;
+    transition: $transition;
+
+    &:hover {
+      background: $primary-color;
+      color: $bg-white;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// ==========================================================================
+// Pricing Cards
+// ==========================================================================
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-8;
+  align-items: stretch;
+}
+
+.pricing-card {
+  @include card;
+  padding: $spacing-10;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &--featured {
+    border: 2px solid $primary-color;
+    transform: scale(1.05);
+
+    @include max-lg {
+      transform: none;
+    }
+
+    &::before {
+      content: 'Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: $primary-color;
+      color: $bg-white;
+      padding: $spacing-1 $spacing-4;
+      border-radius: $radius-full;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+    }
+  }
+}
+
+.pricing-card__title {
+  margin-bottom: $spacing-2;
+}
+
+.pricing-card__price {
+  font-size: $font-size-5xl;
+  font-weight: $font-weight-bold;
+  color: $primary-color;
+  margin-bottom: $spacing-5;
+
+  span {
+    font-size: $font-size-base;
+    color: $text-light;
+    font-weight: $font-weight-normal;
+  }
+}
+
+.pricing-card__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 $spacing-8;
+  text-align: left;
+  flex: 1;
+
+  li {
+    padding: $spacing-3 0;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+
+    &::before {
+      content: '✓';
+      color: $primary-color;
+      font-weight: $font-weight-bold;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.pricing-card__button {
+  margin-top: auto;
+}
+
