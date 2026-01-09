@@ -1011,3 +1011,207 @@ function neamob_register_service_page_fields() {
 }
 add_action('acf/init', 'neamob_register_service_page_fields');
 
+/**
+ * Register Portfolio Items CPT
+ */
+function neamob_register_portfolio_items_cpt() {
+    $labels = [
+        'name'               => __('Portfolio Items', 'neamob-theme'),
+        'singular_name'      => __('Portfolio Item', 'neamob-theme'),
+        'menu_name'          => __('Portfolio', 'neamob-theme'),
+        'add_new'            => __('Add New', 'neamob-theme'),
+        'add_new_item'       => __('Add New Portfolio Item', 'neamob-theme'),
+        'edit_item'          => __('Edit Portfolio Item', 'neamob-theme'),
+    ];
+
+    $args = [
+        'labels'              => $labels,
+        'public'              => true,
+        'publicly_queryable'  => true,
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'query_var'           => true,
+        'rewrite'             => ['slug' => 'portfolio-item'],
+        'capability_type'     => 'post',
+        'has_archive'         => false,
+        'hierarchical'        => false,
+        'menu_position'       => 7,
+        'menu_icon'           => 'dashicons-images-alt2',
+        'supports'            => ['title', 'editor', 'thumbnail'],
+        'show_in_rest'        => true,
+    ];
+
+    register_post_type('portfolio_item', $args);
+}
+add_action('init', 'neamob_register_portfolio_items_cpt');
+
+/**
+ * Register ACF fields for Portfolio Items and Portfolio Page
+ */
+function neamob_register_portfolio_fields() {
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+
+    // Portfolio Item fields
+    acf_add_local_field_group([
+        'key' => 'group_portfolio_item',
+        'title' => 'Portfolio Item Settings',
+        'fields' => [
+            [
+                'key' => 'field_portfolio_ctr',
+                'label' => 'CTR Value',
+                'name' => 'portfolio_ctr',
+                'type' => 'text',
+                'placeholder' => '2.4%',
+            ],
+            [
+                'key' => 'field_portfolio_category',
+                'label' => 'Category',
+                'name' => 'portfolio_category',
+                'type' => 'select',
+                'choices' => [
+                    'All' => 'All',
+                    'Static' => 'Static',
+                    'Video' => 'Video',
+                    'UGC-Video' => 'UGC-Video',
+                ],
+                'default_value' => 'All',
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'portfolio_item',
+                ],
+            ],
+        ],
+    ]);
+
+    // Portfolio Page fields
+    acf_add_local_field_group([
+        'key' => 'group_portfolio_page',
+        'title' => 'Portfolio Page Settings',
+        'fields' => [
+            [
+                'key' => 'field_portfolio_title',
+                'label' => 'Page Title',
+                'name' => 'portfolio_title',
+                'type' => 'text',
+                'default_value' => 'Portfolio',
+            ],
+            [
+                'key' => 'field_portfolio_description',
+                'label' => 'Description',
+                'name' => 'portfolio_description',
+                'type' => 'textarea',
+                'rows' => 3,
+            ],
+            [
+                'key' => 'field_portfolio_categories',
+                'label' => 'Filter Categories (comma separated)',
+                'name' => 'portfolio_categories',
+                'type' => 'text',
+                'default_value' => 'All, Static, Video, UGC-Video',
+            ],
+            [
+                'key' => 'field_portfolio_blocks',
+                'label' => 'Content Blocks',
+                'name' => 'portfolio_blocks',
+                'type' => 'repeater',
+                'button_label' => 'Add Block',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_block_label',
+                        'label' => 'Label',
+                        'name' => 'block_label',
+                        'type' => 'text',
+                        'wrapper' => ['width' => '50'],
+                    ],
+                    [
+                        'key' => 'field_block_layout',
+                        'label' => 'Layout',
+                        'name' => 'block_layout',
+                        'type' => 'select',
+                        'choices' => [
+                            'two_images' => 'Two Images',
+                            'single_image' => 'Single Image',
+                            'video' => 'Video',
+                        ],
+                        'wrapper' => ['width' => '50'],
+                    ],
+                    [
+                        'key' => 'field_block_title',
+                        'label' => 'Title',
+                        'name' => 'block_title',
+                        'type' => 'text',
+                    ],
+                    [
+                        'key' => 'field_block_text',
+                        'label' => 'Text',
+                        'name' => 'block_text',
+                        'type' => 'textarea',
+                        'rows' => 4,
+                    ],
+                    [
+                        'key' => 'field_block_link',
+                        'label' => 'Link',
+                        'name' => 'block_link',
+                        'type' => 'link',
+                    ],
+                    [
+                        'key' => 'field_block_image_1',
+                        'label' => 'Image 1',
+                        'name' => 'block_image_1',
+                        'type' => 'image',
+                        'return_format' => 'array',
+                    ],
+                    [
+                        'key' => 'field_block_image_2',
+                        'label' => 'Image 2 (for two images layout)',
+                        'name' => 'block_image_2',
+                        'type' => 'image',
+                        'return_format' => 'array',
+                        'conditional_logic' => [
+                            [
+                                [
+                                    'field' => 'field_block_layout',
+                                    'operator' => '==',
+                                    'value' => 'two_images',
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        'key' => 'field_block_video_url',
+                        'label' => 'YouTube Video URL',
+                        'name' => 'block_video_url',
+                        'type' => 'url',
+                        'conditional_logic' => [
+                            [
+                                [
+                                    'field' => 'field_block_layout',
+                                    'operator' => '==',
+                                    'value' => 'video',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'page_template',
+                    'operator' => '==',
+                    'value' => 'page-portfolio.php',
+                ],
+            ],
+        ],
+    ]);
+}
+add_action('acf/init', 'neamob_register_portfolio_fields');
+

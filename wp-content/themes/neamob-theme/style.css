@@ -6883,6 +6883,305 @@ input[type=radio] {
   margin-bottom: 0;
 }
 
+.portfolio-page {
+  background-color: #FFFFFF;
+}
+
+.portfolio-hero {
+  padding: 80px 0 60px;
+  text-align: center;
+}
+
+.portfolio-hero__title {
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  color: #000A18;
+  margin: 0 0 24px;
+}
+@media (max-width: 768px) {
+  .portfolio-hero__title {
+    font-size: 40px;
+  }
+}
+
+.portfolio-hero__description {
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #495B75;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+.portfolio-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 48px;
+}
+
+.portfolio-tabs__btn {
+  padding: 10px 20px;
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #495B75;
+  background: transparent;
+  border: 1px solid #E5E7EB;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.portfolio-tabs__btn:hover {
+  border-color: #000A18;
+  color: #000A18;
+}
+.portfolio-tabs__btn.active {
+  background-color: #000A18;
+  border-color: #000A18;
+  color: #FFFFFF;
+}
+
+.portfolio-slider {
+  margin: 0 -20px;
+  padding: 0 20px;
+  overflow: hidden;
+}
+
+.portfolio-swiper {
+  overflow: visible;
+}
+.portfolio-swiper .swiper-wrapper {
+  align-items: stretch;
+}
+.portfolio-swiper .swiper-slide {
+  width: 280px;
+  height: auto;
+}
+@media (max-width: 768px) {
+  .portfolio-swiper .swiper-slide {
+    width: 240px;
+  }
+}
+
+.portfolio-card {
+  display: block;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 360px;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.portfolio-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+@media (max-width: 768px) {
+  .portfolio-card {
+    height: 300px;
+  }
+}
+
+.portfolio-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 6px 12px;
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  border-radius: 100px;
+}
+
+.portfolio-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portfolio-card__placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%);
+}
+
+.portfolio-block {
+  padding: 80px 0;
+  border-top: 1px solid #E5E7EB;
+}
+.portfolio-block:first-of-type {
+  border-top: none;
+}
+
+.portfolio-block__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+@media (max-width: 992px) {
+  .portfolio-block__layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+.portfolio-block__layout--video {
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+.portfolio-block__layout--video .portfolio-block__content {
+  max-width: 700px;
+}
+.portfolio-block__layout--video .portfolio-block__media {
+  width: 100%;
+}
+
+.portfolio-block__content {
+  max-width: 500px;
+}
+
+.portfolio-block__label {
+  display: block;
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #495B75;
+  margin-bottom: 16px;
+}
+
+.portfolio-block__title {
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #000A18;
+  margin: 0 0 20px;
+}
+@media (max-width: 768px) {
+  .portfolio-block__title {
+    font-size: 28px;
+  }
+}
+
+.portfolio-block__text {
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #495B75;
+  margin: 0 0 24px;
+}
+
+.portfolio-block__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000A18;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.portfolio-block__link:hover {
+  color: #0094FF;
+}
+.portfolio-block__link:hover .link-dot {
+  background-color: #0094FF;
+}
+.portfolio-block__link .link-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #0094FF;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+@media (max-width: 992px) {
+  .portfolio-block__media {
+    order: -1;
+  }
+}
+
+.portfolio-block__images--two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.portfolio-block__images--two img, .portfolio-block__images--two .image-placeholder {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+@media (max-width: 768px) {
+  .portfolio-block__images--two img, .portfolio-block__images--two .image-placeholder {
+    height: 200px;
+  }
+}
+.portfolio-block__images--single img, .portfolio-block__images--single .image-placeholder {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+.portfolio-block__images .image-placeholder {
+  background: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%);
+  min-height: 300px;
+}
+
+.portfolio-block__video {
+  width: 100%;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #000;
+}
+.video-wrapper .video-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+.video-wrapper:hover .video-thumbnail {
+  opacity: 0.8;
+}
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.video-play-btn:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+.video-play-btn svg {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
 .custom-block {
   padding: 4rem 2.5rem;
   border-radius: 16px;
