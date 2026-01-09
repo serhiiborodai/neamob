@@ -1,77 +1,187 @@
 <?php
 /**
- * Single post template
- *
- * @package Neamob_Theme
+ * Template for single blog posts
  */
-
 get_header();
+
+// Get post data
+$categories = get_the_category();
+$category = !empty($categories) ? $categories[0] : null;
+$author_id = get_the_author_meta('ID');
+$author_name = get_the_author();
+$author_position = get_the_author_meta('description') ?: 'Author at NeaMob';
+$author_avatar = get_avatar_url($author_id, ['size' => 60]);
+
+// Get previous and next posts
+$prev_post = get_previous_post();
+$next_post = get_next_post();
 ?>
 
-<main id="main" class="site-main">
+<main class="single-post">
     <div class="container">
-        <?php while (have_posts()) : the_post(); ?>
-            
-            <article id="post-<?php the_ID(); ?>" <?php post_class('single-post'); ?>>
+        <!-- Back to Blog -->
+        <a href="<?php echo get_permalink(get_option('page_for_posts')); ?>" class="back-to-blog">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Back to Blog
+        </a>
+
+        <div class="single-post__layout">
+            <!-- Sticky Table of Contents -->
+            <aside class="single-post__toc">
+                <div class="toc-wrapper">
+                    <h4 class="toc-title">Table of content</h4>
+                    <nav class="toc-nav" id="toc-nav">
+                        <!-- Will be populated by JavaScript -->
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <article class="single-post__content">
+                <!-- Post Header -->
                 <header class="single-post__header">
-                    <h1 class="single-post__title"><?php the_title(); ?></h1>
-                    
                     <div class="single-post__meta">
-                        <span class="post-date">
-                            <time datetime="<?php echo get_the_date('c'); ?>">
-                                <?php echo get_the_date(); ?>
-                            </time>
-                        </span>
-                        <span class="post-author">
-                            <?php esc_html_e('By', 'neamob-theme'); ?> <?php the_author(); ?>
-                        </span>
-                        <?php if (has_category()) : ?>
-                            <span class="post-categories">
-                                <?php the_category(', '); ?>
-                            </span>
+                        <?php if ($category): ?>
+                            <a href="<?php echo get_category_link($category->term_id); ?>" class="single-post__category">
+                                <?php echo esc_html($category->name); ?>
+                            </a>
                         <?php endif; ?>
+                        <time class="single-post__date" datetime="<?php echo get_the_date('c'); ?>">
+                            <?php echo get_the_date('d M, Y'); ?>
+                        </time>
                     </div>
+
+                    <h1 class="single-post__title"><?php the_title(); ?></h1>
                 </header>
 
-                <?php if (has_post_thumbnail()) : ?>
-                    <div class="single-post__thumbnail">
-                        <?php the_post_thumbnail('large'); ?>
-                    </div>
-                <?php endif; ?>
-
-                <div class="single-post__content">
+                <!-- Post Content -->
+                <div class="single-post__body" id="post-content">
                     <?php the_content(); ?>
                 </div>
 
-                <?php if (has_tag()) : ?>
-                    <footer class="single-post__footer">
-                        <div class="post-tags">
-                            <?php the_tags('<span class="tags-label">' . esc_html__('Tags:', 'neamob-theme') . '</span> ', ', '); ?>
-                        </div>
-                    </footer>
-                <?php endif; ?>
+                <!-- Author Box -->
+                <div class="single-post__author">
+                    <div class="author-avatar">
+                        <img src="<?php echo esc_url($author_avatar); ?>" alt="<?php echo esc_attr($author_name); ?>">
+                    </div>
+                    <div class="author-info">
+                        <span class="author-label">Written by <strong><?php echo esc_html($author_name); ?></strong></span>
+                        <span class="author-position"><?php echo esc_html($author_position); ?></span>
+                    </div>
+                </div>
 
-                <?php
-                // Post navigation
-                the_post_navigation([
-                    'prev_text' => '<span class="nav-subtitle">' . esc_html__('Previous:', 'neamob-theme') . '</span><span class="nav-title">%title</span>',
-                    'next_text' => '<span class="nav-subtitle">' . esc_html__('Next:', 'neamob-theme') . '</span><span class="nav-title">%title</span>',
-                ]);
-                ?>
-
-                <?php
-                // Comments
-                if (comments_open() || get_comments_number()) :
-                    comments_template();
-                endif;
-                ?>
+                <!-- Post Navigation -->
+                <nav class="single-post__navigation">
+                    <div class="nav-prev">
+                        <?php if ($prev_post): ?>
+                            <a href="<?php echo get_permalink($prev_post); ?>">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Previous post
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                    <div class="nav-next">
+                        <?php if ($next_post): ?>
+                            <a href="<?php echo get_permalink($next_post); ?>">
+                                Next post
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </nav>
             </article>
-            
-        <?php endwhile; ?>
+        </div>
     </div>
 </main>
 
-<?php
-get_sidebar();
-get_footer();
+<?php // Contact Form before footer
+get_template_part('template-parts/contact-form'); ?>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Generate Table of Contents
+    const postContent = document.getElementById('post-content');
+    const tocNav = document.getElementById('toc-nav');
+    const headings = postContent.querySelectorAll('h2, h3');
+    
+    if (headings.length > 0 && tocNav) {
+        const tocList = document.createElement('ul');
+        tocList.className = 'toc-list';
+        
+        headings.forEach((heading, index) => {
+            // Add ID to heading if not present
+            if (!heading.id) {
+                heading.id = 'section-' + index;
+            }
+            
+            const li = document.createElement('li');
+            li.className = 'toc-item' + (heading.tagName === 'H3' ? ' toc-item--sub' : '');
+            
+            const link = document.createElement('a');
+            link.href = '#' + heading.id;
+            link.textContent = heading.textContent;
+            link.className = 'toc-link';
+            
+            li.appendChild(link);
+            tocList.appendChild(li);
+        });
+        
+        tocNav.appendChild(tocList);
+        
+        // Highlight active section on scroll
+        const tocLinks = tocNav.querySelectorAll('.toc-link');
+        
+        function updateActiveLink() {
+            let currentSection = '';
+            
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    currentSection = heading.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink();
+        
+        // Smooth scroll to section
+        tocLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    } else {
+        // Hide TOC if no headings
+        const tocWrapper = document.querySelector('.single-post__toc');
+        if (tocWrapper) {
+            tocWrapper.style.display = 'none';
+        }
+    }
+});
+</script>
+
+<?php get_footer(); ?>
