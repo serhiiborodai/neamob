@@ -764,6 +764,28 @@ function neamob_register_acf_fields() {
                 'type' => 'text',
                 'instructions' => 'e.g. REVENUE, LEADS, ROI',
             ],
+            [
+                'key' => 'field_case_excerpt',
+                'label' => 'Short Description',
+                'name' => 'case_excerpt',
+                'type' => 'textarea',
+                'rows' => 3,
+            ],
+            [
+                'key' => 'field_case_tags',
+                'label' => 'Tags',
+                'name' => 'case_tags',
+                'type' => 'repeater',
+                'button_label' => 'Add Tag',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_case_tag_name',
+                        'label' => 'Tag Name',
+                        'name' => 'tag_name',
+                        'type' => 'text',
+                    ],
+                ],
+            ],
         ],
         'location' => [
             [
