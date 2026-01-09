@@ -852,3 +852,162 @@ function neamob_increment_job_applications($job_id) {
     update_field('job_applications_count', $current + 1, $job_id);
 }
 
+/**
+ * Register ACF fields for Service Pages
+ */
+function neamob_register_service_page_fields() {
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+
+    acf_add_local_field_group([
+        'key' => 'group_service_page',
+        'title' => 'Service Page Settings',
+        'fields' => [
+            // Hero Section
+            [
+                'key' => 'field_service_hero_title',
+                'label' => 'Hero Title',
+                'name' => 'service_hero_title',
+                'type' => 'text',
+                'instructions' => 'Use <br> for line breaks',
+            ],
+            [
+                'key' => 'field_service_hero_subtitle',
+                'label' => 'Hero Subtitle',
+                'name' => 'service_hero_subtitle',
+                'type' => 'textarea',
+                'rows' => 2,
+            ],
+            [
+                'key' => 'field_service_hero_button_text',
+                'label' => 'Button Text',
+                'name' => 'service_hero_button_text',
+                'type' => 'text',
+                'default_value' => 'Let\'s Chat',
+            ],
+            [
+                'key' => 'field_service_hero_button_link',
+                'label' => 'Button Link',
+                'name' => 'service_hero_button_link',
+                'type' => 'url',
+            ],
+            // Stats
+            [
+                'key' => 'field_service_show_stats',
+                'label' => 'Show Stats Cards',
+                'name' => 'service_show_stats',
+                'type' => 'true_false',
+                'ui' => 1,
+            ],
+            [
+                'key' => 'field_service_stats',
+                'label' => 'Stats Cards',
+                'name' => 'service_stats',
+                'type' => 'repeater',
+                'conditional_logic' => [
+                    [
+                        [
+                            'field' => 'field_service_show_stats',
+                            'operator' => '==',
+                            'value' => '1',
+                        ],
+                    ],
+                ],
+                'sub_fields' => [
+                    [
+                        'key' => 'field_stat_value',
+                        'label' => 'Value',
+                        'name' => 'stat_value',
+                        'type' => 'text',
+                        'wrapper' => ['width' => '33'],
+                    ],
+                    [
+                        'key' => 'field_stat_label',
+                        'label' => 'Label',
+                        'name' => 'stat_label',
+                        'type' => 'text',
+                        'wrapper' => ['width' => '33'],
+                    ],
+                    [
+                        'key' => 'field_stat_color',
+                        'label' => 'Background Color',
+                        'name' => 'stat_color',
+                        'type' => 'color_picker',
+                        'wrapper' => ['width' => '33'],
+                    ],
+                ],
+            ],
+            // Overview
+            [
+                'key' => 'field_service_overview',
+                'label' => 'Overview Text',
+                'name' => 'service_overview',
+                'type' => 'wysiwyg',
+                'toolbar' => 'basic',
+                'media_upload' => 0,
+            ],
+            // What We Do
+            [
+                'key' => 'field_service_what_we_do',
+                'label' => 'What We Do Items',
+                'name' => 'service_what_we_do',
+                'type' => 'repeater',
+                'button_label' => 'Add Item',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_item_title',
+                        'label' => 'Title',
+                        'name' => 'item_title',
+                        'type' => 'text',
+                    ],
+                    [
+                        'key' => 'field_item_description',
+                        'label' => 'Description',
+                        'name' => 'item_description',
+                        'type' => 'textarea',
+                        'rows' => 3,
+                    ],
+                ],
+            ],
+            // What Sets Us Apart
+            [
+                'key' => 'field_service_apart_title',
+                'label' => 'What Sets Us Apart - Title',
+                'name' => 'service_apart_title',
+                'type' => 'text',
+                'default_value' => 'What sets us apart',
+            ],
+            [
+                'key' => 'field_service_apart_text',
+                'label' => 'What Sets Us Apart - Text',
+                'name' => 'service_apart_text',
+                'type' => 'wysiwyg',
+                'toolbar' => 'basic',
+                'media_upload' => 0,
+            ],
+            [
+                'key' => 'field_service_apart_image',
+                'label' => 'What Sets Us Apart - Image',
+                'name' => 'service_apart_image',
+                'type' => 'image',
+                'return_format' => 'array',
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'page_template',
+                    'operator' => '==',
+                    'value' => 'page-service.php',
+                ],
+            ],
+        ],
+        'menu_order' => 0,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+    ]);
+}
+add_action('acf/init', 'neamob_register_service_page_fields');
+
