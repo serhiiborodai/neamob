@@ -91,7 +91,7 @@ function neamob_enqueue_scripts() {
         'neamob-style',
         get_template_directory_uri() . '/css/style.min.css',
         ['swiper-css'],
-        $theme_version
+        filemtime(get_template_directory() . '/css/style.min.css')
     );
 
     // Swiper JS
