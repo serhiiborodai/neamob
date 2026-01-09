@@ -19,7 +19,7 @@
                         <ul class="footer-column__links">
                             <li><a href="<?php echo esc_url(home_url('/services/growth-strategy-planning/')); ?>">Growth Strategy & Planning</a></li>
                             <li><a href="<?php echo esc_url(home_url('/services/data-analytics-insights/')); ?>">Data Analytics & Insights</a></li>
-                            <li><a href="<?php echo esc_url(home_url('/services/creative-experience-design/')); ?>">Creative & Experience Design</a></li>
+                            <li><a href="<?php echo esc_url(home_url('/services/creative-design/')); ?>">Creative & Design</a></li>
                             <li><a href="<?php echo esc_url(home_url('/services/media-campaigns/')); ?>">Media & Campaigns</a></li>
                         </ul>
                     </div>
