@@ -359,7 +359,7 @@ p:last-child {
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1220px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -8465,7 +8465,7 @@ input[type=radio] {
   background-color: rgba(6, 21, 38, 0.5);
 }
 .wp-block-cover .wp-block-cover__inner-container {
-  max-width: 1200px;
+  max-width: 1220px;
   padding: 0 20px;
   text-align: center;
   color: #FFFFFF;
