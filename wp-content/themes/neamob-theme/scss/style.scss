@@ -22,6 +22,8 @@ Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-com
 @import 'base/mixins';
 @import 'base/reset';
 
+@import 'components/common';
+
 // @import 'base/typography';
 
 // @import 'layout/grid';
@@ -33,7 +35,7 @@ Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-com
 // @import 'components/slider';
 // @import 'components/cards';
 // @import 'components/hero';
-// @import 'components/logo-slider';
+@import 'components/logo-slider';
 // @import 'components/services-accordion';
 // @import 'components/value-section';
 // @import 'components/case-studies';
@@ -44,6 +46,7 @@ Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-com
 // @import 'components/faq';
 // @import 'components/contact-form';
 
+@import 'pages/home';
 // @import 'pages/careers';
 // @import 'pages/about';
 // @import 'pages/blog';
@@ -55,4 +58,3 @@ Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-com
 
 // @import 'blocks/custom-blocks';
 // @import 'blocks/patterns';
-

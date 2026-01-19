@@ -33,7 +33,9 @@
                         </div>
                     <?php else : ?>
                         <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo site-logo--text" rel="home">
-                            <span class="site-logo__text"><?php bloginfo('name'); ?></span>
+                            <span class="site-logo__text">
+                                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/icons/logo.svg'); ?>" alt="<?php bloginfo('name'); ?>" class="site-logo__img">
+                            </span>
                         </a>
                     <?php endif; ?>
                 </div>

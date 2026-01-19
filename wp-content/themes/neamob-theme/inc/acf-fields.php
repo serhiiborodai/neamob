@@ -194,6 +194,14 @@ function neamob_register_acf_fields() {
                 'name' => 'hero_button_link',
                 'type' => 'link',
             ],
+            [
+                'key' => 'field_hero_bg_image',
+                'label' => 'Background Image',
+                'name' => 'hero_bg_image',
+                'type' => 'image',
+                'return_format' => 'url',
+                'instructions' => 'Background image for hero section (recommended: WebP format)',
+            ],
         ],
         'location' => [
             [

@@ -44,10 +44,15 @@ a {
   color: $primary-color;
   text-decoration: none;
   transition: $transition;
+  cursor: pointer;
 
   &:hover {
     color: $primary-dark;
   }
+}
+
+button {
+  cursor: pointer;
 }
 
 // Images
