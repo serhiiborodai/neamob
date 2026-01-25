@@ -121,8 +121,8 @@
 
   // Placeholder gradient when no image
   &--placeholder {
-    background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 50%, #1E40AF 100%);
-    
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
+
     // Wave pattern overlay
     &::after {
       content: '';
@@ -131,7 +131,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='rgba(255,255,255,0.1)' d='M0,192L48,176C96,160,192,128,288,138.7C384,149,480,203,576,213.3C672,224,768,192,864,165.3C960,139,1056,117,1152,128C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") no-repeat bottom;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='rgba(255,255,255,0.1)' d='M0,192L48,176C96,160,192,128,288,138.7C384,149,480,203,576,213.3C672,224,768,192,864,165.3C960,139,1056,117,1152,128C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E")
+        no-repeat bottom;
       background-size: cover;
     }
   }
@@ -198,7 +199,7 @@
   line-height: 1.6;
   color: $text-color;
   margin-bottom: $spacing-5;
-  
+
   // Limit to 2-3 lines
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -219,7 +220,7 @@
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  background: #E2E8F0;
+  background: #e2e8f0;
 
   img {
     width: 100%;
@@ -290,4 +291,3 @@
     justify-content: center;
   }
 }
-

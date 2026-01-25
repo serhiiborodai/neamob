@@ -194,7 +194,7 @@ if (!$beliefs) {
                     <?php if ($join_image) : ?>
                         <img src="<?php echo esc_url($join_image['sizes']['large']); ?>" alt="<?php echo esc_attr($join_image['alt']); ?>">
                     <?php else : ?>
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/join-us.jpg" alt="Join NeaMob Tech">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/about_tech.png" alt="Join NeaMob Tech">
                     <?php endif; ?>
                 </div>
                 <div class="about-join__content">
