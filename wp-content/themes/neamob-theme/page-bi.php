@@ -6,7 +6,7 @@ get_header();
 
 // Get ACF fields
 $hero_title = get_field('bi_hero_title') ?: 'One infrastructure.<br>Every answer.';
-$hero_text = get_field('bi_hero_text');
+$hero_text = get_field('bi_hero_text') ?: "Fragmented data, inconsistent metrics, reporting that's outdated before it's delivered. We build BI infrastructure that solves these problems at the source—a single, automated system where every number means the same thing to everyone, and insights surface the moment they matter.";
 $hero_button_text = get_field('bi_hero_button_text') ?: "Let's Chat";
 $hero_button_link = get_field('bi_hero_button_link') ?: '/contact';
 $hero_stats = get_field('bi_hero_stats');
