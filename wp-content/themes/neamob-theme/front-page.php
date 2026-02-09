@@ -51,39 +51,38 @@ $value_tags = get_field('value_tags');
 
 <!-- Logo Slider -->
 <?php
-$partners = neamob_get_partners();
-if ($partners->have_posts()):
-    ?>
+$logos_dir = get_template_directory() . '/assets/logos/hp_color/';
+$logos_url = get_template_directory_uri() . '/assets/logos/hp_color/';
+$logo_files = glob($logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE);
+
+if (!empty($logo_files)):
+?>
     <section class="logo-slider">
         <div class="logo-slider__bg"></div>
         <div class="logo-slider__track">
-            <div
-                class="logo-slider__group">
-                <?php while ($partners->have_posts()):
-                    $partners->the_post();
-                    $logo = get_field('partner_logo') ?: get_post_meta(get_the_ID(), 'partner_logo', true);
-                    ?>
+            <div class="logo-slider__group">
+                <?php foreach ($logo_files as $logo_path): 
+                    $filename = basename($logo_path);
+                    $alt = pathinfo($filename, PATHINFO_FILENAME);
+                ?>
                     <div class="logo-slider__item">
-                        <img src="<?php echo esc_url($logo); ?>" alt="<?php the_title_attribute(); ?>">
+                        <img src="<?php echo esc_url($logos_url . rawurlencode($filename)); ?>" alt="<?php echo esc_attr($alt); ?>">
                     </div>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </div>
             <div class="logo-slider__group">
-                <?php $partners->rewind_posts(); ?>
-                <?php while ($partners->have_posts()):
-                    $partners->the_post();
-                    $logo = get_field('partner_logo') ?: get_post_meta(get_the_ID(), 'partner_logo', true);
-                    ?>
-                        <div class="logo-slider__item"> <img src="<?php echo esc_url($logo); ?>" alt="<?php the_title_attribute(); ?>">
+                <?php foreach ($logo_files as $logo_path): 
+                    $filename = basename($logo_path);
+                    $alt = pathinfo($filename, PATHINFO_FILENAME);
+                ?>
+                    <div class="logo-slider__item">
+                        <img src="<?php echo esc_url($logos_url . rawurlencode($filename)); ?>" alt="<?php echo esc_attr($alt); ?>">
                     </div>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
-    <?php
-    wp_reset_postdata();
-endif;
-?>
+<?php endif; ?>
 
 <!-- Services Section (What We Do) -->
 <?php
