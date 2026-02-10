@@ -317,21 +317,36 @@
 
         accordions.forEach(function (accordion) {
             const items = accordion.querySelectorAll('.services-accordion__item');
+            const section = accordion.closest('.services-section');
+            const images = section ? section.querySelectorAll('.services-section__image') : [];
 
             items.forEach(function (item) {
                 const header = item.querySelector('.services-accordion__header');
 
                 header.addEventListener('click', function () {
                     const isActive = item.classList.contains('is-active');
+                    const index = item.dataset.index;
+
+                    // If already active, do nothing (always keep one open)
+                    if (isActive) {
+                        return;
+                    }
 
                     // Close all items
                     items.forEach(function (otherItem) {
                         otherItem.classList.remove('is-active');
                     });
 
-                    // Open clicked item if it wasn't already open
-                    if (!isActive) {
-                        item.classList.add('is-active');
+                    // Hide all images
+                    images.forEach(function (img) {
+                        img.classList.remove('is-active');
+                    });
+
+                    // Open clicked item
+                    item.classList.add('is-active');
+                    // Show corresponding image
+                    if (images[index]) {
+                        images[index].classList.add('is-active');
                     }
                 });
             });
@@ -339,6 +354,9 @@
             // Open first item by default
             if (items.length > 0 && !accordion.querySelector('.services-accordion__item.is-active')) {
                 items[0].classList.add('is-active');
+                if (images[0]) {
+                    images[0].classList.add('is-active');
+                }
             }
         });
     }

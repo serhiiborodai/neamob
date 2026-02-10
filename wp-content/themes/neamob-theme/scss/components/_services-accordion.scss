@@ -64,9 +64,16 @@
   background: #E8EAED;
   border-radius: $radius-lg;
   overflow: hidden;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  &.is-active {
+    display: flex;
+    opacity: 1;
+  }
 
   img {
     width: 100%;

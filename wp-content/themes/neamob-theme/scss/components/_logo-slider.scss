@@ -4,8 +4,8 @@
 
 .logo-slider {
   position: relative;
-  margin: -140px 0 0;
-  padding: 35px 0;
+  margin: -117px 0 0;
+  padding: 24px 0 23px;
   background: transparent;
   overflow: hidden;
 
@@ -64,8 +64,8 @@
 .logo-slider__group {
   display: flex;
   align-items: center;
-  gap: $spacing-16;
   flex-shrink: 0;
+  gap: 20px;
 
   @include max-md {
     gap: $spacing-10;

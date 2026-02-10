@@ -56,25 +56,27 @@ $logos_url = get_template_directory_uri() . '/assets/logos/hp_color/';
 $logo_files = glob($logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE);
 
 if (!empty($logo_files)):
-?>
+    ?>
     <section class="logo-slider">
         <div class="logo-slider__bg"></div>
         <div class="logo-slider__track">
-            <div class="logo-slider__group">
-                <?php foreach ($logo_files as $logo_path): 
+            <div
+                class="logo-slider__group">
+                <?php foreach ($logo_files as $logo_path):
                     $filename = basename($logo_path);
                     $alt = pathinfo($filename, PATHINFO_FILENAME);
-                ?>
+                    ?>
                     <div class="logo-slider__item">
                         <img src="<?php echo esc_url($logos_url . rawurlencode($filename)); ?>" alt="<?php echo esc_attr($alt); ?>">
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="logo-slider__group">
-                <?php foreach ($logo_files as $logo_path): 
+            <div
+                class="logo-slider__group">
+                <?php foreach ($logo_files as $logo_path):
                     $filename = basename($logo_path);
                     $alt = pathinfo($filename, PATHINFO_FILENAME);
-                ?>
+                    ?>
                     <div class="logo-slider__item">
                         <img src="<?php echo esc_url($logos_url . rawurlencode($filename)); ?>" alt="<?php echo esc_attr($alt); ?>">
                     </div>
@@ -94,12 +96,12 @@ if ($services->have_posts()):
             <div class="services-section__grid">
                 <div class="services-section__content">
                     <div class="services-accordion">
-                        <?php $first = true; ?>
+                        <?php $index = 0; ?>
                         <?php while ($services->have_posts()):
                             $services->the_post();
                             $short_desc = get_field('service_short_description') ?: get_the_excerpt();
                             ?>
-                                <div class="services-accordion__item<?php echo $first ? ' is-active' : ''; ?>"> <div class="services-accordion__header">
+                                <div class="services-accordion__item<?php echo $index === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $index; ?>"> <div class="services-accordion__header">
                                     <div class="services-accordion__icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                     </div>
@@ -112,14 +114,24 @@ if ($services->have_posts()):
                                     </div>
                                 </div>
                             </div>
-                            <?php $first = false; ?>
+                            <?php $index++; ?>
                         <?php endwhile; ?>
                     </div>
                 </div>
-                <div class="services-section__media">
-                    <div class="services-section__image">
-                        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/services-preview.jpg" alt="Our Services">
-                    </div>
+                <div
+                    class="services-section__media">
+                    <?php
+                    $gray_logos_dir = get_template_directory() . '/assets/logos/hp_gray/';
+                    $gray_logos_url = get_template_directory_uri() . '/assets/logos/hp_gray/';
+                    $gray_files = glob($gray_logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE);
+                    sort($gray_files);
+                    foreach ($gray_files as $i => $img_path):
+                        $filename = basename($img_path);
+                        ?>
+                        <div class="services-section__image<?php echo $i === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $i; ?>">
+                            <img src="<?php echo esc_url($gray_logos_url . $filename); ?>" alt="Service <?php echo $i + 1; ?>">
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
@@ -250,7 +262,11 @@ if ($case_studies->have_posts()):
                                 <?php endif; ?>
                             </div>
                             <?php if ($badge_value && $badge_text): ?>
-                                <div class="case-card__badge"><?php echo esc_html($badge_value . ' ' . $badge_text); ?></div>
+                                <div class="case-card__badge">
+                                    <div class="case-card__badge-bg"></div>
+                                    <div class="case-card__badge-text"><?php echo esc_html($badge_value . ' ' . $badge_text); ?></div>
+
+                                </div>
                             <?php endif; ?>
                         </div>
                         <div class="case-card__content">
