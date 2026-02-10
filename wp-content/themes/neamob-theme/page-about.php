@@ -42,30 +42,14 @@ if (!$beliefs) {
         </div>
     </section>
 
-    <!-- Gallery Slider -->
+    <!-- Gallery -->
     <section class="about-gallery">
         <div class="about-gallery__track">
-            <div class="about-gallery__slider swiper" id="aboutGallerySlider">
-                <div class="swiper-wrapper">
-                    <?php if ($gallery) : ?>
-                        <?php foreach ($gallery as $image) : ?>
-                        <div class="swiper-slide">
-                            <div class="about-gallery__item">
-                                <img src="<?php echo esc_url($image['sizes']['large']); ?>" alt="<?php echo esc_attr($image['alt']); ?>">
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <?php for ($i = 1; $i <= 5; $i++) : ?>
-                        <div class="swiper-slide">
-                            <div class="about-gallery__item">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/team-<?php echo $i; ?>.jpg" alt="Team photo <?php echo $i; ?>">
-                            </div>
-                        </div>
-                        <?php endfor; ?>
-                    <?php endif; ?>
-                </div>
+            <?php for ($i = 1; $i <= 5; $i++) : ?>
+            <div class="about-gallery__item">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/about/<?php echo $i; ?>.webp" alt="About photo <?php echo $i; ?>">
             </div>
+            <?php endfor; ?>
         </div>
     </section>
 
@@ -136,7 +120,10 @@ if (!$beliefs) {
             
             <div class="about-team__slider swiper" id="teamSlider">
                 <div class="swiper-wrapper">
-                    <?php while ($team_members->have_posts()) : $team_members->the_post(); 
+                    <?php 
+                    $team_index = 0;
+                    $team_images = ['3.png', '4.png', '5.png'];
+                    while ($team_members->have_posts()) : $team_members->the_post(); 
                         $position = get_field('team_position');
                         $location = get_field('team_location');
                         $dept_color = get_field('team_department_color') ?: 'green';
@@ -146,7 +133,9 @@ if (!$beliefs) {
                     <div class="swiper-slide">
                         <div class="team-card">
                             <div class="team-card__image">
-                                <?php if (has_post_thumbnail()) : ?>
+                                <?php if ($team_index < 3) : ?>
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/team/<?php echo $team_images[$team_index]; ?>" alt="<?php the_title_attribute(); ?>">
+                                <?php elseif (has_post_thumbnail()) : ?>
                                     <?php the_post_thumbnail('medium_large'); ?>
                                 <?php else : ?>
                                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/placeholder-person.jpg" alt="<?php the_title_attribute(); ?>">
@@ -173,7 +162,9 @@ if (!$beliefs) {
                             </div>
                         </div>
                     </div>
-                    <?php endwhile; ?>
+                    <?php 
+                    $team_index++;
+                    endwhile; ?>
                 </div>
             </div>
         </div>

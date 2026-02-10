@@ -415,23 +415,43 @@ if ($blog_posts->have_posts()):
 endif;
 ?>
 
-<!-- Partner Video Block -->
-<section class="partner-video-section">
+<!-- Our Partners Section -->
+<section class="our-partners">
     <div class="container">
-        <div class="partner-video-block">
-            <div class="partner-video-block__content">
-                <div class="partner-video-block__logo">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/snapper.png" alt="Snappper">
+        <h2 class="our-partners__title">Our Partners</h2>
+        <div
+            class="our-partners__grid">
+            <!-- Partner Card 1 - Vokal -->
+            <div class="partner-card">
+                <div class="partner-card__logo">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p1.png" alt="Vokal">
                 </div>
-                <h2 class="partner-video-block__title">Our Partner</h2>
-                <p class="partner-video-block__text">The coveted commercial-grade video production company sought-after for their fresh approach and unforgettable creative</p>
+                <p class="partner-card__text">Vokal is a digital agency driving measurable growth through strategic digital value creation and performance marketing.</p>
             </div>
-            <div class="partner-video-block__video" id="partner-video">
-                <div class="partner-video-block__thumbnail" onclick="playPartnerVideo()">
-                    <img src="https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg" alt="Video thumbnail">
-                    <div class="play-button">
-                        <svg viewbox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+
+            <!-- Partner Card 2 - Snappper (with video) -->
+            <div class="partner-card partner-card--video">
+                <div class="partner-card__logo">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper">
+                </div>
+                <div class="partner-card__video" id="snappper-video">
+                    <div class="partner-card__thumbnail" onclick="playSnapperVideo()">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/power.png" alt="Video thumbnail">
                     </div>
+                </div>
+                <p class="partner-card__text">Snappper is an award-winning creative and video production agency crafting engaging branded content with proven reach and results.</p>
+            </div>
+
+            <!-- Partner Card 3 - Illumin -->
+            <div class="partner-card">
+                <div class="partner-card__logo">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners">
+                </div>
+                <div class="partner-card__text">illumin is a journey advertising platform that helps brands plan, activate, and optimize digital campaigns across channels with real-time insights.
+                    <a href="#" class="partner-card__cta">
+                        <span class="partner-card__cta-dot"></span>
+                        Download Case Study
+                    </a>
                 </div>
             </div>
         </div>
@@ -439,10 +459,10 @@ endif;
 </section>
 
 <script>
-    function playPartnerVideo() {
-var container = document.getElementById('partner-video');
+    function playSnapperVideo() {
+var container = document.getElementById('snappper-video');
 var videoId = 'YOUR_VIDEO_ID'; // Replace with actual YouTube video ID
-container.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&controls=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+container.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 container.classList.add('is-playing');
 }
 </script>

@@ -2,7 +2,7 @@
   .container {
     padding: 50px 0 0;
     width: 980px;
-    margin: 0 auto 40px;
+    margin: 0 auto 20px;
   }
 
   &__title {
@@ -23,7 +23,28 @@
 }
 
 .about-gallery {
-  height: 380px;
+  width: 100%;
+  overflow: hidden;
+
+  &__track {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  &__item {
+    width: 380px;
+    height: 380px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
 .about-who {
