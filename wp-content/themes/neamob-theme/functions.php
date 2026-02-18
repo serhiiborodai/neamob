@@ -854,3 +854,10 @@ function neamob_case_studies_shortcode($atts)
 }
 add_shortcode('case_studies', 'neamob_case_studies_shortcode');
 
+
+
+// Remove width and height from post thumbnails
+add_filter('post_thumbnail_html', function($html) {
+    return preg_replace('/(width|height)="\d*"\s/', '', $html);
+}, 10);
+
