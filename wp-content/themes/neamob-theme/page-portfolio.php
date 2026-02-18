@@ -76,9 +76,9 @@ $blocks = get_field('portfolio_blocks');
                             }
                             ?>
                             <div class="video-wrapper" data-video-id="<?php echo esc_attr($video_id); ?>">
-                                <img src="https://img.youtube.com/vi/<?php echo esc_attr($video_id); ?>/maxresdefault.jpg" alt="Video thumbnail" class="video-thumbnail">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/video-thumbnail.png" alt="Video thumbnail" class="video-thumbnail">
                                 <button class="video-play-btn">
-                                    <svg width="68" height="48" viewBox="0 0 68 48"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="white"/></svg>
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/play-button.png" alt="Play">
                                 </button>
                             </div>
                         </div>
@@ -87,12 +87,12 @@ $blocks = get_field('portfolio_blocks');
                             <?php if ($block['block_image_1']): ?>
                                 <img src="<?php echo esc_url($block['block_image_1']['url']); ?>" alt="<?php echo esc_attr($block['block_image_1']['alt']); ?>">
                             <?php else: ?>
-                                <div class="image-placeholder"></div>
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/portfolio-1.png" alt="Portfolio">
                             <?php endif; ?>
                             <?php if ($block['block_image_2']): ?>
                                 <img src="<?php echo esc_url($block['block_image_2']['url']); ?>" alt="<?php echo esc_attr($block['block_image_2']['alt']); ?>">
                             <?php else: ?>
-                                <div class="image-placeholder"></div>
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/portfolio-2.png" alt="Portfolio">
                             <?php endif; ?>
                         </div>
                     <?php else: ?>
@@ -100,7 +100,7 @@ $blocks = get_field('portfolio_blocks');
                             <?php if ($block['block_image_1']): ?>
                                 <img src="<?php echo esc_url($block['block_image_1']['url']); ?>" alt="<?php echo esc_attr($block['block_image_1']['alt']); ?>">
                             <?php else: ?>
-                                <div class="image-placeholder"></div>
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/single-image.png" alt="Portfolio">
                             <?php endif; ?>
                         </div>
                     <?php endif; ?>

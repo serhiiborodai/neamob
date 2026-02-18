@@ -123,6 +123,38 @@
                 }
             }
         }
+
+        &__images {
+            display: flex;
+            gap: 20px;
+
+            img {
+                border-radius: 8px;
+            }
+        }
+
+        &__video {
+            .video-wrapper {
+                position: relative;
+                
+                .video-thumbnail {
+                    width: 100%;
+                    height: auto;
+                    border-radius: 8px;
+                }
+            }
+
+            .video-play-btn {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+            }
+        }
     }
 
     .portfolio-gallery {

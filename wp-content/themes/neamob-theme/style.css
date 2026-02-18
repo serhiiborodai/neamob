@@ -2528,6 +2528,31 @@ select {
   height: 600px;
   overflow: hidden;
 }
+.portfolio-page .portfolio-block__images {
+  display: flex;
+  gap: 20px;
+}
+.portfolio-page .portfolio-block__images img {
+  border-radius: 8px;
+}
+.portfolio-page .portfolio-block__video .video-wrapper {
+  position: relative;
+}
+.portfolio-page .portfolio-block__video .video-wrapper .video-thumbnail {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.portfolio-page .portfolio-block__video .video-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
 .portfolio-page .portfolio-gallery {
   width: 100%;
   overflow: hidden;
