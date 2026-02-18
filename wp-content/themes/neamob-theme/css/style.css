@@ -2237,8 +2237,6 @@ select {
 }
 .service-hero__text {
   padding: 100px 0 0;
-  position: relative;
-  z-index: 9;
 }
 .service-hero__title {
   font-size: 64px;
@@ -2277,8 +2275,9 @@ select {
 }
 .service-hero__image {
   position: absolute;
-  right: -30px;
-  top: 20px;
+  right: 0;
+  top: 50px;
+  max-width: 600px;
 }
 .service-hero__image img {
   width: 100%;

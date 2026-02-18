@@ -11,8 +11,16 @@ $hero_subtitle = get_field('service_hero_subtitle');
 $hero_button_text = get_field('service_hero_button_text') ?: 'Let\'s Chat';
 $hero_button_link = get_field('service_hero_button_link') ?: '/contact';
 
-// Hero image (optional)
+// Hero image (optional - ACF or static based on slug)
 $hero_image = get_field('service_hero_image');
+$page_slug = get_post_field('post_name', get_post());
+$static_images = [
+    'growth-strategy-planning' => 'growth-strategy.png',
+    'data-analytics-insights' => 'data-analytics.png',
+    'creative-design' => 'creative-design.png',
+    'media-campaigns' => 'media-campaigns.png',
+];
+$static_hero_image = isset($static_images[$page_slug]) ? get_template_directory_uri() . '/assets/images/services/' . $static_images[$page_slug] : '';
 
 // Stats cards (optional, fallback if no image)
 $show_stats = get_field('service_show_stats');
@@ -55,19 +63,9 @@ $apart_image = get_field('service_apart_image');
                 <div class="service-hero__image">
                     <img src="<?php echo esc_url($hero_image['url']); ?>" alt="<?php echo esc_attr($hero_image['alt']); ?>">
                 </div>
-                <?php elseif ($show_stats && $stats): ?>
-                <div class="service-hero__stats">
-                    <?php foreach ($stats as $index => $stat): ?>
-                        <div class="stat-card stat-card--<?php echo $index + 1; ?>" style="<?php echo $stat['stat_color'] ? 'background-color: ' . esc_attr($stat['stat_color']) . ';' : ''; ?>">
-                            <span class="stat-card__value"><?php echo esc_html($stat['stat_value']); ?></span>
-                            <span class="stat-card__label"><?php echo esc_html($stat['stat_label']); ?></span>
-                        </div>
-                    <?php endforeach; ?>
-                    
-                    <!-- Decorative line -->
-                    <svg class="service-hero__line" viewBox="0 0 400 200" fill="none" preserveAspectRatio="none">
-                        <path d="M0 150 L100 150 L150 80 L250 80 L300 40 L400 40" stroke="#0094FF" stroke-width="2" fill="none"/>
-                    </svg>
+                <?php elseif ($static_hero_image): ?>
+                <div class="service-hero__image">
+                    <img src="<?php echo esc_url($static_hero_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
                 </div>
                 <?php endif; ?>
             </div>
