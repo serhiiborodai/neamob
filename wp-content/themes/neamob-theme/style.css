@@ -1016,7 +1016,7 @@ select {
   width: 100%;
   display: block;
   height: 200px;
-  background: #eee;
+  background: url("../assets/images/blog-placeholder.png") center/cover no-repeat;
   border-radius: 8px;
   margin-bottom: 17px;
 }
@@ -1432,6 +1432,7 @@ select {
   font-weight: 500;
   font-size: 58px;
   margin-bottom: 28px;
+  color: #000a18;
 }
 .single-job-grid .single-job-body {
   font-size: 16px;
