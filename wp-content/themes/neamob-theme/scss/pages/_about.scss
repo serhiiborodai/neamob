@@ -255,6 +255,34 @@
     &__position {
       font-size: 14px;
     }
+
+    &__dept {
+      position: absolute;
+      background: #eee;
+      color: #fff;
+      text-transform: uppercase;
+      border-radius: 4px;
+      padding: 6px 8px 5px;
+      font-size: 12px;
+      display: inline-block;
+      line-height: 1;
+      letter-spacing: 0.7px;
+      bottom: -43px;
+      left: 0;
+      white-space: nowrap;
+
+      &--blue {
+        background: #0094ff;
+      }
+
+      &--green {
+        background: #00c853;
+      }
+
+      &--purple {
+        background: #8a6aff;
+      }
+    }
   }
 }
 
