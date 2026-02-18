@@ -183,7 +183,7 @@ $apart_image = get_field('bi_apart_image');
                         <?php if ($apart_image): ?>
                             <img src="<?php echo esc_url($apart_image['url']); ?>" alt="<?php echo esc_attr($apart_image['alt']); ?>">
                         <?php else: ?>
-                            <div class="bi-apart__placeholder"></div>
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi/apart-image.png" alt="What sets us apart">
                         <?php endif; ?>
                     </div>
                     <div class="bi-apart__content">
@@ -199,7 +199,7 @@ $apart_image = get_field('bi_apart_image');
                 </div>
             <?php else: ?>
                 <div class="bi-section__image">
-                    <div class="bi-section__placeholder"></div>
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi/section-<?php echo $section_index + 1; ?>.png" alt="<?php echo esc_attr($section['section_title']); ?>">
                 </div>
             <?php endif; ?>
         </div>
