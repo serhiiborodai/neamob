@@ -419,17 +419,34 @@ endif;
 <section class="our-partners">
     <div class="container">
         <h2 class="our-partners__title">Our Partners</h2>
-        <div
-            class="our-partners__grid">
+        <div class="our-partners__grid">
             <!-- Partner Card 1 - Vokal -->
             <div class="partner-card">
                 <div class="partner-card__logo">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p1.png" alt="Vokal">
                 </div>
+                <div class="partner-card__image">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-1.png" alt="Vokal office">
+                </div>
                 <p class="partner-card__text">Vokal is a digital agency driving measurable growth through strategic digital value creation and performance marketing.</p>
             </div>
 
-            <!-- Partner Card 2 - Snappper (with video) -->
+            <!-- Partner Card 2 - Illumin -->
+            <div class="partner-card">
+                <div class="partner-card__logo">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners">
+                </div>
+                <div class="partner-card__image">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-2.png" alt="illumin platform">
+                </div>
+                <p class="partner-card__text">illumin is a journey advertising platform that helps brands plan, activate, and optimize digital campaigns across channels with real-time insights.</p>
+                <a href="#" class="partner-card__cta">
+                    <span class="partner-card__cta-dot"></span>
+                    Download Case Study
+                </a>
+            </div>
+
+            <!-- Partner Card 3 - Snappper (with video) -->
             <div class="partner-card partner-card--video">
                 <div class="partner-card__logo">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper">
@@ -440,19 +457,6 @@ endif;
                     </div>
                 </div>
                 <p class="partner-card__text">Snappper is an award-winning creative and video production agency crafting engaging branded content with proven reach and results.</p>
-            </div>
-
-            <!-- Partner Card 3 - Illumin -->
-            <div class="partner-card">
-                <div class="partner-card__logo">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners">
-                </div>
-                <div class="partner-card__text">illumin is a journey advertising platform that helps brands plan, activate, and optimize digital campaigns across channels with real-time insights.
-                    <a href="#" class="partner-card__cta">
-                        <span class="partner-card__cta-dot"></span>
-                        Download Case Study
-                    </a>
-                </div>
             </div>
         </div>
     </div>

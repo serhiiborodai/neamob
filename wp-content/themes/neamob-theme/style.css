@@ -238,6 +238,7 @@ select {
   border-top: 1px solid #112a40;
   font-size: 14px;
   padding: 18px 0 18px;
+  color: #495b75;
 }
 .site-footer .footer-bottom .container {
   width: 1180px;
@@ -253,7 +254,7 @@ select {
   gap: 10px;
 }
 .site-footer .footer-legal a {
-  color: #fff;
+  color: #495b75;
 }
 
 .careers-page + .site-footer {
