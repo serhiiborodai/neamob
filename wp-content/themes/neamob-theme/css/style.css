@@ -2635,6 +2635,10 @@ select {
   padding-right: 200px;
   position: relative;
 }
+.bi-page .bi-hero__mobile img {
+  width: 100%;
+  height: auto;
+}
 .bi-page .bi-hero__btn {
   display: flex;
   color: #fff;

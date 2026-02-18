@@ -85,6 +85,10 @@ $apart_image = get_field('bi_apart_image');
                             <div class="mockup-card__chart"></div>
                         </div>
                     </div>
+                    
+                    <div class="bi-hero__mobile">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi/hero-mobile.png" alt="BI Dashboard Mobile">
+                    </div>
                 </div>
             </div>
         </div>

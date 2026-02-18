@@ -31,6 +31,7 @@
 
         &__stats {
             display: flex;
+            display: none;
             padding-top: 24px;
             gap: 20px;
             margin-bottom: 20px;
@@ -38,8 +39,16 @@
         }
 
         &__mockup {
+            display: none;
             padding-right: 200px;
             position: relative;
+        }
+
+        &__mobile {
+            img {
+                width: 540px;
+                height: auto;
+            }
         }
 
         &__btn {
