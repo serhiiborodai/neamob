@@ -36,58 +36,16 @@ $blocks = get_field('portfolio_blocks');
                 <?php endforeach; ?>
             </div>
 
-            <!-- Portfolio Slider -->
-            <div class="portfolio-slider">
-                <div class="swiper portfolio-swiper">
-                    <div class="swiper-wrapper">
-                        <?php 
-                        // Get portfolio items from CPT
-                        $portfolio_query = new WP_Query([
-                            'post_type' => 'portfolio_item',
-                            'posts_per_page' => -1,
-                            'orderby' => 'menu_order',
-                            'order' => 'ASC',
-                        ]);
-                        
-                        if ($portfolio_query->have_posts()):
-                            while ($portfolio_query->have_posts()): $portfolio_query->the_post();
-                                $image = get_the_post_thumbnail_url(get_the_ID(), 'large');
-                                $ctr = get_field('portfolio_ctr');
-                                $category = get_field('portfolio_category');
-                                $link = get_permalink();
-                        ?>
-                            <div class="swiper-slide" data-category="<?php echo esc_attr(sanitize_title($category)); ?>">
-                                <a href="<?php echo esc_url($link); ?>" class="portfolio-card">
-                                    <?php if ($ctr): ?>
-                                        <span class="portfolio-card__badge">CTR: <?php echo esc_html($ctr); ?></span>
-                                    <?php endif; ?>
-                                    <?php if ($image): ?>
-                                        <img src="<?php echo esc_url($image); ?>" alt="<?php the_title_attribute(); ?>" class="portfolio-card__image">
-                                    <?php else: ?>
-                                        <div class="portfolio-card__placeholder"></div>
-                                    <?php endif; ?>
-                                </a>
-                            </div>
-                        <?php 
-                            endwhile;
-                            wp_reset_postdata();
-                        else:
-                            // Fallback placeholders
-                            for ($i = 0; $i < 6; $i++):
-                        ?>
-                            <div class="swiper-slide" data-category="all">
-                                <div class="portfolio-card">
-                                    <span class="portfolio-card__badge">CTR: 2.4%</span>
-                                    <div class="portfolio-card__placeholder"></div>
-                                </div>
-                            </div>
-                        <?php 
-                            endfor;
-                        endif;
-                        ?>
+            <!-- Portfolio Gallery -->
+            <section class="portfolio-gallery">
+                <div class="portfolio-gallery__track">
+                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                    <div class="portfolio-gallery__item">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/<?php echo $i; ?>.png" alt="Portfolio item <?php echo $i; ?>">
                     </div>
+                    <?php endfor; ?>
                 </div>
-            </div>
+            </section>
         </div>
     </section>
 
