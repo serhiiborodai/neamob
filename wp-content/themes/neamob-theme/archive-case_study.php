@@ -13,16 +13,16 @@ $case_studies = new WP_Query([
 ]);
 
 $first_post = null;
-$other_posts = [];
+$all_posts = [];
 
 if ($case_studies->have_posts()) {
     $count = 0;
     while ($case_studies->have_posts()) {
         $case_studies->the_post();
+        $post = get_post();
+        $all_posts[] = $post;
         if ($count === 0) {
-            $first_post = get_post();
-        } else {
-            $other_posts[] = get_post();
+            $first_post = $post;
         }
         $count++;
     }
@@ -71,10 +71,10 @@ if ($case_studies->have_posts()) {
         </article>
         <?php endif; ?>
 
-        <?php if (!empty($other_posts)): ?>
-        <!-- Other Case Studies -->
+        <?php if (!empty($all_posts)): ?>
+        <!-- All Case Studies -->
         <div class="case-grid">
-            <?php foreach ($other_posts as $post): 
+            <?php foreach ($all_posts as $post): 
                 $tags = get_field('case_tags', $post->ID) ?: [];
                 $excerpt = get_field('case_excerpt', $post->ID) ?: get_the_excerpt($post->ID);
                 $image = get_the_post_thumbnail_url($post->ID, 'medium_large');

@@ -2942,7 +2942,7 @@ select {
 .case-studies-archive .case-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 60px 20px;
 }
 .case-studies-archive .case-grid .case-card {
   flex: 0 0 380px;
@@ -2983,6 +2983,12 @@ select {
   padding: 5px 8px 4px;
   letter-spacing: 0.6px;
   display: block;
+}
+.case-studies-archive .case-grid .case-card__image-link {
+  display: block;
+  max-height: 200px;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 .single-case__layout {
