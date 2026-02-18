@@ -156,6 +156,7 @@
     font-size: 58px;
     margin-bottom: 28px;
     color: #000a18;
+    white-space: nowrap;
   }
 
   .single-job-body {
@@ -229,6 +230,7 @@
     letter-spacing: 0.7px;
     top: 60px;
     right: 0;
+    white-space: nowrap;
 
     &--purple {
       background: #8a6aff;

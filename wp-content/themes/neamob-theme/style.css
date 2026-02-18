@@ -1434,6 +1434,7 @@ select {
   font-size: 58px;
   margin-bottom: 28px;
   color: #000a18;
+  white-space: nowrap;
 }
 .single-job-grid .single-job-body {
   font-size: 16px;
@@ -1498,6 +1499,7 @@ select {
   letter-spacing: 0.7px;
   top: 60px;
   right: 0;
+  white-space: nowrap;
 }
 .single-job-grid .single-job-category--purple {
   background: #8a6aff;
@@ -1599,6 +1601,29 @@ select {
 .about-gallery {
   width: 100%;
   overflow: hidden;
+  position: relative;
+}
+.about-gallery:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 380px;
+  background: linear-gradient(to right, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 75%);
+  pointer-events: none;
+  z-index: 1;
+}
+.about-gallery::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 380px;
+  background: linear-gradient(to left, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 75%);
+  pointer-events: none;
+  z-index: 1;
 }
 .about-gallery__track {
   display: flex;
