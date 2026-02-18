@@ -11,7 +11,10 @@ $hero_subtitle = get_field('service_hero_subtitle');
 $hero_button_text = get_field('service_hero_button_text') ?: 'Let\'s Chat';
 $hero_button_link = get_field('service_hero_button_link') ?: '/contact';
 
-// Stats cards (optional)
+// Hero image (optional)
+$hero_image = get_field('service_hero_image');
+
+// Stats cards (optional, fallback if no image)
 $show_stats = get_field('service_show_stats');
 $stats = get_field('service_stats');
 
@@ -48,7 +51,11 @@ $apart_image = get_field('service_apart_image');
                     </a>
                 </div>
                 
-                <?php if ($show_stats && $stats): ?>
+                <?php if ($hero_image): ?>
+                <div class="service-hero__image">
+                    <img src="<?php echo esc_url($hero_image['url']); ?>" alt="<?php echo esc_attr($hero_image['alt']); ?>">
+                </div>
+                <?php elseif ($show_stats && $stats): ?>
                 <div class="service-hero__stats">
                     <?php foreach ($stats as $index => $stat): ?>
                         <div class="stat-card stat-card--<?php echo $index + 1; ?>" style="<?php echo $stat['stat_color'] ? 'background-color: ' . esc_attr($stat['stat_color']) . ';' : ''; ?>">
@@ -111,7 +118,7 @@ $apart_image = get_field('service_apart_image');
                     <?php if ($apart_image): ?>
                         <img src="<?php echo esc_url($apart_image['url']); ?>" alt="<?php echo esc_attr($apart_image['alt'] ?: $apart_title); ?>">
                     <?php else: ?>
-                        <div class="service-apart__placeholder"></div>
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/services/apart-image.png" alt="<?php echo esc_attr($apart_title); ?>">
                     <?php endif; ?>
                 </div>
                 <div class="service-apart__content">
