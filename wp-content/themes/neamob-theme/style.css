@@ -477,6 +477,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   justify-content: center;
   height: 70px;
   min-width: 120px;
+  padding: 0 25px;
   opacity: 0.6;
   filter: grayscale(100%) brightness(2);
   transition: all 0.3s ease;
