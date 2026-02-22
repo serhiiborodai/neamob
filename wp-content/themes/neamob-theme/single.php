@@ -100,6 +100,86 @@ $next_post = get_next_post();
     </div>
 </main>
 
+<!-- FAQ Section for Blog Posts -->
+<section class="faq-section">
+    <div class="container">
+        <div class="faq-section__grid">
+            <div class="faq-section__sidebar">
+                <h2 class="faq-section__title">FAQs</h2>
+                <p class="faq-section__text">Got more questions? Reach out to us. We're always here to help!</p>
+                <a href="/contact" class="faq-section__cta">Let's Chat</a>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-item__header">
+                        <h3 class="faq-item__question">What is creative reporting in advertising?</h3>
+                        <div class="faq-item__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </div>
+                    </div>
+                    <div class="faq-item__body">
+                        <div class="faq-item__answer">
+                            <div class="faq-item__answer-text">Creative reporting is the process of analyzing ad creative performance to understand what visual and messaging elements resonate with your audience and drive results.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item is-active">
+                    <div class="faq-item__header">
+                        <h3 class="faq-item__question">How often should creative reporting be done?</h3>
+                        <div class="faq-item__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </div>
+                    </div>
+                    <div class="faq-item__body">
+                        <div class="faq-item__answer">
+                            <div class="faq-item__answer-text">We produce creative reports both weekly and monthly. Weekly reports help catch trends early and make quick adjustments. Monthly reports provide the larger picture: month-over-month comparisons, pattern recognition across longer timeframes, and strategic recommendations that shape the next production cycle.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-item__header">
+                        <h3 class="faq-item__question">What metrics matter most in ad creative analysis?</h3>
+                        <div class="faq-item__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </div>
+                    </div>
+                    <div class="faq-item__body">
+                        <div class="faq-item__answer">
+                            <div class="faq-item__answer-text">Key metrics include click-through rate (CTR), conversion rate, cost per acquisition (CPA), engagement rate, and creative fatigue indicators.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-item__header">
+                        <h3 class="faq-item__question">What's the difference between creative reporting and campaign reporting?</h3>
+                        <div class="faq-item__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </div>
+                    </div>
+                    <div class="faq-item__body">
+                        <div class="faq-item__answer">
+                            <div class="faq-item__answer-text">Campaign reporting focuses on overall performance metrics, while creative reporting dives deeper into which specific visual and copy elements drive those results.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-item__header">
+                        <h3 class="faq-item__question">Can creative reporting improve ad performance over time?</h3>
+                        <div class="faq-item__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </div>
+                    </div>
+                    <div class="faq-item__body">
+                        <div class="faq-item__answer">
+                            <div class="faq-item__answer-text">Yes, by continuously analyzing creative performance and iterating based on data, you can systematically improve ad effectiveness and reduce wasted spend.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <?php // Contact Form before footer
 get_template_part('template-parts/contact-form'); ?>
 
