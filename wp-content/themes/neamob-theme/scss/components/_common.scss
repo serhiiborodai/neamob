@@ -14,6 +14,34 @@
     .menu-toggle {
       display: none;
     }
+
+    .menu-item-has-children {
+      position: relative;
+
+      > .sub-menu {
+        position: absolute;
+        z-index: 9;
+        background: rgba(0, 0, 0, 0.7);
+        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 40px 20px 20px;
+        left: -50%;
+        display: none;
+      }
+
+      > .menu-placeholder {
+        color: #fff;
+        padding-bottom: 20px;
+      }
+
+      &:hover {
+        > .sub-menu {
+          display: flex;
+        }
+      }
+    }
   }
 
   .site-logo__text {
@@ -240,5 +268,65 @@
 
   &__text {
     font-size: 18px;
+  }
+}
+
+.cky-preference-center {
+  .cky-preference-header {
+    padding: 32px 0 15px;
+    margin: 0 24px;
+    border-bottom: 1px solid #d8e3eb;
+
+    .cky-preference-title {
+      color: #000a18 !important;
+      font-size: 24px;
+      font-family: 'DM Sans';
+      font-weight: 500;
+    }
+
+    .cky-btn-close img {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  .cky-preference-body-wrapper {
+    .cky-preference-content-wrapper {
+      padding: 25px 0 0;
+
+      p {
+        font-size: 16px;
+        color: #495b75;
+        font-family: 'Raleway';
+        line-height: 1.5;
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .cky-accordion-header-wrapper .cky-accordion-header-des p {
+    font-size: 16px;
+    color: #495b75;
+    font-family: 'Raleway';
+    line-height: 1.5;
+  }
+}
+
+body {
+  .cky-prefrence-btn-wrapper {
+    padding-bottom: 33px;
+
+    .cky-btn {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.25;
+      font-family: 'DM Sans';
+      background: #495b75 !important;
+      color: #f9f7f1 !important;
+      border: 2px solid #495b75 !important;
+      height: auto;
+      padding: 14px 0;
+      border-radius: 4px;
+    }
   }
 }

@@ -106,7 +106,8 @@
     position: relative;
   }
 
-  a {
+  a,
+  .menu-placeholder {
     display: block;
     padding: $spacing-2 $spacing-4;
     color: rgba($bg-white, 0.85);
@@ -126,6 +127,10 @@
       color: $bg-white;
       background: rgba($bg-white, 0.1);
     }
+  }
+
+  .menu-placeholder {
+    cursor: default;
   }
 
   // Current menu item

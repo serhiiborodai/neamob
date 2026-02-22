@@ -861,3 +861,12 @@ add_filter('post_thumbnail_html', function($html) {
     return preg_replace('/(width|height)="\d*"\s/', '', $html);
 }, 10);
 
+// Replace menu links with # URL to span
+add_filter('walker_nav_menu_start_el', function($item_output, $item, $depth, $args) {
+    if ($item->url === '#') {
+        $item_output = preg_replace('/<a[^>]*>/', '<span class="menu-placeholder">', $item_output);
+        $item_output = str_replace('</a>', '</span>', $item_output);
+    }
+    return $item_output;
+}, 10, 4);
+
