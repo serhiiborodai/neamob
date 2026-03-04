@@ -20,7 +20,14 @@ $static_images = [
     'creative-design' => 'creative-design.png',
     'media-campaigns' => 'media-campaigns.png',
 ];
+$static_images_sm = [
+    'growth-strategy-planning' => '1_sm.png',
+    'data-analytics-insights' => '2_sm.png',
+    'creative-design' => '3_sm.png',
+    'media-campaigns' => '4_sm.png',
+];
 $static_hero_image = isset($static_images[$page_slug]) ? get_template_directory_uri() . '/assets/images/services/' . $static_images[$page_slug] : '';
+$static_hero_image_sm = isset($static_images_sm[$page_slug]) ? get_template_directory_uri() . '/assets/images/services/' . $static_images_sm[$page_slug] : '';
 
 // Stats cards (optional, fallback if no image)
 $show_stats = get_field('service_show_stats');
@@ -65,7 +72,12 @@ $apart_image = get_field('service_apart_image');
                 </div>
                 <?php elseif ($static_hero_image): ?>
                 <div class="service-hero__image">
-                    <img src="<?php echo esc_url($static_hero_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                    <picture>
+                        <?php if ($static_hero_image_sm): ?>
+                        <source media="(max-width: 1199px)" srcset="<?php echo esc_url($static_hero_image_sm); ?>">
+                        <?php endif; ?>
+                        <img src="<?php echo esc_url($static_hero_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                    </picture>
                 </div>
                 <?php endif; ?>
             </div>

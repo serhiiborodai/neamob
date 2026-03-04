@@ -321,3 +321,156 @@
 .single-job-back {
   display: none;
 }
+
+@media screen and (max-width: 1199px) {
+  .careers-hero {
+    .container {
+      width: auto;
+      padding: 40px 15px 0;
+    }
+
+    &__title {
+      font-size: 40px;
+      line-height: 1.2;
+      margin-bottom: 13px;
+    }
+
+    &__text {
+      font-size: 18px;
+      line-height: 1.55;
+      font-weight: 400;
+      width: auto;
+      padding: 0 10px;
+    }
+  }
+
+  .jobs-section {
+    .container {
+      width: auto;
+      padding: 0 15px;
+    }
+
+    .jobs-list {
+      padding-top: 29px;
+    }
+
+    .job-card {
+      position: relative;
+      padding-bottom: 93px;
+
+      &__meta {
+        position: absolute;
+        left: 0;
+        right: 0;
+      }
+
+      &__category {
+        margin-bottom: 12px;
+      }
+
+      &__title {
+        font-size: 20px;
+        line-height: 1.35;
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+
+      &__applied {
+        top: 8px;
+        right: 5px;
+        position: absolute;
+      }
+
+      &__apply {
+        top: 119px;
+        left: 0;
+        right: auto;
+      }
+    }
+  }
+
+  .single-job-page {
+    .container {
+      width: auto;
+      padding: 40px 15px 80px;
+    }
+
+    .single-job-grid {
+      display: block;
+      position: relative;
+    }
+
+    .single-job-content {
+      width: auto;
+      padding-top: 34px;
+    }
+
+    .single-job-title {
+      font-size: 32px;
+      line-height: 1.35;
+      margin-bottom: 37px;
+    }
+
+    .single-job-body h2 {
+      margin-bottom: 12px;
+    }
+
+    .single-job-grid .single-job-body ul,
+    .single-job-grid .single-job-body p {
+      margin-bottom: 22px;
+    }
+
+    .single-job-sidebar {
+      width: auto;
+    }
+
+    .single-job-meta {
+      position: static;
+      height: auto;
+    }
+
+    .single-job-meta .single-job-applied {
+      position: absolute;
+      top: 6px;
+      right: 1px;
+    }
+
+    .single-job-category {
+      top: 0px;
+      right: auto;
+      left: 1px;
+    }
+
+    .job-apply-card {
+      padding: 21px 21px;
+
+      &__title {
+        font-size: 24px;
+        line-height: 1.35;
+        margin-bottom: 13px;
+      }
+
+      .wpcf7-form {
+        width: auto;
+
+        label {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .job-apply-card .wpcf7-form span.wpcf7-form-control-wrap {
+      margin-bottom: 12px;
+
+      input.wpcf7-form-control:not(.wpcf7-submit) {
+        padding: 12px 30px;
+        width: 100%;
+      }
+    }
+  }
+
+  .job-apply-card .wpcf7-form input.wpcf7-submit {
+    margin-top: 24px;
+    padding: 10px 71px 10px;
+  }
+}

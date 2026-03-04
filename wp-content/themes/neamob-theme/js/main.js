@@ -17,6 +17,7 @@
         initServicesAccordion();
         initTestimonialsSlider();
         initFaqAccordion();
+        initContactForm();
     });
 
     /**
@@ -206,25 +207,18 @@
      * Initialize mobile menu
      */
     function initMobileMenu() {
-        const menuToggle = document.querySelector('.menu-toggle');
+        const menuToggle = document.querySelector('.menu-mobile__toggle');
         const mainNav = document.querySelector('.main-nav');
 
         if (menuToggle && mainNav) {
-            menuToggle.addEventListener('click', function () {
-                mainNav.classList.toggle('is-open');
-                menuToggle.classList.toggle('is-active');
-                menuToggle.setAttribute(
-                    'aria-expanded',
-                    menuToggle.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'
-                );
+            menuToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                mainNav.classList.toggle('to-show');
             });
 
-            // Close menu when clicking outside
             document.addEventListener('click', function (e) {
-                if (!mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
-                    mainNav.classList.remove('is-open');
-                    menuToggle.classList.remove('is-active');
-                    menuToggle.setAttribute('aria-expanded', 'false');
+                if (!mainNav.contains(e.target)) {
+                    mainNav.classList.remove('to-show');
                 }
             });
         }
@@ -388,6 +382,188 @@
                 });
             });
         });
+    }
+
+    /**
+     * Initialize Contact Form UX
+     */
+    function initContactForm() {
+        var forms = document.querySelectorAll('.wpcf7-form');
+        if (!forms.length) return;
+
+        forms.forEach(function(form) {
+            form.querySelectorAll('select').forEach(function(sel) {
+                var label = sel.closest('label');
+                if (label) label.classList.add('has-select');
+                var wrap = sel.closest('.wpcf7-form-control-wrap');
+                if (wrap) wrap.classList.add('has-select');
+            });
+
+            var submitBtn = form.querySelector('.wpcf7-submit');
+            if (!submitBtn) return;
+
+            var submitWrap = document.createElement('div');
+            submitWrap.className = 'cf7-submit-wrap';
+            submitBtn.parentNode.insertBefore(submitWrap, submitBtn);
+            submitWrap.appendChild(submitBtn);
+
+            var loadingEl = document.createElement('div');
+            loadingEl.className = 'cf7-status cf7-status--loading';
+            loadingEl.innerHTML = '<span class="cf7-status__icon cf7-status__icon--spinner"></span> Submitting Your Request...';
+            submitWrap.appendChild(loadingEl);
+
+            var successEl = document.createElement('div');
+            successEl.className = 'cf7-status cf7-status--success';
+            successEl.innerHTML = '<span class="cf7-status__icon cf7-status__icon--check"></span> Thanks! Our Team Will Contact You Shortly.';
+            submitWrap.appendChild(successEl);
+
+            var errorEl = document.createElement('div');
+            errorEl.className = 'cf7-status cf7-status--error';
+            errorEl.innerHTML = '<button type="button" class="cf7-status__retry"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.00024 1V5.16667H4.95691M1.68191 4.33333C2.45445 2.99538 3.66772 1.96727 5.11431 1.42476C6.5609 0.882251 8.15101 0.859014 9.61284 1.35902C11.0747 1.85903 12.3175 2.85124 13.1288 4.16605C13.9401 5.48087 14.2695 7.03664 14.0608 8.56746C13.8521 10.0983 13.1182 11.5091 11.9846 12.5587C10.8509 13.6084 9.38787 14.2317 7.84554 14.3221C6.30321 14.4126 4.77735 13.9645 3.52878 13.0546C2.2802 12.1446 1.38643 10.8293 1.00024 9.33333" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="cf7-status__text"></span>';
+            submitWrap.appendChild(errorEl);
+
+            var retryBtn = errorEl.querySelector('.cf7-status__retry');
+            retryBtn.addEventListener('click', function() {
+                submitWrap.classList.remove('is-error');
+                submitBtn.style.display = '';
+            });
+
+            setupValidation(form);
+
+            var wpcf7El = form.closest('.wpcf7');
+            if (!wpcf7El) return;
+
+            wpcf7El.addEventListener('wpcf7submit', function() {
+                submitWrap.classList.remove('is-loading');
+            });
+
+            wpcf7El.addEventListener('wpcf7mailsent', function() {
+                submitWrap.classList.add('is-success');
+                submitBtn.style.display = 'none';
+                form.reset();
+                setTimeout(function() {
+                    submitWrap.classList.remove('is-success');
+                    submitBtn.style.display = '';
+                }, 5000);
+            });
+
+            wpcf7El.addEventListener('wpcf7mailfailed', function() {
+                showFormError(submitWrap, submitBtn, errorEl, "We couldn\u2019t submit your request. Please try again.");
+            });
+
+            wpcf7El.addEventListener('wpcf7spam', function() {
+                showFormError(submitWrap, submitBtn, errorEl, "We couldn\u2019t submit your request. Please try again.");
+            });
+
+            form.addEventListener('submit', function() {
+                submitWrap.classList.add('is-loading');
+                submitBtn.style.display = 'none';
+            });
+        });
+
+        function showFormError(wrap, btn, errEl, msg) {
+            var textEl = errEl.querySelector('.cf7-status__text');
+            textEl.textContent = msg;
+            wrap.classList.add('is-error');
+            btn.style.display = 'none';
+        }
+
+        function setupValidation(form) {
+            var nameFields = form.querySelectorAll('input[name="full-name"], input[name="last-name"]');
+            var emailField = form.querySelector('input[name="your-email"]');
+            var phoneField = form.querySelector('input[name="your-phone"]');
+
+            nameFields.forEach(function(field) {
+                field.addEventListener('invalid', function(e) {
+                    e.preventDefault();
+                });
+                field.addEventListener('blur', function() { validateName(field); });
+                field.addEventListener('input', function() { clearFieldError(field); });
+            });
+
+            if (emailField) {
+                emailField.addEventListener('invalid', function(e) { e.preventDefault(); });
+                emailField.addEventListener('blur', function() { validateEmail(emailField); });
+                emailField.addEventListener('input', function() { clearFieldError(emailField); });
+            }
+
+            if (phoneField) {
+                phoneField.addEventListener('invalid', function(e) { e.preventDefault(); });
+                phoneField.addEventListener('blur', function() { validatePhone(phoneField); });
+                phoneField.addEventListener('input', function() { clearFieldError(phoneField); });
+            }
+        }
+
+        function validateName(field) {
+            var val = field.value.trim();
+            var label = field.name === 'full-name' ? 'name' : 'last name';
+            if (!val) {
+                showFieldError(field, 'Please enter your ' + label + '.');
+                return false;
+            }
+            if (val.length < 2) {
+                showFieldError(field, 'Name must be at least 2 characters.');
+                return false;
+            }
+            if (!/^[a-zA-ZÀ-ÿ\s\-']+$/.test(val)) {
+                showFieldError(field, 'Please use letters only.');
+                return false;
+            }
+            clearFieldError(field);
+            return true;
+        }
+
+        function validateEmail(field) {
+            var val = field.value;
+            if (!val.trim()) {
+                showFieldError(field, 'Please enter your email address.');
+                return false;
+            }
+            if (val !== val.trim()) {
+                showFieldError(field, 'Remove any extra spaces.');
+                return false;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+                showFieldError(field, 'Enter a valid email address (e.g., name@example.com).');
+                return false;
+            }
+            clearFieldError(field);
+            return true;
+        }
+
+        function validatePhone(field) {
+            var val = field.value.trim();
+            if (!val) return true;
+            var digits = val.replace(/\D/g, '');
+            if (digits.length < 7) {
+                showFieldError(field, 'Please enter the full phone number.');
+                return false;
+            }
+            if (!/^[\d\s\+\-\(\)\.]+$/.test(val)) {
+                showFieldError(field, 'Enter a valid phone number (e.g., +1 555 123 4567).');
+                return false;
+            }
+            clearFieldError(field);
+            return true;
+        }
+
+        function showFieldError(field, msg) {
+            clearFieldError(field);
+            field.classList.add('wpcf7-not-valid');
+            var wrap = field.closest('.wpcf7-form-control-wrap') || field.parentNode;
+            var tip = document.createElement('span');
+            tip.className = 'wpcf7-not-valid-tip cf7-custom-error';
+            tip.setAttribute('role', 'alert');
+            tip.textContent = msg;
+            wrap.appendChild(tip);
+        }
+
+        function clearFieldError(field) {
+            field.classList.remove('wpcf7-not-valid');
+            var wrap = field.closest('.wpcf7-form-control-wrap') || field.parentNode;
+            var tips = wrap.querySelectorAll('.cf7-custom-error');
+            tips.forEach(function(t) { t.remove(); });
+        }
     }
 
     /**

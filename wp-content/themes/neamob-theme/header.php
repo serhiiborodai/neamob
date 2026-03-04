@@ -42,6 +42,9 @@
 
                 <!-- Navigation -->
                 <nav id="site-navigation" class="main-nav">
+                    <span class="menu-mobile__toggle">
+                        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/icons/menu.svg'); ?>" alt="" width="40" height="40">
+                    </span>
                     <?php
                     wp_nav_menu([
                         'theme_location' => 'primary',
@@ -63,15 +66,6 @@
                     </a>
                 </div>
 
-                <!-- Mobile Menu Toggle -->
-                <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
-                    <span class="hamburger">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
-                    <span class="screen-reader-text"><?php esc_html_e('Menu', 'neamob-theme'); ?></span>
-                </button>
             </div>
         </div>
     </header>

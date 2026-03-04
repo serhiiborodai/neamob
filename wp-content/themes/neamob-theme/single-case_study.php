@@ -36,6 +36,15 @@ $results = get_field('case_results');
                     <?php endif; ?>
                 </header>
 
+                <!-- Image (mobile copy) -->
+                <div class="single-case__image-mobile">
+                    <?php if (has_post_thumbnail()): ?>
+                        <?php the_post_thumbnail('full'); ?>
+                    <?php else: ?>
+                        <div class="single-case__placeholder"></div>
+                    <?php endif; ?>
+                </div>
+
                 <!-- Metrics -->
                 <?php if ($metrics): ?>
                 <section class="single-case__section">

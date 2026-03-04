@@ -214,6 +214,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         tocNav.appendChild(tocList);
         
+        // Copy toc-wrapper before first h2 (for mobile)
+        const tocWrapper = document.querySelector('.toc-wrapper');
+        const firstH2 = postContent.querySelector('h2');
+        if (tocWrapper && firstH2) {
+            const tocCopy = document.createElement('div');
+            tocCopy.className = 'toc__for-mobile';
+            tocCopy.appendChild(tocWrapper.cloneNode(true));
+            firstH2.parentNode.insertBefore(tocCopy, firstH2);
+        }
+        
         // Highlight active section on scroll
         const tocLinks = tocNav.querySelectorAll('.toc-link');
         

@@ -274,4 +274,114 @@
     &__nav {
         display: none;
     }
+
+    &__image-mobile {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1199px) {
+    .case-studies-archive {
+        .container {
+            width: auto;
+            padding: 40px 15px 0;
+        }
+
+        &__title {
+            font-size: 40px;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        .case-featured {
+            flex-direction: column;
+            margin-bottom: 91px;
+
+            &__image {
+                flex: 0 0 auto;
+                height: auto;
+            }
+
+            &__tags {
+                margin-bottom: 16px;
+            }
+
+            &__title {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .case-grid {
+            gap: 32px 20px;
+
+            &__content {
+                padding: 17px 0 0;
+            }
+
+            &__title {
+                a {
+                    font-size: 18px;
+                    line-height: 1.4;
+                    margin-bottom: 2px;
+                }
+            }
+
+            .case-card {
+                flex: 0 0 100%;
+            }
+        }
+    }
+
+    .single-case {
+        &__layout {
+            padding: 40px 15px 0;
+            width: auto;
+            display: block;
+        }
+
+        &__header {
+            padding-bottom: 23px;
+            margin-bottom: 24px;
+        }
+
+        &__title {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        &__excerpt {
+            margin-bottom: 14px;
+        }
+
+        &__image-mobile {
+            display: block;
+            margin-bottom: 35px;
+        }
+
+        &__section {
+            padding-bottom: 12px;
+            margin-bottom: 32px;
+
+            &:nth-child(7) {
+                border-bottom: 0;
+            }
+        }
+
+        .case-metrics {
+            display: block;
+
+            .case-metric {
+                margin-bottom: 17px;
+
+                &__value {
+                    font-size: 20px;
+                }
+            }
+        }
+
+        &__image {
+            display: none;
+        }
+    }
 }

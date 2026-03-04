@@ -354,7 +354,10 @@ endif;
     <div class="container">
         <h2 class="comparison-section__title">Why choose NeaMob Tech?</h2>
         <div class="comparison-image">
-            <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/table.png" alt="Why choose NeaMob Tech comparison table">
+            <picture>
+                <source media="(max-width: 639px)" srcset="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/compare-mobile.jpeg">
+                <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/table.png" alt="Why choose NeaMob Tech comparison table">
+            </picture>
         </div>
     </div>
 </section>

@@ -136,6 +136,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-bottom: 80px;
   }
 
   .blog-card {
@@ -159,6 +160,7 @@
 
       img {
         width: auto;
+        border-radius: 10px;
       }
     }
 
@@ -426,5 +428,169 @@
         top: 1px;
       }
     }
+  }
+
+  .toc__for-mobile {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  .blog-hero {
+    .container {
+      width: auto;
+      padding: 40px 15px;
+    }
+
+    &__title {
+      font-size: 40px;
+      line-height: 1.2;
+    }
+  }
+
+  .blog-latest {
+    .container {
+      padding: 0 15px;
+      width: auto;
+      margin: 0 0 92px;
+    }
+
+    &__card {
+      flex-direction: column;
+    }
+
+    &__image {
+      flex: 0 0 auto;
+      height: 342px;
+
+      img {
+        min-height: 100%;
+        min-width: 100%;
+      }
+    }
+
+    &__meta {
+      margin-bottom: 17px;
+    }
+
+    &__title a {
+      font-size: 24px;
+      line-height: 1.35;
+      display: block;
+    }
+
+    &__excerpt {
+      padding-top: 11px;
+      max-height: 175px;
+      margin-bottom: 37px;
+      height: auto;
+    }
+  }
+
+  .blog-tabs {
+    .container {
+      width: auto;
+      padding: 0 15px;
+      margin: 0 0 29px;
+    }
+
+    &__list {
+      padding-bottom: 0;
+    }
+
+    &__tab {
+      margin-bottom: 20px;
+      margin-left: 0;
+      margin-right: 15px;
+    }
+  }
+
+  .blog-grid-section {
+    .container {
+      width: auto;
+      padding: 0 15px;
+    }
+
+    .blog-grid {
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .blog-card {
+      width: 380px;
+      margin-bottom: 2px;
+      max-width: 100%;
+    }
+  }
+
+  #page .single-post {
+    .container {
+      width: auto;
+      padding: 86px 15px 83px;
+    }
+
+    .back-to-blog {
+      left: 36px;
+      top: 20px;
+    }
+
+    &__layout {
+      display: block;
+      padding-bottom: 0;
+    }
+
+    &__toc {
+      display: none;
+    }
+
+    &__content {
+      padding: 0;
+    }
+
+    &__meta {
+      margin-bottom: 24px;
+    }
+
+    &__title {
+      font-size: 32px;
+      line-height: 1.25;
+    }
+
+    &__body {
+      .wp-block-image {
+        padding-top: 9px;
+      }
+
+      .toc__for-mobile {
+        display: block;
+        margin-bottom: 23px;
+
+        .toc-title {
+          margin-bottom: 20px;
+        }
+      }
+
+      .wp-block-heading {
+        font-size: 20px;
+        line-height: 1.35;
+        margin-bottom: 13px;
+      }
+    }
+  }
+
+  .single-post .faq-section {
+    .faq-item {
+      padding: 20px 19px 17px;
+    }
+
+    .faq-item__icon {
+      top: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 639px) {
+  .blog-grid-section .blog-card__image img {
+    min-height: 100%;
   }
 }
