@@ -407,6 +407,10 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   }
 }
 @media screen and (max-width: 1199px) {
+  #masthead .container {
+    padding: 19px 15px 27px;
+    width: auto;
+  }
   #masthead .site-header__inner {
     position: relative;
   }
@@ -1543,10 +1547,6 @@ body .cky-prefrence-btn-wrapper .cky-btn {
 @media screen and (max-width: 1199px) {
   .header-cta {
     display: none;
-  }
-  #masthead .container {
-    padding: 0 15px;
-    width: auto;
   }
   .hero-section {
     height: 648px;
