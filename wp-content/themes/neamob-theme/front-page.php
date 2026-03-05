@@ -54,6 +54,7 @@ $value_tags = get_field('value_tags');
 $logos_dir = get_template_directory() . '/assets/logos/hp_color/';
 $logos_url = get_template_directory_uri() . '/assets/logos/hp_color/';
 $logo_files = glob($logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE);
+usort($logo_files, function ($a, $b) { return filemtime($a) - filemtime($b); });
 
 if (!empty($logo_files)):
     ?>

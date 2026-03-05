@@ -740,6 +740,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
 .services-section .services-accordion__title {
   font-size: 24px;
   line-height: 1.4;
+  color: #000a18;
 }
 .services-section .services-accordion__body {
   padding: 11px 0 0 52px;
@@ -899,6 +900,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   font-size: 56px;
   font-weight: 500;
   padding-bottom: 30px;
+  color: #000a18;
 }
 .case-studies-section__link {
   display: inline-block;
@@ -1054,6 +1056,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   font-size: 56px;
   font-weight: 500;
   margin: 0 0 36px;
+  color: #000a18;
 }
 .comparison-section .comparison-grid {
   border: 1px solid #d8e3eb;
@@ -1110,6 +1113,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   font-size: 56px;
   font-weight: 500;
   margin: 0 0 30px;
+  color: #000a18;
 }
 .blog-section__link {
   display: inline-block;
@@ -1209,6 +1213,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   font-weight: 500;
   line-height: 1.5;
   margin-bottom: 34px;
+  color: #000a18;
 }
 .our-partners__grid {
   display: flex;
@@ -1313,6 +1318,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
 }
 .faq-section .faq-item__question {
   font-size: 20px;
+  color: #000a18;
 }
 .faq-section .faq-item__header {
   cursor: pointer;
@@ -2507,6 +2513,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   font-size: 56px;
   font-weight: 500;
   margin-bottom: 12px;
+  color: #000a18;
 }
 .about-join__text {
   font-size: 18px;
@@ -2936,7 +2943,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   line-height: 1.4;
   margin-bottom: 14px;
   font-weight: 500;
-  color: #495b75;
+  color: #272838;
 }
 #page .single-post__author {
   display: flex;
@@ -3258,6 +3265,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   font-size: 48px;
   font-weight: 500;
   padding: 119px 0 20px 203px;
+  color: #000a18;
 }
 .service-whatwedo__item {
   display: flex;
@@ -3273,6 +3281,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   line-height: 1.4;
   font-weight: 500;
   margin-bottom: 22px;
+  color: #000a18;
 }
 .service-whatwedo__item-text {
   font-size: 16px;
@@ -3302,6 +3311,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   line-height: 1.2;
   font-weight: 500;
   margin-bottom: 40px;
+  color: #000a18;
 }
 .service-apart__text {
   line-height: 1.5;
@@ -4124,6 +4134,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   line-height: 1.35;
   font-weight: 500;
   margin-bottom: 21px;
+  color: #000a18;
 }
 .single-case__excerpt {
   font-size: 18px;

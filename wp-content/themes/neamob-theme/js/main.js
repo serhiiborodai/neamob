@@ -430,34 +430,38 @@
 
             setupValidation(form);
 
-            var wpcf7El = form.closest('.wpcf7');
-            if (!wpcf7El) return;
-
-            wpcf7El.addEventListener('wpcf7submit', function() {
-                submitWrap.classList.remove('is-loading');
-            });
-
-            wpcf7El.addEventListener('wpcf7mailsent', function() {
-                submitWrap.classList.add('is-success');
-                submitBtn.style.display = 'none';
-                form.reset();
-                setTimeout(function() {
-                    submitWrap.classList.remove('is-success');
-                    submitBtn.style.display = '';
-                }, 5000);
-            });
-
-            wpcf7El.addEventListener('wpcf7mailfailed', function() {
-                showFormError(submitWrap, submitBtn, errorEl, "We couldn\u2019t submit your request. Please try again.");
-            });
-
-            wpcf7El.addEventListener('wpcf7spam', function() {
-                showFormError(submitWrap, submitBtn, errorEl, "We couldn\u2019t submit your request. Please try again.");
-            });
-
             form.addEventListener('submit', function() {
                 submitWrap.classList.add('is-loading');
                 submitBtn.style.display = 'none';
+            });
+        });
+
+        ['wpcf7submit', 'wpcf7mailsent', 'wpcf7mailfailed', 'wpcf7spam'].forEach(function(eventName) {
+            document.addEventListener(eventName, function(ev) {
+                var unitTag = ev.detail && ev.detail.unitTag;
+                var wpcf7El = unitTag ? document.querySelector('#' + unitTag.replace(/^#/, '')) : document.querySelector('.wpcf7');
+                if (!wpcf7El) return;
+                var submitWrap = wpcf7El.querySelector('.cf7-submit-wrap');
+                var submitBtn = wpcf7El.querySelector('.wpcf7-submit');
+                var form = wpcf7El.querySelector('.wpcf7-form');
+                var errorEl = submitWrap && submitWrap.querySelector('.cf7-status--error');
+                if (!submitWrap || !submitBtn) return;
+
+                submitWrap.classList.remove('is-loading');
+                if (eventName === 'wpcf7mailsent') {
+                    submitWrap.classList.add('is-success');
+                    submitBtn.style.display = 'none';
+                    if (form) form.reset();
+                    setTimeout(function() {
+                        submitWrap.classList.remove('is-success');
+                        submitBtn.style.display = '';
+                    }, 5000);
+                } else if (eventName === 'wpcf7mailfailed' || eventName === 'wpcf7spam') {
+                    var textEl = errorEl && errorEl.querySelector('.cf7-status__text');
+                    if (textEl) textEl.textContent = "We couldn't submit your request. Please try again.";
+                    submitWrap.classList.add('is-error');
+                    submitBtn.style.display = 'none';
+                }
             });
         });
 
