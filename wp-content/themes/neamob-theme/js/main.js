@@ -13,6 +13,7 @@
         initSwiperSliders();
         initMobileMenu();
         initSmoothScroll();
+        initScrollToForm();
         initAnimations();
         initServicesAccordion();
         initTestimonialsSlider();
@@ -246,6 +247,44 @@
                 }
             });
         });
+    }
+
+    /**
+     * Scroll to contact form: Let's Chat / Book Free Audit buttons
+     */
+    function initScrollToForm() {
+        var formSection = document.getElementById('contact-form');
+        var homeUrl = (typeof neamobData !== 'undefined' && neamobData.siteUrl) ? neamobData.siteUrl : '/';
+
+        function scrollToForm(e) {
+            var formEl = document.getElementById('contact-form');
+            if (formEl) {
+                e.preventDefault();
+                var headerH = document.querySelector('.site-header') ? document.querySelector('.site-header').offsetHeight : 0;
+                var top = formEl.getBoundingClientRect().top + window.pageYOffset - headerH;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            } else {
+                e.preventDefault();
+                window.location.href = homeUrl.replace(/\/$/, '') + '/#contact-form';
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            var t = e.target.closest('a, button');
+            if (!t) return;
+            var text = (t.textContent || '').trim();
+            if (text === "Let's Chat" || text === 'Book Free Audit') {
+                scrollToForm(e);
+            }
+        });
+
+        if (window.location.hash === '#contact-form' && formSection) {
+            setTimeout(function() {
+                var headerH = document.querySelector('.site-header') ? document.querySelector('.site-header').offsetHeight : 0;
+                var top = formSection.getBoundingClientRect().top + window.pageYOffset - headerH;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }, 100);
+        }
     }
 
     /**

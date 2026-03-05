@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<section class="contact-form-section">
+<section class="contact-form-section" id="contact-form">
     <div class="container">
         <div class="contact-form-section__grid">
             <div class="contact-form-section__content">

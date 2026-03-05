@@ -31,7 +31,7 @@ $value_tags = get_field('value_tags', $front_page_id);
             <div class="value-section__content">
                 <h2 class="value-section__title"><?php echo esc_html($value_title); ?></h2>
                 <p class="value-section__text"><?php echo esc_html($value_text); ?></p>
-                <a href="<?php echo esc_url($value_button_url); ?>" class="btn btn--hero">
+                <a href="#contact-form" class="btn btn--hero">
                     <span class="btn__dot"></span>
                     <span><?php echo esc_html($value_button_text); ?></span>
                 </a>

@@ -41,7 +41,7 @@ $value_tags = get_field('value_tags');
         <div class="hero-section__content">
             <h1 class="hero-section__title"><?php echo wp_kses_post($hero_title); ?></h1>
             <p class="hero-section__text"><?php echo esc_html($hero_text); ?></p>
-            <a href="<?php echo esc_url($hero_button_url); ?>" class="btn btn--hero">
+            <a href="#contact-form" class="btn btn--hero">
                 <span class="btn__dot"></span>
                 <span><?php echo esc_html($hero_button_text); ?></span>
             </a>
@@ -149,7 +149,7 @@ endif;
             <div class="value-section__content">
                 <h2 class="value-section__title"><?php echo esc_html($value_title); ?></h2>
                 <p class="value-section__text"><?php echo esc_html($value_text); ?></p>
-                <a href="<?php echo esc_url($value_button_url); ?>" class="btn btn--hero">
+                <a href="#contact-form" class="btn btn--hero">
                     <span class="btn__dot"></span>
                     <span><?php echo esc_html($value_button_text); ?></span>
                 </a>
