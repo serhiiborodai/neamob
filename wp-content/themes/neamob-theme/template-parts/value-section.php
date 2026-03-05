@@ -72,7 +72,7 @@ $value_tags = get_field('value_tags', $front_page_id);
                                 <span class="<?php echo esc_attr($class); ?>"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                             </span>
                         <?php else: ?>
-                            <a href="#" class="<?php echo esc_attr($class); ?>"><?php echo esc_html($tag['tag_text']); ?></a>
+                            <a class="<?php echo esc_attr($class); ?>"><?php echo esc_html($tag['tag_text']); ?></a>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
@@ -82,30 +82,30 @@ $value_tags = get_field('value_tags', $front_page_id);
             <div class="value-reports">
                 <p class="value-reports__label">Some of Our Reports</p>
                 <div class="value-reports__tags">
-                    <a href="#" class="report-tag">Forecasting</a>
-                    <a href="#" class="report-tag">Profitability</a>
-                    <a href="#" class="report-tag">Lifetime Value</a>
+                    <a class="report-tag">Forecasting</a>
+                    <a class="report-tag">Profitability</a>
+                    <a class="report-tag">Lifetime Value</a>
                     <span class="report-tag report-tag--icon">
                         <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/icons/chart.svg" alt="">
                     </span>
-                    <a href="#" class="report-tag">Traffic Sources</a>
-                    <a href="#" class="report-tag">Cost per Acquisition</a>
-                    <a href="#" class="report-tag">Cash Flow</a>
+                    <a class="report-tag">Traffic Sources</a>
+                    <a class="report-tag">Cost per Acquisition</a>
+                    <a class="report-tag">Cash Flow</a>
                     <span class="report-tag report-tag--icon">
                         <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/icons/message.svg" alt="">
                     </span>
-                    <a href="#" class="report-tag">Funnel Analysis</a>
+                    <a class="report-tag">Funnel Analysis</a>
 
                     <span class="report-tag report-tag--icon">
                         <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/icons/chart2.svg" alt="">
                     </span>
-                    <a href="#" class="report-tag">Conversion Rates</a>
-                    <a href="#" class="report-tag">Offline/Organic Tracking</a>
+                    <a class="report-tag">Conversion Rates</a>
+                    <a class="report-tag">Offline/Organic Tracking</a>
                     <span class="report-tag report-tag--icon">
                         <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/icons/increase.svg" alt="">
                     </span>
-                    <a href="#" class="report-tag">Amazon and Shopify</a>
-                    <a href="#" class="report-tag">Attribution</a>
+                    <a class="report-tag">Amazon and Shopify</a>
+                    <a class="report-tag">Attribution</a>
                 </div>
             </div>
         <?php endif; ?>
