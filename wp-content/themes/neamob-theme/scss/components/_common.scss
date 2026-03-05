@@ -305,6 +305,10 @@ body {
 
         a {
           color: #fff;
+
+          &:hover {
+            color: #aeaeae;
+          }
         }
       }
 
@@ -313,8 +317,8 @@ body {
 
         > .sub-menu {
           position: absolute;
-          z-index: 9;
-          background: rgba(0, 0, 0, 0.7);
+          z-index: 99;
+          background: rgba(0, 0, 0, 0.9);
           white-space: nowrap;
           display: flex;
           flex-direction: column;
@@ -327,10 +331,19 @@ body {
         > .menu-placeholder {
           color: #fff;
           padding-bottom: 20px;
+
+          &:hover {
+            color: #aeaeae;
+          }
         }
 
         &:hover {
           > .sub-menu {
+            display: flex;
+          }
+        }
+        > .sub-menu {
+          &:hover {
             display: flex;
           }
         }

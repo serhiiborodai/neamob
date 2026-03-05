@@ -45,7 +45,7 @@ if (!$beliefs) {
     <!-- Gallery -->
     <section class="about-gallery">
         <div class="about-gallery__track">
-            <?php for ($i = 1; $i <= 5; $i++) : ?>
+            <?php for ($i = 1; $i <= 7; $i++) : ?>
             <div class="about-gallery__item">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/about/<?php echo $i; ?>.webp" alt="About photo <?php echo $i; ?>">
             </div>

@@ -90,6 +90,12 @@ if (!empty($logo_files)):
 <!-- Services Section (What We Do) -->
 <?php
 $services = neamob_get_services();
+$service_links = [
+    '/services/growth-strategy-planning/',
+    '/services/data-analytics-insights/',
+    '/services/creative-design/',
+    '/services/media-campaigns/',
+];
 if ($services->have_posts()):
     ?>
         <section class="services-section"> <div class="container">
@@ -111,7 +117,7 @@ if ($services->have_posts()):
                                 <div class="services-accordion__body">
                                     <div class="services-accordion__body-inner">
                                         <p class="services-accordion__text"><?php echo esc_html($short_desc); ?></p>
-                                        <a href="<?php the_permalink(); ?>" class="services-accordion__link">Learn More</a>
+                                        <a href="<?php echo esc_url(isset($service_links[$index]) ? home_url($service_links[$index]) : get_permalink()); ?>" class="services-accordion__link">Learn More</a>
                                     </div>
                                 </div>
                             </div>

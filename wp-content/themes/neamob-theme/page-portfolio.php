@@ -59,7 +59,7 @@ $blocks = get_field('portfolio_blocks');
                     <h2 class="portfolio-block__title"><?php echo esc_html($block['block_title']); ?></h2>
                     <p class="portfolio-block__text"><?php echo wp_kses_post($block['block_text']); ?></p>
                     <?php if ($block['block_link']): ?>
-                        <a href="<?php echo esc_url($block['block_link']['url']); ?>" class="portfolio-block__link">
+                        <a href="<?php echo esc_url(home_url('/case-study/driving-qualified-leads-for-canadian-centre-for-addictions-through-strategic-digital-marketing/')); ?>" class="portfolio-block__link">
                             <span class="link-dot"></span>
                             <?php echo esc_html($block['block_link']['title'] ?: 'Learn More'); ?>
                         </a>

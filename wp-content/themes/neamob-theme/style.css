@@ -383,13 +383,16 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   #masthead .site-header__inner #primary-menu a {
     color: #fff;
   }
+  #masthead .site-header__inner #primary-menu a:hover {
+    color: #aeaeae;
+  }
   #masthead .site-header__inner .menu-item-has-children {
     position: relative;
   }
   #masthead .site-header__inner .menu-item-has-children > .sub-menu {
     position: absolute;
-    z-index: 9;
-    background: rgba(0, 0, 0, 0.7);
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.9);
     white-space: nowrap;
     display: flex;
     flex-direction: column;
@@ -402,7 +405,13 @@ body .cky-prefrence-btn-wrapper .cky-btn {
     color: #fff;
     padding-bottom: 20px;
   }
+  #masthead .site-header__inner .menu-item-has-children > .menu-placeholder:hover {
+    color: #aeaeae;
+  }
   #masthead .site-header__inner .menu-item-has-children:hover > .sub-menu {
+    display: flex;
+  }
+  #masthead .site-header__inner .menu-item-has-children > .sub-menu:hover {
     display: flex;
   }
 }
@@ -1092,7 +1101,6 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   width: 25px;
 }
 .comparison-section .comparison-image {
-  border: 1px solid #d8e3eb;
   border-radius: 8px;
 }
 

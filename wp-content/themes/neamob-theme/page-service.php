@@ -26,6 +26,12 @@ $static_images_sm = [
     'creative-design' => '3_sm.png',
     'media-campaigns' => '4_sm.png',
 ];
+$static_apart_images = [
+    'growth-strategy-planning' => '1se.png',
+    'data-analytics-insights' => '2se.png',
+    'creative-design' => '3se.png',
+    'media-campaigns' => '4se.png',
+];
 $static_hero_image = isset($static_images[$page_slug]) ? get_template_directory_uri() . '/assets/images/services/' . $static_images[$page_slug] : '';
 $static_hero_image_sm = isset($static_images_sm[$page_slug]) ? get_template_directory_uri() . '/assets/images/services/' . $static_images_sm[$page_slug] : '';
 
@@ -125,11 +131,18 @@ $apart_image = get_field('service_apart_image');
         <div class="container">
             <div class="service-apart__layout">
                 <div class="service-apart__image">
-                    <?php if ($apart_image): ?>
-                        <img src="<?php echo esc_url($apart_image['url']); ?>" alt="<?php echo esc_attr($apart_image['alt'] ?: $apart_title); ?>">
-                    <?php else: ?>
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/services/apart-image.png" alt="<?php echo esc_attr($apart_title); ?>">
-                    <?php endif; ?>
+                    <?php
+                    $apart_img_url = '';
+                    if (isset($static_apart_images[$page_slug])) {
+                        $apart_img_url = get_template_directory_uri() . '/assets/images/services/' . $static_apart_images[$page_slug];
+                    } elseif ($apart_image) {
+                        $apart_img_url = $apart_image['url'];
+                    } else {
+                        $apart_img_url = get_template_directory_uri() . '/assets/images/services/apart-image.png';
+                    }
+                    $apart_img_alt = ($apart_image && !empty($apart_image['alt'])) ? $apart_image['alt'] : $apart_title;
+                    ?>
+                    <img src="<?php echo esc_url($apart_img_url); ?>" alt="<?php echo esc_attr($apart_img_alt); ?>">
                 </div>
                 <div class="service-apart__content">
                     <h2 class="service-apart__title"><?php echo esc_html($apart_title); ?></h2>
