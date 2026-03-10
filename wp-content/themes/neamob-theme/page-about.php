@@ -45,11 +45,23 @@ if (!$beliefs) {
     <!-- Gallery -->
     <section class="about-gallery">
         <div class="about-gallery__track">
-            <?php for ($i = 1; $i <= 7; $i++) : ?>
+            <?php 
+            $gallery = get_field('about_gallery');
+            if ($gallery && is_array($gallery) && !empty($gallery)): 
+                foreach ($gallery as $img): 
+                    $url = is_array($img) ? ($img['url'] ?? '') : $img;
+                    $alt = is_array($img) ? ($img['alt'] ?? 'About photo') : 'About photo';
+            ?>
+            <div class="about-gallery__item">
+                <img src="<?php echo esc_url($url); ?>" alt="<?php echo esc_attr($alt); ?>">
+            </div>
+            <?php endforeach;
+            else: /* Fallback to static images */
+                for ($i = 1; $i <= 7; $i++) : ?>
             <div class="about-gallery__item">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/about/<?php echo $i; ?>.webp" alt="About photo <?php echo $i; ?>">
             </div>
-            <?php endfor; ?>
+            <?php endfor; endif; ?>
         </div>
     </section>
 

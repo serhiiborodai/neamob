@@ -342,6 +342,37 @@ function neamob_register_acf_fields() {
     ]);
 
     // =========================================================================
+    // Why Choose Us (Front Page)
+    // =========================================================================
+    acf_add_local_field_group([
+        'key' => 'group_why_choose_us',
+        'title' => 'Why Choose Us Section',
+        'fields' => [
+            [
+                'key' => 'field_comparison_title',
+                'label' => 'Title',
+                'name' => 'comparison_title',
+                'type' => 'text',
+                'default_value' => 'Why choose NeaMob Tech?',
+            ],
+            [
+                'key' => 'field_comparison_image',
+                'label' => 'Comparison Table Image',
+                'name' => 'comparison_image',
+                'type' => 'image',
+                'return_format' => 'url',
+                'instructions' => 'Desktop image. For mobile use compare-mobile.jpeg in assets.',
+            ],
+        ],
+        'location' => [
+            [
+                ['param' => 'page_type', 'operator' => '==', 'value' => 'front_page'],
+            ],
+        ],
+        'menu_order' => 3,
+    ]);
+
+    // =========================================================================
     // Testimonials Fields
     // =========================================================================
     acf_add_local_field_group([
@@ -697,7 +728,7 @@ function neamob_register_acf_fields() {
     ]);
 
     // =========================================================================
-    // Partner Logo Fields
+    // Partner Logo Fields (logo slider + Our Partners cards)
     // =========================================================================
     acf_add_local_field_group([
         'key' => 'group_partner',
@@ -724,6 +755,85 @@ function neamob_register_acf_fields() {
                 'name' => 'partner_order',
                 'type' => 'number',
                 'default_value' => 0,
+            ],
+            [
+                'key' => 'field_partner_show_in_slider',
+                'label' => 'Show in Logo Slider (Homepage)',
+                'name' => 'partner_show_in_slider',
+                'type' => 'true_false',
+                'ui' => 1,
+                'default_value' => 0,
+            ],
+            [
+                'key' => 'field_partner_show_in_cards',
+                'label' => 'Show in Our Partners Section',
+                'name' => 'partner_show_in_cards',
+                'type' => 'true_false',
+                'ui' => 1,
+                'default_value' => 0,
+            ],
+            [
+                'key' => 'field_partner_description',
+                'label' => 'Description (for Partners cards)',
+                'name' => 'partner_description',
+                'type' => 'textarea',
+                'rows' => 3,
+                'conditional_logic' => [[['field' => 'field_partner_show_in_cards', 'operator' => '==', 'value' => '1']]],
+            ],
+            [
+                'key' => 'field_partner_card_type',
+                'label' => 'Card Type',
+                'name' => 'partner_card_type',
+                'type' => 'select',
+                'choices' => ['image' => 'Image', 'video' => 'Video'],
+                'default_value' => 'image',
+                'conditional_logic' => [[['field' => 'field_partner_show_in_cards', 'operator' => '==', 'value' => '1']]],
+            ],
+            [
+                'key' => 'field_partner_image',
+                'label' => 'Card Image',
+                'name' => 'partner_image',
+                'type' => 'image',
+                'return_format' => 'array',
+                'conditional_logic' => [
+                    [
+                        ['field' => 'field_partner_show_in_cards', 'operator' => '==', 'value' => '1'],
+                        ['field' => 'field_partner_card_type', 'operator' => '==', 'value' => 'image'],
+                    ],
+                ],
+            ],
+            [
+                'key' => 'field_partner_video_url',
+                'label' => 'YouTube Video URL',
+                'name' => 'partner_video_url',
+                'type' => 'url',
+                'placeholder' => 'https://www.youtube.com/watch?v=...',
+                'conditional_logic' => [
+                    [
+                        ['field' => 'field_partner_show_in_cards', 'operator' => '==', 'value' => '1'],
+                        ['field' => 'field_partner_card_type', 'operator' => '==', 'value' => 'video'],
+                    ],
+                ],
+            ],
+            [
+                'key' => 'field_partner_video_thumb',
+                'label' => 'Video Thumbnail (fallback)',
+                'name' => 'partner_video_thumb',
+                'type' => 'image',
+                'return_format' => 'url',
+                'conditional_logic' => [
+                    [
+                        ['field' => 'field_partner_show_in_cards', 'operator' => '==', 'value' => '1'],
+                        ['field' => 'field_partner_card_type', 'operator' => '==', 'value' => 'video'],
+                    ],
+                ],
+            ],
+            [
+                'key' => 'field_partner_cta',
+                'label' => 'CTA Button (optional)',
+                'name' => 'partner_cta',
+                'type' => 'link',
+                'conditional_logic' => [[['field' => 'field_partner_show_in_cards', 'operator' => '==', 'value' => '1']]],
             ],
         ],
         'location' => [
@@ -901,7 +1011,7 @@ function neamob_get_services($count = -1) {
 }
 
 /**
- * Get partner logos
+ * Get partner logos (all)
  */
 function neamob_get_partners() {
     return new WP_Query([
@@ -911,6 +1021,42 @@ function neamob_get_partners() {
         'orderby' => 'meta_value_num',
         'order' => 'ASC',
     ]);
+}
+
+/**
+ * Get partners for logo slider (hp_color replacement)
+ */
+function neamob_get_partners_for_slider() {
+    $query = neamob_get_partners();
+    $filtered = [];
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            if (get_field('partner_show_in_slider')) {
+                $filtered[] = get_post();
+            }
+        }
+        wp_reset_postdata();
+    }
+    return $filtered;
+}
+
+/**
+ * Get partners for Our Partners section cards
+ */
+function neamob_get_partners_for_cards() {
+    $query = neamob_get_partners();
+    $filtered = [];
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            if (get_field('partner_show_in_cards')) {
+                $filtered[] = get_post();
+            }
+        }
+        wp_reset_postdata();
+    }
+    return $filtered;
 }
 
 /**
@@ -1211,6 +1357,15 @@ function neamob_register_portfolio_fields() {
                 'default_value' => 'All, Static, Video, UGC-Video',
             ],
             [
+                'key' => 'field_portfolio_gallery',
+                'label' => 'Hero Gallery Images',
+                'name' => 'portfolio_gallery',
+                'type' => 'gallery',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+                'instructions' => 'Images for the hero gallery strip. If empty, falls back to default images.',
+            ],
+            [
                 'key' => 'field_portfolio_blocks',
                 'label' => 'Content Blocks',
                 'name' => 'portfolio_blocks',
@@ -1308,4 +1463,141 @@ function neamob_register_portfolio_fields() {
     ]);
 }
 add_action('acf/init', 'neamob_register_portfolio_fields');
+
+/**
+ * Theme Options (Careers, Blog, Footer, Contact Form)
+ * Uses ACF Options if available, else fallback to defaults
+ */
+function neamob_register_theme_options() {
+    if (!function_exists('acf_add_options_page')) {
+        return;
+    }
+    acf_add_options_page([
+        'page_title' => 'Theme Settings',
+        'menu_title' => 'Theme Settings',
+        'menu_slug'  => 'theme-settings',
+        'capability' => 'edit_posts',
+        'redirect'   => false,
+    ]);
+
+    if (!function_exists('acf_add_local_field_group')) {
+        return;
+    }
+    acf_add_local_field_group([
+        'key' => 'group_theme_options',
+        'title' => 'Theme Settings',
+        'fields' => [
+            [
+                'key' => 'field_tab_careers',
+                'label' => 'Careers Page',
+                'name' => '',
+                'type' => 'tab',
+            ],
+            [
+                'key' => 'field_careers_hero_title',
+                'label' => 'Hero Title',
+                'name' => 'careers_hero_title',
+                'type' => 'text',
+                'default_value' => 'Join Us',
+            ],
+            [
+                'key' => 'field_careers_hero_text',
+                'label' => 'Hero Text',
+                'name' => 'careers_hero_text',
+                'type' => 'textarea',
+                'rows' => 2,
+                'default_value' => "We're searching for people who are ready for a new challenge, love collaborating, and value our culture of transparency to join our team.",
+            ],
+            [
+                'key' => 'field_tab_blog',
+                'label' => 'Blog Page',
+                'name' => '',
+                'type' => 'tab',
+            ],
+            [
+                'key' => 'field_blog_hero_title',
+                'label' => 'Hero Title',
+                'name' => 'blog_hero_title',
+                'type' => 'text',
+                'default_value' => 'Blog',
+            ],
+            [
+                'key' => 'field_tab_contact',
+                'label' => 'Contact Form',
+                'name' => '',
+                'type' => 'tab',
+            ],
+            [
+                'key' => 'field_contact_form_title',
+                'label' => 'Title',
+                'name' => 'contact_form_title',
+                'type' => 'text',
+                'default_value' => 'Get in touch',
+            ],
+            [
+                'key' => 'field_contact_form_text',
+                'label' => 'Description',
+                'name' => 'contact_form_text',
+                'type' => 'textarea',
+                'rows' => 2,
+                'default_value' => "Ready to take your marketing to the next level? Fill out the form and our team will get back to you within 48 hours.",
+            ],
+            [
+                'key' => 'field_tab_footer',
+                'label' => 'Footer & Header',
+                'name' => '',
+                'type' => 'tab',
+            ],
+            [
+                'key' => 'field_header_cta_text',
+                'label' => 'Header CTA Button Text',
+                'name' => 'header_cta_text',
+                'type' => 'text',
+                'default_value' => "Let's Chat",
+            ],
+            [
+                'key' => 'field_header_cta_url',
+                'label' => 'Header CTA Button URL',
+                'name' => 'header_cta_url',
+                'type' => 'url',
+                'default_value' => '/contact',
+            ],
+            [
+                'key' => 'field_footer_email',
+                'label' => 'Footer Email',
+                'name' => 'footer_email',
+                'type' => 'email',
+                'default_value' => 'info@neamob.com',
+            ],
+            [
+                'key' => 'field_footer_social_facebook',
+                'label' => 'Facebook URL',
+                'name' => 'footer_social_facebook',
+                'type' => 'url',
+            ],
+            [
+                'key' => 'field_footer_social_instagram',
+                'label' => 'Instagram URL',
+                'name' => 'footer_social_instagram',
+                'type' => 'url',
+            ],
+            [
+                'key' => 'field_footer_social_linkedin',
+                'label' => 'LinkedIn URL',
+                'name' => 'footer_social_linkedin',
+                'type' => 'url',
+            ],
+        ],
+        'location' => [[['param' => 'options_page', 'operator' => '==', 'value' => 'theme-settings']]],
+    ]);
+}
+add_action('acf/init', 'neamob_register_theme_options');
+
+/**
+ * Get theme option with fallback (works without ACF Options)
+ */
+function neamob_get_theme_option($key, $default = '') {
+    $val = function_exists('get_field') ? get_field($key, 'option') : null;
+    return $val !== null && $val !== '' ? $val : $default;
+}
 

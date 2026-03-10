@@ -40,9 +40,10 @@ $blog_categories = get_terms([
 
 <main class="blog-page">
     <!-- Blog Hero -->
+    <?php $blog_title = neamob_get_theme_option('blog_hero_title', 'Blog'); ?>
     <section class="blog-hero">
         <div class="container">
-            <h1 class="blog-hero__title">Blog</h1>
+            <h1 class="blog-hero__title"><?php echo esc_html($blog_title); ?></h1>
         </div>
     </section>
 

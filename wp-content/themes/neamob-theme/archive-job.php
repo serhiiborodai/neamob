@@ -14,10 +14,14 @@ $jobs = neamob_get_jobs(10, $paged);
 <main
     class="careers-page">
     <!-- Hero Section -->
+    <?php
+    $careers_title = neamob_get_theme_option('careers_hero_title', 'Join Us');
+    $careers_text = neamob_get_theme_option('careers_hero_text', "We're searching for people who are ready for a new challenge, love collaborating, and value our culture of transparency to join our team.");
+    ?>
     <section class="careers-hero">
         <div class="container">
-            <h1 class="careers-hero__title">Join Us</h1>
-            <p class="careers-hero__text">We're searching for people who are ready for a new challenge, love collaborating, and value our culture of transparency to join our team.</p>
+            <h1 class="careers-hero__title"><?php echo esc_html($careers_title); ?></h1>
+            <p class="careers-hero__text"><?php echo esc_html($careers_text); ?></p>
         </div>
     </section>
 

@@ -8,7 +8,7 @@ get_header();
 $hero_title = get_field('portfolio_title') ?: 'Portfolio';
 $hero_description = get_field('portfolio_description');
 $portfolio_categories = get_field('portfolio_categories') ?: ['All', 'Static', 'Video', 'UGC-Video'];
-$portfolio_items = get_field('portfolio_items');
+$portfolio_gallery = get_field('portfolio_gallery');
 
 // Blocks
 $blocks = get_field('portfolio_blocks');
@@ -39,11 +39,22 @@ $blocks = get_field('portfolio_blocks');
             <!-- Portfolio Gallery -->
             <section class="portfolio-gallery">
                 <div class="portfolio-gallery__track">
-                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                    <?php 
+                    if ($portfolio_gallery && is_array($portfolio_gallery) && !empty($portfolio_gallery)): 
+                        foreach ($portfolio_gallery as $img): 
+                            $url = is_array($img) ? ($img['url'] ?? '') : $img;
+                            $alt = is_array($img) ? ($img['alt'] ?? 'Portfolio') : 'Portfolio';
+                    ?>
+                    <div class="portfolio-gallery__item">
+                        <img src="<?php echo esc_url($url); ?>" alt="<?php echo esc_attr($alt); ?>">
+                    </div>
+                    <?php endforeach;
+                    else: 
+                        for ($i = 1; $i <= 5; $i++) : ?>
                     <div class="portfolio-gallery__item">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/<?php echo $i; ?>.png" alt="Portfolio item <?php echo $i; ?>">
                     </div>
-                    <?php endfor; ?>
+                    <?php endfor; endif; ?>
                 </div>
             </section>
         </div>
@@ -58,10 +69,14 @@ $blocks = get_field('portfolio_blocks');
                     <span class="portfolio-block__label"><?php echo esc_html($block['block_label']); ?></span>
                     <h2 class="portfolio-block__title"><?php echo esc_html($block['block_title']); ?></h2>
                     <p class="portfolio-block__text"><?php echo wp_kses_post($block['block_text']); ?></p>
-                    <?php if ($block['block_link']): ?>
-                        <a href="<?php echo esc_url(home_url('/case-study/driving-qualified-leads-for-canadian-centre-for-addictions-through-strategic-digital-marketing/')); ?>" class="portfolio-block__link">
+                    <?php if ($block['block_link'] && !empty($block['block_link']['url'])): 
+                        $link = $block['block_link'];
+                        $link_url = $link['url'];
+                        $link_href = (strpos($link_url, 'http') === 0) ? $link_url : home_url($link_url);
+                    ?>
+                        <a href="<?php echo esc_url($link_href); ?>" class="portfolio-block__link" <?php echo !empty($link['target']) ? 'target="' . esc_attr($link['target']) . '"' : ''; ?>>
                             <span class="link-dot"></span>
-                            <?php echo esc_html($block['block_link']['title'] ?: 'Learn More'); ?>
+                            <?php echo esc_html($link['title'] ?: 'Learn More'); ?>
                         </a>
                     <?php endif; ?>
                 </div>

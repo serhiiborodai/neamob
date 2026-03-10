@@ -62,17 +62,23 @@
                     </div>
 
                     <!-- Connect -->
+                    <?php
+                    $footer_email = neamob_get_theme_option('footer_email', 'info@neamob.com');
+                    $social_fb = neamob_get_theme_option('footer_social_facebook', 'https://facebook.com/neamob');
+                    $social_ig = neamob_get_theme_option('footer_social_instagram', 'https://instagram.com/neamob');
+                    $social_li = neamob_get_theme_option('footer_social_linkedin', 'https://linkedin.com/company/neamob');
+                    ?>
                     <div class="footer-column">
                         <h4 class="footer-column__title">
                             <a href="<?php echo esc_url(home_url('/contact/')); ?>">Connect</a>
                         </h4>
                         <ul class="footer-column__links">
                             <li><a href="<?php echo esc_url(home_url('/contact/')); ?>">Let's Chat</a></li>
-                            <li><a href="mailto:info@neamob.com">info@neamob.com</a></li>
+                            <?php if ($footer_email): ?><li><a href="mailto:<?php echo esc_attr($footer_email); ?>"><?php echo esc_html($footer_email); ?></a></li><?php endif; ?>
                             <li><a href="<?php echo esc_url(home_url('/careers/')); ?>">Careers</a></li>
-                            <li><a href="https://facebook.com/neamob" target="_blank" rel="noopener noreferrer">Facebook</a></li>
-                            <li><a href="https://instagram.com/neamob" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-                            <li><a href="https://linkedin.com/company/neamob" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                            <?php if ($social_fb): ?><li><a href="<?php echo esc_url($social_fb); ?>" target="_blank" rel="noopener noreferrer">Facebook</a></li><?php endif; ?>
+                            <?php if ($social_ig): ?><li><a href="<?php echo esc_url($social_ig); ?>" target="_blank" rel="noopener noreferrer">Instagram</a></li><?php endif; ?>
+                            <?php if ($social_li): ?><li><a href="<?php echo esc_url($social_li); ?>" target="_blank" rel="noopener noreferrer">LinkedIn</a></li><?php endif; ?>
                         </ul>
                     </div>
                 </div>

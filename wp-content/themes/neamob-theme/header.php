@@ -57,9 +57,14 @@
                 </nav>
 
                 <!-- CTA Button -->
+                <?php
+                $cta_text = neamob_get_theme_option('header_cta_text', "Let's Chat");
+                $cta_url = neamob_get_theme_option('header_cta_url', '/contact');
+                $cta_href = (strpos($cta_url, 'http') === 0) ? $cta_url : home_url($cta_url);
+                ?>
                 <div class="header-cta">
-                    <a href="<?php echo esc_url(home_url('/contact')); ?>" class="btn btn--cta">
-                        <span>Let's Chat</span>
+                    <a href="<?php echo esc_url($cta_href); ?>" class="btn btn--cta">
+                        <span><?php echo esc_html($cta_text); ?></span>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>

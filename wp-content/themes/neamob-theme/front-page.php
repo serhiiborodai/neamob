@@ -51,37 +51,46 @@ $value_tags = get_field('value_tags');
 
 <!-- Logo Slider -->
 <?php
+$logo_slider_partners = neamob_get_partners_for_slider();
 $logos_dir = get_template_directory() . '/assets/logos/hp_color/';
 $logos_url = get_template_directory_uri() . '/assets/logos/hp_color/';
-$logo_files = glob($logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE);
-usort($logo_files, function ($a, $b) { return filemtime($a) - filemtime($b); });
+$logo_files = empty($logo_slider_partners) ? glob($logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE) : [];
+if (!empty($logo_files)) { usort($logo_files, function ($a, $b) { return filemtime($a) - filemtime($b); }); }
 
-if (!empty($logo_files)):
-    ?>
+if (!empty($logo_slider_partners) || !empty($logo_files)):
+?>
     <section class="logo-slider">
         <div class="logo-slider__bg"></div>
         <div class="logo-slider__track">
-            <div
-                class="logo-slider__group">
-                <?php foreach ($logo_files as $logo_path):
+            <div class="logo-slider__group">
+                <?php if (!empty($logo_slider_partners)): foreach ($logo_slider_partners as $p): setup_postdata($p);
+                    $logo = get_field('partner_logo', $p->ID);
+                    if ($logo): ?>
+                    <div class="logo-slider__item">
+                        <img src="<?php echo esc_url($logo); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
+                    </div>
+                <?php endif; endforeach; wp_reset_postdata(); else: foreach ($logo_files as $logo_path):
                     $filename = basename($logo_path);
-                    $alt = pathinfo($filename, PATHINFO_FILENAME);
-                    ?>
+                    $alt = pathinfo($filename, PATHINFO_FILENAME); ?>
                     <div class="logo-slider__item">
                         <img src="<?php echo esc_url($logos_url . rawurlencode($filename)); ?>" alt="<?php echo esc_attr($alt); ?>">
                     </div>
-                <?php endforeach; ?>
+                <?php endforeach; endif; ?>
             </div>
-            <div
-                class="logo-slider__group">
-                <?php foreach ($logo_files as $logo_path):
+            <div class="logo-slider__group">
+                <?php if (!empty($logo_slider_partners)): foreach ($logo_slider_partners as $p): setup_postdata($p);
+                    $logo = get_field('partner_logo', $p->ID);
+                    if ($logo): ?>
+                    <div class="logo-slider__item">
+                        <img src="<?php echo esc_url($logo); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
+                    </div>
+                <?php endif; endforeach; wp_reset_postdata(); else: foreach ($logo_files as $logo_path):
                     $filename = basename($logo_path);
-                    $alt = pathinfo($filename, PATHINFO_FILENAME);
-                    ?>
+                    $alt = pathinfo($filename, PATHINFO_FILENAME); ?>
                     <div class="logo-slider__item">
                         <img src="<?php echo esc_url($logos_url . rawurlencode($filename)); ?>" alt="<?php echo esc_attr($alt); ?>">
                     </div>
-                <?php endforeach; ?>
+                <?php endforeach; endif; ?>
             </div>
         </div>
     </section>
@@ -90,12 +99,6 @@ if (!empty($logo_files)):
 <!-- Services Section (What We Do) -->
 <?php
 $services = neamob_get_services();
-$service_links = [
-    '/services/growth-strategy-planning/',
-    '/services/data-analytics-insights/',
-    '/services/creative-design/',
-    '/services/media-campaigns/',
-];
 if ($services->have_posts()):
     ?>
         <section class="services-section"> <div class="container">
@@ -117,7 +120,7 @@ if ($services->have_posts()):
                                 <div class="services-accordion__body">
                                     <div class="services-accordion__body-inner">
                                         <p class="services-accordion__text"><?php echo esc_html($short_desc); ?></p>
-                                        <a href="<?php echo esc_url(isset($service_links[$index]) ? home_url($service_links[$index]) : get_permalink()); ?>" class="services-accordion__link">Learn More</a>
+                                        <a href="<?php echo esc_url(get_permalink()); ?>" class="services-accordion__link">Learn More</a>
                                     </div>
                                 </div>
                             </div>
@@ -357,13 +360,17 @@ endif;
 ?>
 
 <!-- Why Choose Us - Comparison Section -->
+<?php
+$comparison_title = get_field('comparison_title') ?: 'Why choose NeaMob Tech?';
+$comparison_image = get_field('comparison_image') ?: get_template_directory_uri() . '/assets/images/table.png';
+?>
 <section class="comparison-section">
     <div class="container">
-        <h2 class="comparison-section__title">Why choose NeaMob Tech?</h2>
+        <h2 class="comparison-section__title"><?php echo esc_html($comparison_title); ?></h2>
         <div class="comparison-image">
             <picture>
                 <source media="(max-width: 639px)" srcset="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/compare-mobile.jpeg">
-                <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/table.png" alt="Why choose NeaMob Tech comparison table">
+                <img src="<?php echo esc_url($comparison_image); ?>" alt="<?php echo esc_attr($comparison_title); ?>">
             </picture>
         </div>
     </div>
@@ -426,58 +433,88 @@ endif;
 ?>
 
 <!-- Our Partners Section -->
+<?php
+$partner_cards = neamob_get_partners_for_cards();
+$has_partners = !empty($partner_cards);
+?>
 <section class="our-partners">
     <div class="container">
         <h2 class="our-partners__title">Our Partners</h2>
         <div class="our-partners__grid">
-            <!-- Partner Card 1 - Vokal -->
-            <div class="partner-card">
+            <?php if ($has_partners): 
+                $card_index = 0;
+                foreach ($partner_cards as $p): 
+                    setup_postdata($p);
+                    $logo = get_field('partner_logo', $p->ID);
+                    $desc = get_field('partner_description', $p->ID);
+                    $card_type = get_field('partner_card_type', $p->ID) ?: 'image';
+                    $cta = get_field('partner_cta', $p->ID);
+                    $video_id = '';
+                    if ($card_type === 'video') {
+                        $video_url = get_field('partner_video_url', $p->ID);
+                        if ($video_url && preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $video_url, $m)) {
+                            $video_id = $m[1];
+                        }
+                    }
+                    $card_class = $card_type === 'video' ? 'partner-card partner-card--video' : 'partner-card';
+                    $card_id = 'partner-video-' . $card_index;
+            ?>
+            <div class="<?php echo esc_attr($card_class); ?>">
                 <div class="partner-card__logo">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p1.png" alt="Vokal">
+                    <?php if ($logo): ?><img src="<?php echo esc_url($logo); ?>" alt="<?php echo esc_attr($p->post_title); ?>"><?php endif; ?>
                 </div>
-                <div class="partner-card__image">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-1.png" alt="Vokal office">
-                </div>
-                <p class="partner-card__text">Vokal is a digital agency driving measurable growth through strategic digital value creation and performance marketing.</p>
-            </div>
-
-            <!-- Partner Card 2 - Illumin -->
-            <div class="partner-card">
-                <div class="partner-card__logo">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners">
-                </div>
-                <div class="partner-card__image">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-2.png" alt="illumin platform">
-                </div>
-                <p class="partner-card__text">illumin is a journey advertising platform that helps brands plan, activate, and optimize digital campaigns across channels with real-time insights.</p>
-                <a href="#" class="partner-card__cta">
-                    <span class="partner-card__cta-dot"></span>
-                    Download Case Study
-                </a>
-            </div>
-
-            <!-- Partner Card 3 - Snappper (with video) -->
-            <div class="partner-card partner-card--video">
-                <div class="partner-card__logo">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper">
-                </div>
-                <div class="partner-card__video" id="snappper-video">
-                    <div class="partner-card__thumbnail" onclick="playSnapperVideo()">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/power.png" alt="Video thumbnail">
+                <?php if ($card_type === 'video'): 
+                    $thumb = get_field('partner_video_thumb', $p->ID) ?: get_template_directory_uri() . '/assets/images/power.png';
+                ?>
+                <div class="partner-card__video" id="<?php echo esc_attr($card_id); ?>">
+                    <div class="partner-card__thumbnail" data-video-id="<?php echo esc_attr($video_id); ?>" onclick="neamobPlayPartnerVideo(this)">
+                        <img src="<?php echo esc_url($thumb); ?>" alt="Video thumbnail">
                     </div>
                 </div>
+                <?php else: 
+                    $img = get_field('partner_image', $p->ID);
+                    $img_url = $img && isset($img['url']) ? $img['url'] : (get_template_directory_uri() . '/assets/images/partners/partner-1.png');
+                ?>
+                <div class="partner-card__image">
+                    <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
+                </div>
+                <?php endif; ?>
+                <?php if ($desc): ?><p class="partner-card__text"><?php echo esc_html($desc); ?></p><?php endif; ?>
+                <?php if ($cta && !empty($cta['url'])): ?>
+                <a href="<?php echo esc_url($cta['url']); ?>" class="partner-card__cta" <?php echo !empty($cta['target']) ? 'target="' . esc_attr($cta['target']) . '"' : ''; ?>>
+                    <span class="partner-card__cta-dot"></span>
+                    <?php echo esc_html($cta['title'] ?: 'Learn More'); ?>
+                </a>
+                <?php endif; ?>
+            </div>
+            <?php $card_index++; endforeach; wp_reset_postdata();
+            else: /* Fallback to original if no partners in admin */ ?>
+            <div class="partner-card">
+                <div class="partner-card__logo"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p1.png" alt="Vokal"></div>
+                <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-1.png" alt="Vokal office"></div>
+                <p class="partner-card__text">Vokal is a digital agency driving measurable growth through strategic digital value creation and performance marketing.</p>
+            </div>
+            <div class="partner-card">
+                <div class="partner-card__logo"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners"></div>
+                <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-2.png" alt="illumin platform"></div>
+                <p class="partner-card__text">illumin is a journey advertising platform that helps brands plan, activate, and optimize digital campaigns across channels with real-time insights.</p>
+            </div>
+            <div class="partner-card partner-card--video">
+                <div class="partner-card__logo"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper"></div>
+                <div class="partner-card__video" id="partner-video-0"><div class="partner-card__thumbnail" data-video-id="" onclick="neamobPlayPartnerVideo(this)"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/power.png" alt="Video thumbnail"></div></div>
                 <p class="partner-card__text">Snappper is an award-winning creative and video production agency crafting engaging branded content with proven reach and results.</p>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
-
 <script>
-    function playSnapperVideo() {
-var container = document.getElementById('snappper-video');
-var videoId = 'YOUR_VIDEO_ID'; // Replace with actual YouTube video ID
-container.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-container.classList.add('is-playing');
+function neamobPlayPartnerVideo(el) {
+    var videoId = el.dataset.videoId;
+    var container = el.closest('.partner-card__video');
+    if (!container || !videoId) return;
+    container.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+    container.classList.add('is-playing');
 }
 </script>
 

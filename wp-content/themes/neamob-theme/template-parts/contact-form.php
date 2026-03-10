@@ -11,12 +11,16 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
+<?php
+$contact_title = neamob_get_theme_option('contact_form_title', 'Get in touch');
+$contact_text = neamob_get_theme_option('contact_form_text', "Ready to take your marketing to the next level? Fill out the form and our team will get back to you within 48 hours.");
+?>
 <section class="contact-form-section" id="contact-form">
     <div class="container">
         <div class="contact-form-section__grid">
             <div class="contact-form-section__content">
-                <h2 class="contact-form-section__title">Get in touch</h2>
-                <p class="contact-form-section__text">Ready to take your marketing to the next level? Fill out the form and our team will get back to you within 48 hours.</p>
+                <h2 class="contact-form-section__title"><?php echo esc_html($contact_title); ?></h2>
+                <p class="contact-form-section__text"><?php echo esc_html($contact_text); ?></p>
                 <div class="contact-form-section__image">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/form_obj.png" alt="Get in touch">
                 </div>
