@@ -133,14 +133,25 @@ if (!$beliefs) {
             <div class="about-team__slider swiper" id="teamSlider">
                 <div class="swiper-wrapper">
                     <?php 
+                    $team_index = 0;
+                    $team_fallbacks = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png'];
                     while ($team_members->have_posts()) : $team_members->the_post(); 
-                        $position = get_field('team_position');
-                        $location = get_field('team_location');
-                        $dept_color = get_field('team_department_color') ?: 'green';
-                        $departments = get_the_terms(get_the_ID(), 'team_department');
-                        $dept_name = $departments ? $departments[0]->name : '';
-                        $photo = get_field('team_photo');
+                        $post_id = get_the_ID();
+                        $position = get_field('team_position', $post_id);
+                        $location = get_field('team_location', $post_id);
+                        $departments = get_the_terms($post_id, 'team_department');
+                        $dept_term = $departments ? $departments[0] : null;
+                        $dept_name = $dept_term ? $dept_term->name : '';
+                        // Цвет: сначала из департамента (taxonomy term), иначе из персоны
+                        $term_color = $dept_term ? get_field('dept_badge_color', 'team_department_' . $dept_term->term_id) : null;
+                        $person_color = get_field('team_department_color', $post_id);
+                        $valid_colors = ['green', 'blue', 'purple', 'orange'];
+                        $dept_color = ($term_color && in_array($term_color, $valid_colors, true))
+                            ? $term_color
+                            : (($person_color && in_array($person_color, $valid_colors, true)) ? $person_color : 'green');
+                        $photo = get_field('team_photo', $post_id);
                         $photo_url = $photo && isset($photo['url']) ? $photo['url'] : '';
+                        $fallback_img = $team_fallbacks[$team_index % count($team_fallbacks)];
                     ?>
                     <div class="swiper-slide">
                         <div class="team-card">
@@ -150,7 +161,7 @@ if (!$beliefs) {
                                 <?php elseif (has_post_thumbnail()) : ?>
                                     <?php the_post_thumbnail('medium_large'); ?>
                                 <?php else : ?>
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/placeholder-person.jpg" alt="<?php the_title_attribute(); ?>">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/team/<?php echo esc_attr($fallback_img); ?>" alt="<?php the_title_attribute(); ?>">
                                 <?php endif; ?>
                                 
                                 <?php if ($dept_name) : ?>
@@ -174,7 +185,7 @@ if (!$beliefs) {
                             </div>
                         </div>
                     </div>
-                    <?php endwhile; ?>
+                    <?php $team_index++; endwhile; ?>
                 </div>
             </div>
         </div>

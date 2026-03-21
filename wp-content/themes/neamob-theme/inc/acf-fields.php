@@ -531,6 +531,40 @@ function neamob_register_acf_fields() {
     ]);
 
     // =========================================================================
+    // Department (taxonomy) — Badge Color
+    // Поля видны при редактировании: Team Members → Departments → Edit
+    // =========================================================================
+    acf_add_local_field_group([
+        'key' => 'group_team_department',
+        'title' => 'Department Settings',
+        'fields' => [
+            [
+                'key' => 'field_dept_badge_color',
+                'label' => 'Badge Color',
+                'name' => 'dept_badge_color',
+                'type' => 'select',
+                'choices' => [
+                    'green' => 'Green (Campaign Management)',
+                    'blue' => 'Blue (Creative & Design)',
+                    'purple' => 'Purple (Analytics & Reporting)',
+                    'orange' => 'Orange',
+                ],
+                'default_value' => 'green',
+                'instructions' => 'Color of the department badge on About Us slider. Overrides per-person color if set.',
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'taxonomy',
+                    'operator' => '==',
+                    'value' => 'team_department',
+                ],
+            ],
+        ],
+    ]);
+
+    // =========================================================================
     // About Page Fields
     // =========================================================================
     acf_add_local_field_group([
@@ -1691,4 +1725,28 @@ function neamob_get_theme_option($key, $default = '') {
     $val = function_exists('get_field') ? get_field($key, 'option') : null;
     return $val !== null && $val !== '' ? $val : $default;
 }
+
+/**
+ * Синхронизация полей из PHP в БД ACF — чтобы Field Groups отображались в админке ACF.
+ * Синхронизирует только группы, которых ещё нет в БД (при первом заходе в админку).
+ */
+function neamob_sync_acf_field_groups_to_db() {
+    if (!is_admin() || !function_exists('acf_get_local_field_groups') || !function_exists('acf_update_field_group') || !function_exists('acf_get_field_group')) {
+        return;
+    }
+    $local = acf_get_local_field_groups();
+    $synced = get_option('neamob_acf_synced_keys', []);
+    foreach ($local as $group) {
+        $key = $group['key'] ?? '';
+        if (!$key || in_array($key, $synced, true)) continue;
+        $existing = acf_get_field_group($key);
+        if ($existing && !empty($existing['ID'])) continue; // уже в БД
+        acf_update_field_group($group);
+        $synced[] = $key;
+    }
+    if (!empty($synced)) {
+        update_option('neamob_acf_synced_keys', array_unique($synced));
+    }
+}
+add_action('acf/init', 'neamob_sync_acf_field_groups_to_db', 20);
 

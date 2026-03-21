@@ -735,7 +735,7 @@ body.page-simple .site-main .page-content ul li:before {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
 }
 .logo-slider--reverse .logo-slider__track {
@@ -2639,7 +2639,7 @@ body.page-simple .site-main .page-content ul li:before {
   border-radius: 8px;
 }
 .about-team .team-card__image img {
-  width: 100%;
+  max-width: 100%;
   height: 200px;
   background: #fff;
   border-radius: 8px;
@@ -2688,6 +2688,9 @@ body.page-simple .site-main .page-content ul li:before {
 }
 .about-team .team-card__dept--purple {
   background: #8a6aff;
+}
+.about-team .team-card__dept--orange {
+  background: #ff9800;
 }
 
 .about-join {

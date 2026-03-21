@@ -81,21 +81,6 @@ if ($has_logos):
                     </div>
                 <?php endforeach; endif; ?>
             </div>
-            <div class="logo-slider__group">
-                <?php if (!empty($logo_slider_partners)): foreach ($logo_slider_partners as $p): setup_postdata($p);
-                    $logo = get_field('partner_logo', $p->ID) ?: get_post_meta($p->ID, 'partner_logo', true);
-                    $logo_url = is_array($logo) ? ($logo['url'] ?? '') : ($logo ?: '');
-                    if ($logo_url): ?>
-                    <div class="logo-slider__item">
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
-                    </div>
-                <?php endif; endforeach; wp_reset_postdata(); else: foreach ($logo_files as $path):
-                    $fn = basename($path); ?>
-                    <div class="logo-slider__item">
-                        <img src="<?php echo esc_url($logos_url . rawurlencode($fn)); ?>" alt="<?php echo esc_attr(pathinfo($fn, PATHINFO_FILENAME)); ?>">
-                    </div>
-                <?php endforeach; endif; ?>
-            </div>
         </div>
     </section>
 <?php endif; ?>
