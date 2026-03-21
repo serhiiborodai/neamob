@@ -39,8 +39,12 @@ $static_hero_image_sm = isset($static_images_sm[$page_slug]) ? get_template_dire
 $show_stats = get_field('service_show_stats');
 $stats = get_field('service_stats');
 
-// Overview
+// Overview — ACF или контент страницы
 $overview_text = get_field('service_overview');
+if (empty($overview_text)) {
+    $page_content = get_post()->post_content;
+    $overview_text = $page_content ? apply_filters('the_content', $page_content) : '';
+}
 
 // What we do items
 $what_we_do_items = get_field('service_what_we_do');

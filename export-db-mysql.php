@@ -15,7 +15,9 @@ $tables = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND nam
 
 echo "-- WordPress database dump for nb.twyx.us\n";
 echo "-- Generated: " . date('Y-m-d H:i:s') . "\n\n";
-echo "SET NAMES utf8mb4;\nSET FOREIGN_KEY_CHECKS = 0;\n\n";
+echo "SET NAMES utf8mb4;\n";
+echo "SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION';\n";
+echo "SET FOREIGN_KEY_CHECKS = 0;\n\n";
 
 foreach ($tables as $table) {
     if ($table === '_mysql_data_types_cache') continue;
@@ -32,8 +34,13 @@ foreach ($tables as $table) {
     $createSql = str_replace('"', '`', $createSql);
     $createSql = preg_replace('/\s+NOT NULL\s+ON CONFLICT[^,\)]*/i', ' NOT NULL', $createSql);
     $createSql = preg_replace('/DEFAULT\s+[\'"]?[\d\-: ]+[\'"]?\s*\)/i', ')', $createSql);
+    // AUTO_INCREMENT: убрать DEFAULT 0 (Invalid default value)
+    $createSql = preg_replace('/AUTO_INCREMENT\s+NOT NULL\s+DEFAULT\s+0/i', 'AUTO_INCREMENT', $createSql);
+    $createSql = preg_replace('/AUTO_INCREMENT\s+DEFAULT\s+0/i', 'AUTO_INCREMENT', $createSql);
+    // LONGTEXT/LONGBLOB: MySQL не позволяет DEFAULT — удалить (BLOB/TEXT can't have default value)
+    $createSql = preg_replace('/(LONGTEXT|LONGBLOB)(\s+NOT NULL)?\s+DEFAULT\s+[^,\)]+/i', '$1$2', $createSql);
     if (stripos($createSql, 'ENGINE=') === false) {
-        $createSql = rtrim(rtrim($createSql), ';') . ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;';
+        $createSql = rtrim(rtrim($createSql), ';') . ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;';
     }
     echo "DROP TABLE IF EXISTS `$table`;\n";
     echo $createSql . "\n\n";

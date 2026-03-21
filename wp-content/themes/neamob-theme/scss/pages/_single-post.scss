@@ -143,6 +143,12 @@
     &:hover {
         background-color: rgba($primary-color, 0.2);
     }
+
+    &--blue { background: #0094ff !important; color: #fff !important; }
+    &--green { background: #00c853 !important; color: #fff !important; }
+    &--purple { background: #8a6aff !important; color: #fff !important; }
+    &--orange { background: #ff9800 !important; color: #fff !important; }
+    &--red { background: #f44336 !important; color: #fff !important; }
 }
 
 .single-post__date {

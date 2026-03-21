@@ -133,20 +133,20 @@ if (!$beliefs) {
             <div class="about-team__slider swiper" id="teamSlider">
                 <div class="swiper-wrapper">
                     <?php 
-                    $team_index = 0;
-                    $team_images = ['3.png', '4.png', '5.png'];
                     while ($team_members->have_posts()) : $team_members->the_post(); 
                         $position = get_field('team_position');
                         $location = get_field('team_location');
                         $dept_color = get_field('team_department_color') ?: 'green';
                         $departments = get_the_terms(get_the_ID(), 'team_department');
                         $dept_name = $departments ? $departments[0]->name : '';
+                        $photo = get_field('team_photo');
+                        $photo_url = $photo && isset($photo['url']) ? $photo['url'] : '';
                     ?>
                     <div class="swiper-slide">
                         <div class="team-card">
                             <div class="team-card__image">
-                                <?php if ($team_index < 3) : ?>
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/team/<?php echo $team_images[$team_index]; ?>" alt="<?php the_title_attribute(); ?>">
+                                <?php if ($photo_url) : ?>
+                                    <img src="<?php echo esc_url($photo_url); ?>" alt="<?php the_title_attribute(); ?>">
                                 <?php elseif (has_post_thumbnail()) : ?>
                                     <?php the_post_thumbnail('medium_large'); ?>
                                 <?php else : ?>
@@ -174,9 +174,7 @@ if (!$beliefs) {
                             </div>
                         </div>
                     </div>
-                    <?php 
-                    $team_index++;
-                    endwhile; ?>
+                    <?php endwhile; ?>
                 </div>
             </div>
         </div>

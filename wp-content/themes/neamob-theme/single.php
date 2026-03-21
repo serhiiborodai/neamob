@@ -7,6 +7,7 @@ get_header();
 // Get post data
 $categories = get_the_category();
 $category = !empty($categories) ? $categories[0] : null;
+$cat_color = $category ? neamob_get_category_color($category) : 'blue';
 $author_id = get_the_author_meta('ID');
 $author_name = get_the_author();
 $author_position = get_the_author_meta('description') ?: 'Author at NeaMob';
@@ -44,7 +45,7 @@ $next_post = get_next_post();
                 <header class="single-post__header">
                     <div class="single-post__meta">
                         <?php if ($category): ?>
-                            <a href="<?php echo get_category_link($category->term_id); ?>" class="single-post__category">
+                            <a href="<?php echo get_category_link($category->term_id); ?>" class="single-post__category single-post__category--<?php echo esc_attr($cat_color); ?>">
                                 <?php echo esc_html($category->name); ?>
                             </a>
                         <?php endif; ?>

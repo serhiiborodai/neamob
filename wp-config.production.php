@@ -1,18 +1,16 @@
 <?php
 /**
- * WordPress Configuration - SQLite version for local development
+ * WordPress Configuration — MySQL для production (nb.twyx.us)
+ *
+ * Скопируй в wp-config.php и заполни учётные данные БД.
  *
  * @package WordPress
  */
 
-// ** SQLite settings ** //
-define('DB_DIR', __DIR__ . '/wp-content/database/');
-define('DB_FILE', '.ht.sqlite');
-
-// ** MySQL settings - NOT USED with SQLite ** //
-define('DB_NAME', 'neamob_wp');
-define('DB_USER', 'root');
-define('DB_PASSWORD', '');
+// ** MySQL ** //
+define('DB_NAME', 'ЗАПОЛНИ_ИМЯ_БД');
+define('DB_USER', 'ЗАПОЛНИ_ПОЛЬЗОВАТЕЛЯ');
+define('DB_PASSWORD', 'ЗАПОЛНИ_ПАРОЛЬ');
 define('DB_HOST', 'localhost');
 define('DB_CHARSET', 'utf8mb4');
 define('DB_COLLATE', '');
@@ -29,27 +27,14 @@ define('SECURE_AUTH_SALT', '^r9vn=d&_pYc<e,_qQ|AI%_oy|rT3WBRZb9I|hXzj9]ss:~7k-`T
 define('LOGGED_IN_SALT',   'c?7/U092qg3c#DlheueA$5PFo=wIB;H{|Y}ON+!(5+;i0!iN8&(1jQ%y(zEVElQ8');
 define('NONCE_SALT',       '3kOb-su8;hy0yd(at!{6oiPRl2X3N3Ww~^*uT|+!4O#N?pIDh^Q7SnSl$YN]oC&D');
 
-/**
- * WordPress database table prefix.
- */
 $table_prefix = 'wp_';
 
-/**
- * Debugging mode - enabled for development
- */
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', true);
+define('WP_DEBUG', false);
+define('WP_DEBUG_LOG', false);
+define('WP_DEBUG_DISPLAY', false);
+define('WP_ENVIRONMENT_TYPE', 'production');
 
-/**
- * Development settings
- */
-define('WP_ENVIRONMENT_TYPE', 'local');
-define('SCRIPT_DEBUG', true);
-
-/* Add any custom values between this line and the "stop editing" line. */
-
-// SMTP для теста форм (mail.adm.tools)
+// SMTP mail.adm.tools
 define('NEAMOB_SMTP_HOST', 'mail.adm.tools');
 define('NEAMOB_SMTP_USER', 'neamob@twyx.us');
 define('NEAMOB_SMTP_PASS', 'm0pnI7uuS0twU5niQ3xc');
@@ -57,13 +42,7 @@ define('NEAMOB_SMTP_PORT', 465);
 define('NEAMOB_SMTP_SECURE', 'ssl');
 define('NEAMOB_SMTP_FROM', 'neamob@twyx.us');
 
-/* That's all, stop editing! Happy publishing. */
-
-/** Absolute path to the WordPress directory. */
 if (!defined('ABSPATH')) {
     define('ABSPATH', __DIR__ . '/');
 }
-
-/** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
-

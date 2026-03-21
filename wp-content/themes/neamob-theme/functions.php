@@ -14,6 +14,51 @@ if (!defined('ABSPATH')) {
 require_once get_template_directory() . '/inc/acf-fields.php';
 
 /**
+ * Localhost: подмена siteurl/home по текущему хосту.
+ * Решает проблему когда в БД nb.twyx.us или неверный путь (upload.php вместо wp-admin/upload.php).
+ */
+function neamob_fix_options_for_localhost($value) {
+    $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+    if ($host === 'localhost:8080' || $host === 'localhost' || strpos($host, '127.0.0.1') !== false) {
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        return $scheme . '://' . $host;
+    }
+    return $value;
+}
+add_filter('option_siteurl', 'neamob_fix_options_for_localhost', 1);
+add_filter('option_home', 'neamob_fix_options_for_localhost', 1);
+
+/**
+ * Fix URLs when site URL in DB doesn't match current request (localhost vs production).
+ */
+function neamob_fix_url_for_current_host($url, $path, $scheme, $blog_id) {
+    if (!isset($_SERVER['HTTP_HOST'])) return $url;
+    $parsed = parse_url($url);
+    if (empty($parsed['host'])) return $url;
+    $current_host = $_SERVER['HTTP_HOST'];
+    if ($parsed['host'] === $current_host) return $url;
+    $new_scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $new_path = isset($parsed['path']) && $parsed['path'] !== '' ? $parsed['path'] : '/';
+    $url = $new_scheme . '://' . $current_host . $new_path . (isset($parsed['query']) ? '?' . $parsed['query'] : '') . (isset($parsed['fragment']) ? '#' . $parsed['fragment'] : '');
+    return $url;
+}
+add_filter('home_url', 'neamob_fix_url_for_current_host', 5, 4);
+add_filter('site_url', 'neamob_fix_url_for_current_host', 5, 4);
+
+/**
+ * Localhost: <base href> для корректного разрешения относительных ссылок в админке.
+ * WordPress выводит href='upload.php' — без base они ведут на /upload.php вместо /wp-admin/upload.php.
+ */
+function neamob_admin_base_tag() {
+    $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+    if ($host === 'localhost:8080' || $host === 'localhost' || strpos($host, '127.0.0.1') !== false) {
+        $base = admin_url();
+        echo '<base href="' . esc_url($base) . '">' . "\n";
+    }
+}
+add_action('admin_head', 'neamob_admin_base_tag', 1);
+
+/**
  * Theme Setup
  */
 function neamob_theme_setup()
@@ -667,118 +712,7 @@ function neamob_count_job_application($contact_form)
 }
 add_action('wpcf7_mail_sent', 'neamob_count_job_application');
 
-/**
- * Add meta boxes for Case Studies
- */
-function neamob_case_study_meta_boxes()
-{
-    add_meta_box(
-        'case_study_details',
-        __('Case Study Details', 'neamob-theme'),
-        'neamob_case_study_meta_box_callback',
-        'case_study',
-        'normal',
-        'high'
-    );
-}
-add_action('add_meta_boxes', 'neamob_case_study_meta_boxes');
-
-/**
- * Case Study meta box callback
- */
-function neamob_case_study_meta_box_callback($post)
-{
-    wp_nonce_field('neamob_case_study_meta', 'neamob_case_study_nonce');
-
-    $badge_text = get_post_meta($post->ID, '_case_study_badge_text', true);
-    $badge_value = get_post_meta($post->ID, '_case_study_badge_value', true);
-    $client_logo = get_post_meta($post->ID, '_case_study_client_logo', true);
-    $client_name = get_post_meta($post->ID, '_case_study_client_name', true);
-    ?>
-    <table class="form-table">
-        <tr>
-            <th>
-                <label for="case_study_client_name"><?php _e('Client Name', 'neamob-theme'); ?></label>
-            </th>
-            <td><input type="text" id="case_study_client_name" name="case_study_client_name" value="<?php echo esc_attr($client_name); ?>" class="regular-text"></td>
-        </tr>
-        <tr>
-            <th>
-                <label for="case_study_client_logo"><?php _e('Client Logo URL', 'neamob-theme'); ?></label>
-            </th>
-            <td>
-                <input type="text" id="case_study_client_logo" name="case_study_client_logo" value="<?php echo esc_url($client_logo); ?>" class="regular-text">
-                <button type="button" class="button neamob-upload-logo"><?php _e('Upload Logo', 'neamob-theme'); ?></button>
-                <p class="description"><?php _e('Upload or enter URL of the client logo (preferably SVG or PNG with transparent background)', 'neamob-theme'); ?></p>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <label for="case_study_badge_value"><?php _e('Badge Value', 'neamob-theme'); ?></label>
-            </th>
-            <td>
-                <input type="text" id="case_study_badge_value" name="case_study_badge_value" value="<?php echo esc_attr($badge_value); ?>" class="regular-text" placeholder="+32%">
-                <p class="description"><?php _e('Example: +32%, +358%, 2x', 'neamob-theme'); ?></p>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <label for="case_study_badge_text"><?php _e('Badge Text', 'neamob-theme'); ?></label>
-            </th>
-            <td>
-                <input type="text" id="case_study_badge_text" name="case_study_badge_text" value="<?php echo esc_attr($badge_text); ?>" class="regular-text" placeholder="REVENUE">
-                <p class="description"><?php _e('Example: REVENUE, LEADS, ROI', 'neamob-theme'); ?></p>
-            </td>
-        </tr>
-    </table>
-    <script>
-        jQuery(document).ready(function ($) {
-    $('.neamob-upload-logo').on('click', function (e) {
-    e.preventDefault();
-    var button = $(this);
-    var customUploader = wp.media({
-    title: 'Select Logo',
-    button: {
-    text: 'Use this logo'
-    },
-    multiple: false
-    }).on('select', function () {
-    var attachment = customUploader.state().get('selection').first().toJSON();
-    button.prev('input').val(attachment.url);
-    }).open();
-    });
-    });
-    </script>
-    <?php
-}
-
-/**
- * Save Case Study meta
- */
-function neamob_save_case_study_meta($post_id)
-{
-    if (!isset($_POST['neamob_case_study_nonce']) || !wp_verify_nonce($_POST['neamob_case_study_nonce'], 'neamob_case_study_meta')) {
-        return;
-    }
-
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-
-    if (!current_user_can('edit_post', $post_id)) {
-        return;
-    }
-
-    $fields = ['case_study_badge_text', 'case_study_badge_value', 'case_study_client_logo', 'case_study_client_name'];
-
-    foreach ($fields as $field) {
-        if (isset($_POST[$field])) {
-            $value = $field === 'case_study_client_logo' ? esc_url_raw($_POST[$field]) : sanitize_text_field($_POST[$field]);
-            update_post_meta($post_id, '_' . $field, $value);
-        }
-    }
-}
-add_action('save_post_case_study', 'neamob_save_case_study_meta');
+// Case Study meta box removed — use ACF (Case Study Details) instead
 
 /**
  * Helper function to get case studies for display
@@ -818,10 +752,12 @@ function neamob_case_studies_shortcode($atts)
         class="case-studies-grid">
         <?php while ($query->have_posts()):
             $query->the_post();
-            $badge_text = get_post_meta(get_the_ID(), '_case_study_badge_text', true);
-            $badge_value = get_post_meta(get_the_ID(), '_case_study_badge_value', true);
-            $client_logo = get_post_meta(get_the_ID(), '_case_study_client_logo', true);
-            $client_name = get_post_meta(get_the_ID(), '_case_study_client_name', true);
+            $badge_text = get_field('badge_text') ?: get_post_meta(get_the_ID(), '_case_study_badge_text', true);
+            $badge_value = get_field('badge_value') ?: get_post_meta(get_the_ID(), '_case_study_badge_value', true);
+            $client_logo = get_field('client_logo');
+            if (empty($client_logo)) $client_logo = get_post_meta(get_the_ID(), '_case_study_client_logo', true);
+            if (is_array($client_logo) && isset($client_logo['url'])) $client_logo = $client_logo['url'];
+            $client_name = get_field('client_name') ?: get_post_meta(get_the_ID(), '_case_study_client_name', true);
             ?>
             <article class="case-card">
                 <div class="case-card__header">
@@ -861,6 +797,24 @@ add_filter('post_thumbnail_html', function($html) {
     return preg_replace('/(width|height)="\d*"\s/', '', $html);
 }, 10);
 
+// Services в меню — заглушка: убрать подпункты, ссылку заменить на #
+add_filter('wp_nav_menu_objects', function($items, $args) {
+    if ($args->theme_location !== 'primary') return $items;
+    $service_parent_ids = [];
+    foreach ($items as $i) {
+        if (stripos($i->title, 'Services') !== false && $i->menu_item_parent == '0') {
+            $service_parent_ids[$i->ID] = true;
+            $i->url = '#'; // заглушка, не ссылка
+        }
+    }
+    if (empty($service_parent_ids)) return $items;
+    $filtered = array_filter($items, function($i) use ($service_parent_ids) {
+        if ($i->menu_item_parent == '0') return true;
+        return !isset($service_parent_ids[$i->menu_item_parent]);
+    });
+    return array_values($filtered);
+}, 10, 2);
+
 // Replace menu links with # URL to span
 add_filter('walker_nav_menu_start_el', function($item_output, $item, $depth, $args) {
     if ($item->url === '#') {
@@ -869,4 +823,62 @@ add_filter('walker_nav_menu_start_el', function($item_output, $item, $depth, $ar
     }
     return $item_output;
 }, 10, 4);
+
+// Класс cookie-policy, page-simple на body
+add_filter('body_class', function ($classes) {
+    if (!is_singular('page')) return $classes;
+    $slug = get_post_field('post_name', get_queried_object_id());
+    if ($slug === 'cookie-policy') $classes[] = 'cookie-policy';
+    if (in_array($slug, ['creative-showcase', 'web-projects', 'social-media-campaigns', 'contact'], true)) {
+        $classes[] = 'page-simple';
+    }
+    return $classes;
+});
+
+// Страницы creative-showcase, web-projects, social-media-campaigns, contact — шаблон как cookie/privacy (page.php)
+add_filter('template_include', function($template) {
+    if (!is_singular('page')) return $template;
+    $slug = get_post_field('post_name', get_queried_object_id());
+    if (in_array($slug, ['creative-showcase', 'web-projects', 'social-media-campaigns', 'contact'], true)) {
+        return get_template_directory() . '/page.php';
+    }
+    return $template;
+}, 5);
+
+/**
+ * SMTP через mail.adm.tools (если заданы константы в wp-config)
+ * Добавь в wp-config.php:
+ *   define('NEAMOB_SMTP_HOST', 'mail.adm.tools');
+ *   define('NEAMOB_SMTP_USER', 'neamob@twyx.us');
+ *   define('NEAMOB_SMTP_PASS', 'твой_пароль');
+ *   define('NEAMOB_SMTP_PORT', 465);
+ *   define('NEAMOB_SMTP_SECURE', 'ssl');
+ */
+add_action('phpmailer_init', function ($phpmailer) {
+    if (!defined('NEAMOB_SMTP_HOST') || !NEAMOB_SMTP_HOST) {
+        return;
+    }
+    $phpmailer->isSMTP();
+    $phpmailer->Host = NEAMOB_SMTP_HOST;
+    $phpmailer->Port = defined('NEAMOB_SMTP_PORT') ? (int) NEAMOB_SMTP_PORT : 465;
+    $phpmailer->SMTPAuth = true;
+    $phpmailer->Username = NEAMOB_SMTP_USER;
+    $phpmailer->Password = NEAMOB_SMTP_PASS;
+    $phpmailer->SMTPSecure = defined('NEAMOB_SMTP_SECURE') ? NEAMOB_SMTP_SECURE : 'ssl';
+    $phpmailer->From = defined('NEAMOB_SMTP_FROM') ? NEAMOB_SMTP_FROM : NEAMOB_SMTP_USER;
+    $phpmailer->FromName = get_bloginfo('name');
+});
+
+// light-footer на Cookie Policy, Privacy Policy, Careers, Blog, Case Studies и page-simple
+add_filter('body_class', function ($classes) {
+    if (is_home() || is_post_type_archive('case_study')) {
+        $classes[] = 'light-footer';
+        return $classes;
+    }
+    $simple_slugs = ['cookie-policy', 'privacy-policy', 'careers-page', 'blog', 'creative-showcase', 'web-projects', 'social-media-campaigns', 'contact'];
+    if (is_singular('page') && in_array(get_post_field('post_name', get_queried_object_id()), $simple_slugs, true)) {
+        $classes[] = 'light-footer';
+    }
+    return $classes;
+});
 

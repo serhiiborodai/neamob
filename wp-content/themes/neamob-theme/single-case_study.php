@@ -6,12 +6,19 @@ get_header();
 
 // Get ACF fields
 $tags = get_field('case_tags') ?: [];
-$case_excerpt = get_field('case_excerpt');
+$case_excerpt = get_field('case_excerpt') ?: get_the_excerpt();
 $metrics = get_field('case_metrics') ?: [];
 $challenge = get_field('case_challenge');
 $solution = get_field('case_solution');
 $what_we_did = get_field('case_what_we_did') ?: [];
 $results = get_field('case_results');
+// Fallback: если ACF пусты — используем контент записи
+if (empty($challenge) && empty($solution) && empty($results)) {
+    $cnt = get_post()->post_content;
+    if ($cnt) {
+        $challenge = apply_filters('the_content', $cnt);
+    }
+}
 ?>
 
 <main class="single-case">

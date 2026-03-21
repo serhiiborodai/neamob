@@ -53,8 +53,9 @@ $blog_categories = get_terms([
         $latest_post->rewind_posts();
         if ($latest_post->have_posts()) : 
             $latest_post->the_post();
-            $categories = get_the_category();
-            $category = $categories ? $categories[0] : null;
+                    $categories = get_the_category();
+                    $category = $categories ? $categories[0] : null;
+                    $cat_color = $category ? neamob_get_category_color($category) : 'blue';
     ?>
     <!-- Latest Post Hero -->
     <section class="blog-latest">
@@ -70,7 +71,7 @@ $blog_categories = get_terms([
                 <div class="blog-latest__content">
                     <div class="blog-latest__meta">
                         <?php if ($category) : ?>
-                        <span class="blog-latest__category"><?php echo esc_html($category->name); ?></span>
+                        <span class="blog-latest__category blog-latest__category--<?php echo esc_attr($cat_color); ?>"><?php echo esc_html($category->name); ?></span>
                         <?php endif; ?>
                         <span class="blog-latest__date"><?php echo get_the_date('d M, Y'); ?></span>
                     </div>
@@ -118,11 +119,7 @@ $blog_categories = get_terms([
                 <?php while ($blog_posts->have_posts()) : $blog_posts->the_post(); 
                     $categories = get_the_category();
                     $category = $categories ? $categories[0] : null;
-                    $cat_slug = $category ? $category->slug : '';
-                    $cat_color = 'blue';
-                    if (strpos($cat_slug, 'analytics') !== false) $cat_color = 'blue';
-                    elseif (strpos($cat_slug, 'creative') !== false) $cat_color = 'green';
-                    elseif (strpos($cat_slug, 'campaign') !== false) $cat_color = 'purple';
+                    $cat_color = $category ? neamob_get_category_color($category) : 'blue';
                 ?>
                 <article class="blog-card">
                     <a href="<?php the_permalink(); ?>" class="blog-card__image">

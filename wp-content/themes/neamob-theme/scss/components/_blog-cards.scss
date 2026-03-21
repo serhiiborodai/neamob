@@ -164,6 +164,12 @@
     background: $primary-color;
     color: $bg-white;
   }
+
+  &--blue { background: #0094ff; color: #fff; }
+  &--green { background: #00c853; color: #fff; }
+  &--purple { background: #8a6aff; color: #fff; }
+  &--orange { background: #ff9800; color: #fff; }
+  &--red { background: #f44336; color: #fff; }
 }
 
 .blog-card__date {

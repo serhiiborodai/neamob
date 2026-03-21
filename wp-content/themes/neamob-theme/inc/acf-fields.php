@@ -509,6 +509,15 @@ function neamob_register_acf_fields() {
                 'type' => 'number',
                 'default_value' => 0,
             ],
+            [
+                'key' => 'field_team_photo',
+                'label' => 'Photo',
+                'name' => 'team_photo',
+                'type' => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+                'instructions' => 'Upload via Media Library. Replaces hardcoded placeholder.',
+            ],
         ],
         'location' => [
             [
@@ -693,6 +702,40 @@ function neamob_register_acf_fields() {
                     'param' => 'post_type',
                     'operator' => '==',
                     'value' => 'job',
+                ],
+            ],
+        ],
+    ]);
+
+    // =========================================================================
+    // Post Category Color (for blog - same as job categories)
+    // =========================================================================
+    acf_add_local_field_group([
+        'key' => 'group_category_color',
+        'title' => 'Category Badge Color',
+        'fields' => [
+            [
+                'key' => 'field_category_color',
+                'label' => 'Badge Color',
+                'name' => 'category_color',
+                'type' => 'select',
+                'choices' => [
+                    'green' => 'Green (Creative & Design)',
+                    'blue' => 'Blue (Campaign Management / Analytics)',
+                    'purple' => 'Purple (Analytics & Reporting)',
+                    'orange' => 'Orange',
+                    'red' => 'Red',
+                ],
+                'default_value' => 'blue',
+                'instructions' => 'Color for the category badge on blog list and single post',
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'taxonomy',
+                    'operator' => '==',
+                    'value' => 'category',
                 ],
             ],
         ],
@@ -999,7 +1042,7 @@ function neamob_get_testimonials($count = -1) {
 }
 
 /**
- * Get services
+ * Get services (Service CPT — для админки и архивов)
  */
 function neamob_get_services($count = -1) {
     return new WP_Query([
@@ -1007,6 +1050,24 @@ function neamob_get_services($count = -1) {
         'posts_per_page' => $count,
         'orderby' => 'menu_order',
         'order' => 'ASC',
+    ]);
+}
+
+/**
+ * Get service pages (дочерние страницы Services) — для главной, ссылки ведут на /services/xxx/
+ */
+function neamob_get_service_pages($count = -1) {
+    $services_page = get_page_by_path('services');
+    if (!$services_page) return new WP_Query(['post__in' => [0]]);
+    return new WP_Query([
+        'post_type' => 'page',
+        'post_parent' => $services_page->ID,
+        'posts_per_page' => $count,
+        'orderby' => 'menu_order',
+        'order' => 'ASC',
+        'meta_query' => [
+            ['key' => '_wp_page_template', 'value' => 'page-service.php'],
+        ],
     ]);
 }
 
@@ -1032,9 +1093,12 @@ function neamob_get_partners_for_slider() {
     if ($query->have_posts()) {
         while ($query->have_posts()) {
             $query->the_post();
-            if (get_field('partner_show_in_slider')) {
-                $filtered[] = get_post();
-            }
+            $pid = get_the_ID();
+            if (!get_field('partner_show_in_slider') && !get_post_meta($pid, 'partner_show_in_slider', true)) continue;
+            $logo = get_field('partner_logo') ?: get_post_meta($pid, 'partner_logo', true);
+            $logo_url = is_array($logo) ? ($logo['url'] ?? '') : ($logo ?: '');
+            if (empty($logo_url)) continue;
+            $filtered[] = get_post();
         }
         wp_reset_postdata();
     }
@@ -1118,6 +1182,14 @@ function neamob_register_service_page_fields() {
                 'name' => 'service_hero_subtitle',
                 'type' => 'textarea',
                 'rows' => 2,
+            ],
+            [
+                'key' => 'field_service_accordion_image',
+                'label' => 'Accordion Image (Homepage services section)',
+                'name' => 'service_accordion_image',
+                'type' => 'image',
+                'return_format' => 'array',
+                'instructions' => 'Image shown next to accordion on homepage',
             ],
             [
                 'key' => 'field_service_hero_button_text',
@@ -1269,7 +1341,7 @@ function neamob_register_portfolio_items_cpt() {
         'public'              => true,
         'publicly_queryable'  => true,
         'show_ui'             => true,
-        'show_in_menu'        => true,
+        'show_in_menu'        => false, // Скрыто: портфолио редактируется через страницу Portfolio и её ACF (галерея, блоки)
         'query_var'           => true,
         'rewrite'             => ['slug' => 'portfolio-item'],
         'capability_type'     => 'post',
@@ -1592,6 +1664,25 @@ function neamob_register_theme_options() {
     ]);
 }
 add_action('acf/init', 'neamob_register_theme_options');
+
+/**
+ * Get category badge color for blog (from ACF term field or slug fallback)
+ */
+function neamob_get_category_color($category) {
+    if (!$category || !is_object($category)) {
+        return 'blue';
+    }
+    $color = get_field('category_color', 'category_' . $category->term_id);
+    if ($color) {
+        return $color;
+    }
+    // Fallback by slug (Campaign Management=green, Creative & Design=purple)
+    $slug = $category->slug ?? '';
+    if (strpos($slug, 'analytics') !== false) return 'blue';
+    if (strpos($slug, 'creative') !== false) return 'purple';
+    if (strpos($slug, 'campaign') !== false) return 'green';
+    return 'blue';
+}
 
 /**
  * Get theme option with fallback (works without ACF Options)

@@ -30,12 +30,15 @@ $value_tags = get_field('value_tags');
 
 <!-- Hero Section -->
 <section class="hero-section">
-    <div
-        class="hero-section__bg">
+    <div class="hero-section__bg">
         <?php
         $bg_url = $hero_bg_image ?: get_template_directory_uri() . '/assets/images/hp.webp';
+        $bg_url_mobile = get_template_directory_uri() . '/assets/images/hp-mobile.png';
         ?>
-        <img src="<?php echo esc_url($bg_url); ?>" alt="" class="hero-section__bg-img">
+        <picture>
+            <source media="(max-width: 750px)" srcset="<?php echo esc_url($bg_url_mobile); ?>">
+            <img src="<?php echo esc_url($bg_url); ?>" alt="" class="hero-section__bg-img">
+        </picture>
     </div>
     <div class="container">
         <div class="hero-section__content">
@@ -49,46 +52,47 @@ $value_tags = get_field('value_tags');
     </div>
 </section>
 
-<!-- Logo Slider -->
+<!-- Logo Slider: Partners из админки, fallback — hp_color при отсутствии -->
 <?php
 $logo_slider_partners = neamob_get_partners_for_slider();
 $logos_dir = get_template_directory() . '/assets/logos/hp_color/';
 $logos_url = get_template_directory_uri() . '/assets/logos/hp_color/';
-$logo_files = empty($logo_slider_partners) ? glob($logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE) : [];
-if (!empty($logo_files)) { usort($logo_files, function ($a, $b) { return filemtime($a) - filemtime($b); }); }
+$logo_files = empty($logo_slider_partners) ? array_filter(glob($logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE) ?: []) : [];
+if (!empty($logo_files)) sort($logo_files);
+$has_logos = !empty($logo_slider_partners) || !empty($logo_files);
 
-if (!empty($logo_slider_partners) || !empty($logo_files)):
+if ($has_logos):
 ?>
     <section class="logo-slider">
         <div class="logo-slider__bg"></div>
         <div class="logo-slider__track">
             <div class="logo-slider__group">
                 <?php if (!empty($logo_slider_partners)): foreach ($logo_slider_partners as $p): setup_postdata($p);
-                    $logo = get_field('partner_logo', $p->ID);
-                    if ($logo): ?>
+                    $logo = get_field('partner_logo', $p->ID) ?: get_post_meta($p->ID, 'partner_logo', true);
+                    $logo_url = is_array($logo) ? ($logo['url'] ?? '') : ($logo ?: '');
+                    if ($logo_url): ?>
                     <div class="logo-slider__item">
-                        <img src="<?php echo esc_url($logo); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
                     </div>
-                <?php endif; endforeach; wp_reset_postdata(); else: foreach ($logo_files as $logo_path):
-                    $filename = basename($logo_path);
-                    $alt = pathinfo($filename, PATHINFO_FILENAME); ?>
+                <?php endif; endforeach; wp_reset_postdata(); else: foreach ($logo_files as $path):
+                    $fn = basename($path); ?>
                     <div class="logo-slider__item">
-                        <img src="<?php echo esc_url($logos_url . rawurlencode($filename)); ?>" alt="<?php echo esc_attr($alt); ?>">
+                        <img src="<?php echo esc_url($logos_url . rawurlencode($fn)); ?>" alt="<?php echo esc_attr(pathinfo($fn, PATHINFO_FILENAME)); ?>">
                     </div>
                 <?php endforeach; endif; ?>
             </div>
             <div class="logo-slider__group">
                 <?php if (!empty($logo_slider_partners)): foreach ($logo_slider_partners as $p): setup_postdata($p);
-                    $logo = get_field('partner_logo', $p->ID);
-                    if ($logo): ?>
+                    $logo = get_field('partner_logo', $p->ID) ?: get_post_meta($p->ID, 'partner_logo', true);
+                    $logo_url = is_array($logo) ? ($logo['url'] ?? '') : ($logo ?: '');
+                    if ($logo_url): ?>
                     <div class="logo-slider__item">
-                        <img src="<?php echo esc_url($logo); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
                     </div>
-                <?php endif; endforeach; wp_reset_postdata(); else: foreach ($logo_files as $logo_path):
-                    $filename = basename($logo_path);
-                    $alt = pathinfo($filename, PATHINFO_FILENAME); ?>
+                <?php endif; endforeach; wp_reset_postdata(); else: foreach ($logo_files as $path):
+                    $fn = basename($path); ?>
                     <div class="logo-slider__item">
-                        <img src="<?php echo esc_url($logos_url . rawurlencode($filename)); ?>" alt="<?php echo esc_attr($alt); ?>">
+                        <img src="<?php echo esc_url($logos_url . rawurlencode($fn)); ?>" alt="<?php echo esc_attr(pathinfo($fn, PATHINFO_FILENAME)); ?>">
                     </div>
                 <?php endforeach; endif; ?>
             </div>
@@ -98,7 +102,7 @@ if (!empty($logo_slider_partners) || !empty($logo_files)):
 
 <!-- Services Section (What We Do) -->
 <?php
-$services = neamob_get_services();
+$services = neamob_get_service_pages();
 if ($services->have_posts()):
     ?>
         <section class="services-section"> <div class="container">
@@ -109,7 +113,11 @@ if ($services->have_posts()):
                         <?php $index = 0; ?>
                         <?php while ($services->have_posts()):
                             $services->the_post();
-                            $short_desc = get_field('service_short_description') ?: get_the_excerpt();
+                            $short_desc = get_field('service_short_description') ?: get_field('service_hero_subtitle') ?: get_the_excerpt();
+                            if (empty($short_desc)) {
+                                $cnt = get_post()->post_content;
+                                $short_desc = $cnt ? wp_trim_words(strip_tags($cnt), 35) : '';
+                            }
                             ?>
                                 <div class="services-accordion__item<?php echo $index === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $index; ?>"> <div class="services-accordion__header">
                                     <div class="services-accordion__icon">
@@ -128,20 +136,24 @@ if ($services->have_posts()):
                         <?php endwhile; ?>
                     </div>
                 </div>
-                <div
-                    class="services-section__media">
+                <div class="services-section__media">
                     <?php
-                    $gray_logos_dir = get_template_directory() . '/assets/logos/hp_gray/';
-                    $gray_logos_url = get_template_directory_uri() . '/assets/logos/hp_gray/';
-                    $gray_files = glob($gray_logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE);
-                    sort($gray_files);
-                    foreach ($gray_files as $i => $img_path):
-                        $filename = basename($img_path);
+                    $services->rewind_posts();
+                    $idx = 0;
+                    while ($services->have_posts()):
+                        $services->the_post();
+                        $accordion_img = get_field('service_accordion_image');
+                        $img_url = is_array($accordion_img) ? ($accordion_img['url'] ?? '') : ($accordion_img ?: '');
+                        if (!$img_url) $img_url = get_the_post_thumbnail_url(null, 'medium_large');
                         ?>
-                        <div class="services-section__image<?php echo $i === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $i; ?>">
-                            <img src="<?php echo esc_url($gray_logos_url . $filename); ?>" alt="Service <?php echo $i + 1; ?>">
+                        <div class="services-section__image<?php echo $idx === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $idx; ?>">
+                            <?php if ($img_url): ?>
+                                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                            <?php else: ?>
+                                <div class="services-section__placeholder" aria-hidden="true"></div>
+                            <?php endif; ?>
                         </div>
-                    <?php endforeach; ?>
+                    <?php $idx++; endwhile; ?>
                 </div>
             </div>
         </div>
@@ -397,6 +409,7 @@ if ($blog_posts->have_posts()):
                     $blog_posts->the_post();
                     $categories = get_the_category();
                     $category = !empty($categories) ? $categories[0] : null;
+                    $cat_color = $category ? neamob_get_category_color($category) : 'blue';
                     ?>
                     <article class="blog-card">
                         <a href="<?php the_permalink(); ?>" class="blog-card__image <?php echo !has_post_thumbnail() ? 'blog-card__image--placeholder' : ''; ?>"><?php if (has_post_thumbnail()): ?>
@@ -407,7 +420,7 @@ if ($blog_posts->have_posts()):
                             class="blog-card__meta">
                             <?php if ($category): ?>
                                 <a
-                                    href="<?php echo get_category_link($category->term_id); ?>" class="blog-card__category"><?php echo esc_html($category->name); ?>
+                                    href="<?php echo get_category_link($category->term_id); ?>" class="blog-card__category blog-card__category--<?php echo esc_attr($cat_color); ?>"><?php echo esc_html($category->name); ?>
                                 </a>
                             <?php endif; ?>
                             <span class="blog-card__date"><?php echo get_the_date('d M, Y'); ?></span>
@@ -446,6 +459,7 @@ $has_partners = !empty($partner_cards);
                 foreach ($partner_cards as $p): 
                     setup_postdata($p);
                     $logo = get_field('partner_logo', $p->ID);
+                    $logo_url = is_array($logo) ? ($logo['url'] ?? '') : ($logo ?: '');
                     $desc = get_field('partner_description', $p->ID);
                     $card_type = get_field('partner_card_type', $p->ID) ?: 'image';
                     $cta = get_field('partner_cta', $p->ID);
@@ -461,7 +475,7 @@ $has_partners = !empty($partner_cards);
             ?>
             <div class="<?php echo esc_attr($card_class); ?>">
                 <div class="partner-card__logo">
-                    <?php if ($logo): ?><img src="<?php echo esc_url($logo); ?>" alt="<?php echo esc_attr($p->post_title); ?>"><?php endif; ?>
+                    <?php if ($logo_url): ?><img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>"><?php endif; ?>
                 </div>
                 <?php if ($card_type === 'video'): 
                     $thumb = get_field('partner_video_thumb', $p->ID) ?: get_template_directory_uri() . '/assets/images/power.png';
@@ -498,6 +512,10 @@ $has_partners = !empty($partner_cards);
                 <div class="partner-card__logo"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners"></div>
                 <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-2.png" alt="illumin platform"></div>
                 <p class="partner-card__text">illumin is a journey advertising platform that helps brands plan, activate, and optimize digital campaigns across channels with real-time insights.</p>
+                <a href="https://docs.google.com/presentation/d/1Uu3wqB5EI-SIGIweGL30J6Uk2z_lvYLWAd4KijiZACo/edit" class="partner-card__cta" target="_blank" rel="noopener noreferrer">
+                    <span class="partner-card__cta-dot"></span>
+                    Download case study
+                </a>
             </div>
             <div class="partner-card partner-card--video">
                 <div class="partner-card__logo"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper"></div>

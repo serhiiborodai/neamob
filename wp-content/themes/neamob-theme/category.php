@@ -52,11 +52,7 @@ $blog_categories = get_terms([
                 <?php while (have_posts()) : the_post(); 
                     $categories = get_the_category();
                     $category = $categories ? $categories[0] : null;
-                    $cat_slug = $category ? $category->slug : '';
-                    $cat_color = 'blue';
-                    if (strpos($cat_slug, 'analytics') !== false) $cat_color = 'blue';
-                    elseif (strpos($cat_slug, 'creative') !== false) $cat_color = 'green';
-                    elseif (strpos($cat_slug, 'campaign') !== false) $cat_color = 'purple';
+                    $cat_color = $category ? neamob_get_category_color($category) : 'blue';
                 ?>
                 <article class="blog-card">
                     <a href="<?php the_permalink(); ?>" class="blog-card__image">

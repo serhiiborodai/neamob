@@ -11,11 +11,9 @@
         <div class="footer-main">
             <div class="container">
                 <div class="footer-grid">
-                    <!-- Services & Solutions -->
+                    <!-- Services & Solutions — заголовок без href (как в меню), подпункты со ссылками -->
                     <div class="footer-column">
-                        <h4 class="footer-column__title">
-                            <a href="<?php echo esc_url(home_url('/services/')); ?>">Services & Solutions</a>
-                        </h4>
+                        <h4 class="footer-column__title">Services & Solutions</h4>
                         <ul class="footer-column__links">
                             <li><a href="<?php echo esc_url(home_url('/services/growth-strategy-planning/')); ?>">Growth Strategy & Planning</a></li>
                             <li><a href="<?php echo esc_url(home_url('/services/data-analytics-insights/')); ?>">Data Analytics & Insights</a></li>

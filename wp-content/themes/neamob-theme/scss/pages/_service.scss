@@ -221,6 +221,10 @@
 
     &__image {
         flex: 0 0 510px;
+
+        img {
+            border-radius: 8px;
+        }
     }
 
     &__title {

@@ -628,6 +628,22 @@
             text-transform: uppercase;
             font-size: 12px;
             padding: 3px 14px 0;
+
+            &--blue {
+                background: #0094ff;
+            }
+            &--green {
+                background: #00c853;
+            }
+            &--purple {
+                background: #8a6aff;
+            }
+            &--orange {
+                background: #ff9800;
+            }
+            &--red {
+                background: #f44336;
+            }
         }
 
         &__date {
@@ -896,7 +912,7 @@
             position: absolute;
             top: -138px;
             left: -169px;
-            min-width: 540px;
+            min-width: 460px;
         }
     }
 
@@ -1039,7 +1055,6 @@
         .cf7-status--loading {
             font-size: 16px;
             font-weight: 600;
-            display: flex;
             align-items: center;
             gap: 14px;
             padding: 20px 0;
@@ -1054,7 +1069,6 @@
         .cf7-status--success {
             font-size: 16px;
             font-weight: 600;
-            display: flex;
             align-items: center;
             gap: 14px;
             padding: 20px 0;
@@ -1076,7 +1090,9 @@
         }
 
         .cf7-status--error {
-            display: flex;
+            align-items: center;
+            gap: 14px;
+            justify-content: flex-start;
 
             .cf7-status__text {
                 color: #ff7a00;
@@ -1118,10 +1134,6 @@
             font-weight: 400;
             width: auto;
         }
-    }
-
-    .logo-slider {
-        margin: -79px 0 0;
     }
 
     .services-section {
@@ -1480,6 +1492,22 @@
 @media screen and (max-width: 779px) {
     .case-studies-grid .case-card:nth-child(2) {
         display: none;
+    }
+
+    .logo-slider {
+        margin: -79px 0 0;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .hero-section {
+        background: #000a18;
+    }
+
+    .hero-section__bg-img {
+        width: 100%;
+        height: auto;
+        bottom: 0;
     }
 }
 
