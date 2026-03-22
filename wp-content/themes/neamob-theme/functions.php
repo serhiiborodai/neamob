@@ -797,22 +797,15 @@ add_filter('post_thumbnail_html', function($html) {
     return preg_replace('/(width|height)="\d*"\s/', '', $html);
 }, 10);
 
-// Services в меню — заглушка: убрать подпункты, ссылку заменить на #
+// Services в меню — заглушка: ссылку заменить на #, подпункты остаются
 add_filter('wp_nav_menu_objects', function($items, $args) {
     if ($args->theme_location !== 'primary') return $items;
-    $service_parent_ids = [];
     foreach ($items as $i) {
         if (stripos($i->title, 'Services') !== false && $i->menu_item_parent == '0') {
-            $service_parent_ids[$i->ID] = true;
-            $i->url = '#'; // заглушка, не ссылка
+            $i->url = '#';
         }
     }
-    if (empty($service_parent_ids)) return $items;
-    $filtered = array_filter($items, function($i) use ($service_parent_ids) {
-        if ($i->menu_item_parent == '0') return true;
-        return !isset($service_parent_ids[$i->menu_item_parent]);
-    });
-    return array_values($filtered);
+    return $items;
 }, 10, 2);
 
 // Replace menu links with # URL to span

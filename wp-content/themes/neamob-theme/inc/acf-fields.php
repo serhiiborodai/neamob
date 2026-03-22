@@ -813,12 +813,11 @@ function neamob_register_acf_fields() {
         'fields' => [
             [
                 'key' => 'field_partner_logo',
-                'label' => 'Logo',
+                'label' => 'Logo URL',
                 'name' => 'partner_logo',
-                'type' => 'image',
-                'return_format' => 'url',
-                'required' => 1,
-                'instructions' => 'SVG or PNG, preferably light/white version for dark backgrounds',
+                'type' => 'url',
+                'required' => 0,
+                'instructions' => 'URL логотипа (SVG/PNG). Заполняется автоматически при создании.',
             ],
             [
                 'key' => 'field_partner_url',
@@ -1202,6 +1201,15 @@ function neamob_register_service_page_fields() {
         'key' => 'group_service_page',
         'title' => 'Service Page Settings',
         'fields' => [
+            // Accordion (Homepage What We Do) — уникальное имя, не дублирует group_service (CPT)
+            [
+                'key' => 'field_service_accordion_text',
+                'label' => 'Accordion Text (Homepage)',
+                'name' => 'service_accordion_text',
+                'type' => 'textarea',
+                'rows' => 4,
+                'instructions' => 'Текст во вкладках блока What We Do на главной.',
+            ],
             // Hero Section
             [
                 'key' => 'field_service_hero_title',
@@ -1727,25 +1735,22 @@ function neamob_get_theme_option($key, $default = '') {
 }
 
 /**
- * Синхронизация полей из PHP в БД ACF — чтобы Field Groups отображались в админке ACF.
- * Синхронизирует только группы, которых ещё нет в БД (при первом заходе в админку).
+ * Однократная синхронизация в БД ACF только если группы ещё нет в БД.
+ * НЕ вызывать acf_update_field_group при каждом заходе — это пересобирает поля и ломает привязку к post_meta.
  */
 function neamob_sync_acf_field_groups_to_db() {
     if (!is_admin() || !function_exists('acf_get_local_field_groups') || !function_exists('acf_update_field_group') || !function_exists('acf_get_field_group')) {
         return;
     }
-    $local = acf_get_local_field_groups();
-    $synced = get_option('neamob_acf_synced_keys', []);
-    foreach ($local as $group) {
-        $key = $group['key'] ?? '';
-        if (!$key || in_array($key, $synced, true)) continue;
-        $existing = acf_get_field_group($key);
-        if ($existing && !empty($existing['ID'])) continue; // уже в БД
+    foreach (acf_get_local_field_groups() as $group) {
+        if (empty($group['key'])) {
+            continue;
+        }
+        $existing = acf_get_field_group($group['key']);
+        if ($existing && !empty($existing['ID'])) {
+            continue;
+        }
         acf_update_field_group($group);
-        $synced[] = $key;
-    }
-    if (!empty($synced)) {
-        update_option('neamob_acf_synced_keys', array_unique($synced));
     }
 }
 add_action('acf/init', 'neamob_sync_acf_field_groups_to_db', 20);

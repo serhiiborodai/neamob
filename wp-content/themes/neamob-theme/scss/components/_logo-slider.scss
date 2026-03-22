@@ -94,9 +94,14 @@
     filter: grayscale(0%) brightness(1);
   }
 
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
   img {
-    // max-height: 100%;
-    // max-width: 150px;
     width: auto;
     object-fit: contain;
 
@@ -121,7 +126,7 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
 

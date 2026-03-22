@@ -713,6 +713,12 @@ body.page-simple .site-main .page-content ul li:before {
   opacity: 1;
   filter: grayscale(0%) brightness(1);
 }
+.logo-slider__item a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 .logo-slider__item img {
   width: auto;
   object-fit: contain;
@@ -735,7 +741,7 @@ body.page-simple .site-main .page-content ul li:before {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
 .logo-slider--reverse .logo-slider__track {

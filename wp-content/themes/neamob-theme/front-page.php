@@ -52,7 +52,7 @@ $value_tags = get_field('value_tags');
     </div>
 </section>
 
-<!-- Logo Slider: Partners из админки, fallback — hp_color при отсутствии -->
+<!-- Logo Slider: партнёры из админки (Partner Logos → slider=1), fallback — файлы hp_color -->
 <?php
 $logo_slider_partners = neamob_get_partners_for_slider();
 $logos_dir = get_template_directory() . '/assets/logos/hp_color/';
@@ -66,21 +66,33 @@ if ($has_logos):
     <section class="logo-slider">
         <div class="logo-slider__bg"></div>
         <div class="logo-slider__track">
+            <?php for ($copy = 0; $copy < 2; $copy++): ?>
             <div class="logo-slider__group">
-                <?php if (!empty($logo_slider_partners)): foreach ($logo_slider_partners as $p): setup_postdata($p);
-                    $logo = get_field('partner_logo', $p->ID) ?: get_post_meta($p->ID, 'partner_logo', true);
-                    $logo_url = is_array($logo) ? ($logo['url'] ?? '') : ($logo ?: '');
-                    if ($logo_url): ?>
-                    <div class="logo-slider__item">
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
-                    </div>
-                <?php endif; endforeach; wp_reset_postdata(); else: foreach ($logo_files as $path):
+                <?php if (!empty($logo_slider_partners)): foreach ($logo_slider_partners as $p):
+                    $pid = $p->ID;
+                    $logo = get_field('partner_logo', $pid) ?: get_post_meta($pid, 'partner_logo', true);
+                    $logo_img = is_array($logo) ? ($logo['url'] ?? '') : ($logo ?: '');
+                    if (!$logo_img) continue;
+                    $partner_url = get_field('partner_url', $pid) ?: get_post_meta($pid, 'partner_url', true);
+                    $alt = esc_attr($p->post_title);
+                    $img_tag = '<img src="' . esc_url($logo_img) . '" alt="' . $alt . '">';
+                ?>
+                <div class="logo-slider__item">
+                    <?php if ($partner_url): ?>
+                        <a href="<?php echo esc_url($partner_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo $img_tag; ?></a>
+                    <?php else: ?>
+                        <?php echo $img_tag; ?>
+                    <?php endif; ?>
+                </div>
+                <?php endforeach; wp_reset_postdata();
+                else: foreach ($logo_files as $path):
                     $fn = basename($path); ?>
-                    <div class="logo-slider__item">
-                        <img src="<?php echo esc_url($logos_url . rawurlencode($fn)); ?>" alt="<?php echo esc_attr(pathinfo($fn, PATHINFO_FILENAME)); ?>">
-                    </div>
+                <div class="logo-slider__item">
+                    <img src="<?php echo esc_url($logos_url . rawurlencode($fn)); ?>" alt="<?php echo esc_attr(pathinfo($fn, PATHINFO_FILENAME)); ?>">
+                </div>
                 <?php endforeach; endif; ?>
             </div>
+            <?php endfor; ?>
         </div>
     </section>
 <?php endif; ?>
@@ -98,10 +110,24 @@ if ($services->have_posts()):
                         <?php $index = 0; ?>
                         <?php while ($services->have_posts()):
                             $services->the_post();
-                            $short_desc = get_field('service_short_description') ?: get_field('service_hero_subtitle') ?: get_the_excerpt();
+                            // Как в 3748621: страницы сервисов + те же поля, что до ACF-sync
+                            $pid = get_the_ID();
+                            $short_desc = get_field('service_short_description', $pid)
+                                ?: get_field('service_hero_subtitle', $pid)
+                                ?: get_the_excerpt($pid);
                             if (empty($short_desc)) {
-                                $cnt = get_post()->post_content;
-                                $short_desc = $cnt ? wp_trim_words(strip_tags($cnt), 35) : '';
+                                $cnt = get_post_field('post_content', $pid);
+                                $short_desc = $cnt ? wp_trim_words(strip_tags($cnt), 35, '') : '';
+                            }
+                            // Если мета в БД есть, а ACF после sync не подхватывает — читаем напрямую
+                            if ($short_desc === '' || $short_desc === null) {
+                                foreach (['service_short_description', 'service_hero_subtitle', 'service_accordion_text'] as $_meta_key) {
+                                    $_raw = get_post_meta($pid, $_meta_key, true);
+                                    if (is_string($_raw) && $_raw !== '') {
+                                        $short_desc = $_raw;
+                                        break;
+                                    }
+                                }
                             }
                             ?>
                                 <div class="services-accordion__item<?php echo $index === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $index; ?>"> <div class="services-accordion__header">
