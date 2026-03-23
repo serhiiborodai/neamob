@@ -624,6 +624,39 @@ body.page-simple .site-main .page-content ul li:before {
     transform: rotate(360deg);
   }
 }
+.cky-consent-container.cky-consent-container {
+  width: 502px;
+  max-width: 96%;
+}
+.cky-consent-container.cky-consent-container .cky-consent-container .cky-consent-bar {
+  padding: 21px 19px 28px;
+}
+.cky-consent-container.cky-consent-container .cky-notice .cky-title {
+  color: #000a18 !important;
+  margin-bottom: 23px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #d8e3eb !important;
+  font-size: 24px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+.cky-consent-container.cky-consent-container .cky-notice-des p {
+  line-height: 1.5;
+  font-size: 14px;
+  font-weight: 400;
+  color: #495b75;
+  font-family: "Raleway";
+}
+.cky-consent-container.cky-consent-container .cky-notice-btn-wrapper {
+  margin-top: 28px;
+}
+.cky-consent-container.cky-consent-container .cky-notice-btn-wrapper .cky-btn {
+  color: #fff !important;
+  background: #495b75 !important;
+  border-color: #495b75 !important;
+  border-radius: 4px;
+}
+
 .logo-slider {
   position: relative;
   margin: -117px 0 0;
@@ -1055,6 +1088,7 @@ body.page-simple .site-main .page-content ul li:before {
   font-size: 20px;
   padding: 4px 15px 4px 13px;
   border-radius: 5px;
+  cursor: default;
 }
 .value-reports .report-tag.report-tag--icon {
   padding: 11px 14px 5px;
@@ -1609,7 +1643,7 @@ body.page-simple .site-main .page-content ul li:before {
   width: 100%;
   border: 1px solid #0b2238;
   background: #081a2d;
-  padding: 12px 40px 12px 7px;
+  padding: 12px 40px 11px 7px;
   color: #fff;
   outline: 0;
   border-radius: 4px;
@@ -4437,10 +4471,6 @@ body.page-simple .site-main .page-content ul li:before {
   padding-bottom: 39px;
   border-bottom: 1px solid #d8e3eb;
   margin-bottom: 40px;
-}
-.single-case__section:nth-child(6) {
-  border-bottom: 0;
-  padding-bottom: 64px;
 }
 .single-case__label {
   font-size: 14px;

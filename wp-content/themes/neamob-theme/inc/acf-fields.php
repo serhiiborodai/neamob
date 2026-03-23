@@ -813,11 +813,13 @@ function neamob_register_acf_fields() {
         'fields' => [
             [
                 'key' => 'field_partner_logo',
-                'label' => 'Logo URL',
+                'label' => 'Logo',
                 'name' => 'partner_logo',
-                'type' => 'url',
+                'type' => 'image',
+                'return_format' => 'url',
+                'preview_size' => 'medium',
+                'library' => 'all',
                 'required' => 0,
-                'instructions' => 'URL логотипа (SVG/PNG). Заполняется автоматически при создании.',
             ],
             [
                 'key' => 'field_partner_url',
@@ -1121,21 +1123,25 @@ function neamob_get_partners() {
  * Get partners for logo slider (hp_color replacement)
  */
 function neamob_get_partners_for_slider() {
-    $query = neamob_get_partners();
-    $filtered = [];
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $pid = get_the_ID();
-            if (!get_field('partner_show_in_slider') && !get_post_meta($pid, 'partner_show_in_slider', true)) continue;
-            $logo = get_field('partner_logo') ?: get_post_meta($pid, 'partner_logo', true);
-            $logo_url = is_array($logo) ? ($logo['url'] ?? '') : ($logo ?: '');
-            if (empty($logo_url)) continue;
-            $filtered[] = get_post();
-        }
-        wp_reset_postdata();
-    }
-    return $filtered;
+    return get_posts([
+        'post_type'      => 'partner',
+        'posts_per_page' => -1,
+        'meta_key'       => 'partner_order',
+        'orderby'        => 'meta_value_num',
+        'order'          => 'ASC',
+        'meta_query'     => [
+            [
+                'key'     => 'partner_show_in_slider',
+                'value'   => '1',
+                'compare' => '=',
+            ],
+            [
+                'key'     => 'partner_logo',
+                'value'   => '',
+                'compare' => '!=',
+            ],
+        ],
+    ]);
 }
 
 /**
@@ -1735,23 +1741,8 @@ function neamob_get_theme_option($key, $default = '') {
 }
 
 /**
- * Однократная синхронизация в БД ACF только если группы ещё нет в БД.
- * НЕ вызывать acf_update_field_group при каждом заходе — это пересобирает поля и ломает привязку к post_meta.
+ * НЕ синхронизировать ACF field groups в БД.
+ * Поля зарегистрированы через acf_add_local_field_group() в PHP — они работают без записи в БД.
+ * Запись в БД создавала тысячи дубликатов и вешала админку.
  */
-function neamob_sync_acf_field_groups_to_db() {
-    if (!is_admin() || !function_exists('acf_get_local_field_groups') || !function_exists('acf_update_field_group') || !function_exists('acf_get_field_group')) {
-        return;
-    }
-    foreach (acf_get_local_field_groups() as $group) {
-        if (empty($group['key'])) {
-            continue;
-        }
-        $existing = acf_get_field_group($group['key']);
-        if ($existing && !empty($existing['ID'])) {
-            continue;
-        }
-        acf_update_field_group($group);
-    }
-}
-add_action('acf/init', 'neamob_sync_acf_field_groups_to_db', 20);
 

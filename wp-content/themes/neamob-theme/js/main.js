@@ -10,6 +10,7 @@
      * Initialize when DOM is ready
      */
     document.addEventListener('DOMContentLoaded', function () {
+        initLogoSliderClone();
         initSwiperSliders();
         initMobileMenu();
         initSmoothScroll();
@@ -20,6 +21,14 @@
         initFaqAccordion();
         initContactForm();
     });
+
+    function initLogoSliderClone() {
+        var track = document.querySelector('.logo-slider__track');
+        if (!track) return;
+        var group = track.querySelector('.logo-slider__group');
+        if (!group) return;
+        track.appendChild(group.cloneNode(true));
+    }
 
     /**
      * Initialize all Swiper sliders on the page

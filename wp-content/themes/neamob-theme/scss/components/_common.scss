@@ -580,3 +580,43 @@ body.page-simple .site-main {
     transform: rotate(360deg);
   }
 }
+
+.cky-consent-container.cky-consent-container {
+  width: 502px;
+  max-width: 96%;
+
+  .cky-consent-container .cky-consent-bar {
+    padding: 21px 19px 28px;
+  }
+
+  .cky-notice .cky-title {
+    color: #000a18 !important;
+    margin-bottom: 23px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #d8e3eb !important;
+    font-size: 24px;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .cky-notice-des {
+    p {
+      line-height: 1.5;
+      font-size: 14px;
+      font-weight: 400;
+      color: #495b75;
+      font-family: 'Raleway';
+    }
+  }
+
+  .cky-notice-btn-wrapper {
+    margin-top: 28px;
+
+    .cky-btn {
+      color: #fff !important;
+      background: #495b75 !important;
+      border-color: #495b75 !important;
+      border-radius: 4px;
+    }
+  }
+}

@@ -13,50 +13,6 @@ if (!defined('ABSPATH')) {
 // Include ACF fields registration
 require_once get_template_directory() . '/inc/acf-fields.php';
 
-/**
- * Localhost: подмена siteurl/home по текущему хосту.
- * Решает проблему когда в БД nb.twyx.us или неверный путь (upload.php вместо wp-admin/upload.php).
- */
-function neamob_fix_options_for_localhost($value) {
-    $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-    if ($host === 'localhost:8080' || $host === 'localhost' || strpos($host, '127.0.0.1') !== false) {
-        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        return $scheme . '://' . $host;
-    }
-    return $value;
-}
-add_filter('option_siteurl', 'neamob_fix_options_for_localhost', 1);
-add_filter('option_home', 'neamob_fix_options_for_localhost', 1);
-
-/**
- * Fix URLs when site URL in DB doesn't match current request (localhost vs production).
- */
-function neamob_fix_url_for_current_host($url, $path, $scheme, $blog_id) {
-    if (!isset($_SERVER['HTTP_HOST'])) return $url;
-    $parsed = parse_url($url);
-    if (empty($parsed['host'])) return $url;
-    $current_host = $_SERVER['HTTP_HOST'];
-    if ($parsed['host'] === $current_host) return $url;
-    $new_scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    $new_path = isset($parsed['path']) && $parsed['path'] !== '' ? $parsed['path'] : '/';
-    $url = $new_scheme . '://' . $current_host . $new_path . (isset($parsed['query']) ? '?' . $parsed['query'] : '') . (isset($parsed['fragment']) ? '#' . $parsed['fragment'] : '');
-    return $url;
-}
-add_filter('home_url', 'neamob_fix_url_for_current_host', 5, 4);
-add_filter('site_url', 'neamob_fix_url_for_current_host', 5, 4);
-
-/**
- * Localhost: <base href> для корректного разрешения относительных ссылок в админке.
- * WordPress выводит href='upload.php' — без base они ведут на /upload.php вместо /wp-admin/upload.php.
- */
-function neamob_admin_base_tag() {
-    $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-    if ($host === 'localhost:8080' || $host === 'localhost' || strpos($host, '127.0.0.1') !== false) {
-        $base = admin_url();
-        echo '<base href="' . esc_url($base) . '">' . "\n";
-    }
-}
-add_action('admin_head', 'neamob_admin_base_tag', 1);
 
 /**
  * Theme Setup

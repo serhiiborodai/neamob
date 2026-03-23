@@ -52,47 +52,29 @@ $value_tags = get_field('value_tags');
     </div>
 </section>
 
-<!-- Logo Slider: партнёры из админки (Partner Logos → slider=1), fallback — файлы hp_color -->
+<!-- Logo Slider -->
 <?php
 $logo_slider_partners = neamob_get_partners_for_slider();
-$logos_dir = get_template_directory() . '/assets/logos/hp_color/';
-$logos_url = get_template_directory_uri() . '/assets/logos/hp_color/';
-$logo_files = empty($logo_slider_partners) ? array_filter(glob($logos_dir . '*.{png,svg,jpg,jpeg}', GLOB_BRACE) ?: []) : [];
-if (!empty($logo_files)) sort($logo_files);
-$has_logos = !empty($logo_slider_partners) || !empty($logo_files);
-
-if ($has_logos):
+if (!empty($logo_slider_partners)):
 ?>
     <section class="logo-slider">
         <div class="logo-slider__bg"></div>
         <div class="logo-slider__track">
-            <?php for ($copy = 0; $copy < 2; $copy++): ?>
             <div class="logo-slider__group">
-                <?php if (!empty($logo_slider_partners)): foreach ($logo_slider_partners as $p):
-                    $pid = $p->ID;
-                    $logo = get_field('partner_logo', $pid) ?: get_post_meta($pid, 'partner_logo', true);
-                    $logo_img = is_array($logo) ? ($logo['url'] ?? '') : ($logo ?: '');
-                    if (!$logo_img) continue;
-                    $partner_url = get_field('partner_url', $pid) ?: get_post_meta($pid, 'partner_url', true);
-                    $alt = esc_attr($p->post_title);
-                    $img_tag = '<img src="' . esc_url($logo_img) . '" alt="' . $alt . '">';
+                <?php foreach ($logo_slider_partners as $p):
+                    $logo_url = get_field('partner_logo', $p->ID);
+                    if (!$logo_url) continue;
+                    $partner_url = get_field('partner_url', $p->ID);
                 ?>
                 <div class="logo-slider__item">
                     <?php if ($partner_url): ?>
-                        <a href="<?php echo esc_url($partner_url); ?>" target="_blank" rel="noopener noreferrer"><?php echo $img_tag; ?></a>
+                        <a href="<?php echo esc_url($partner_url); ?>" target="_blank" rel="noopener noreferrer"><img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>"></a>
                     <?php else: ?>
-                        <?php echo $img_tag; ?>
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
                     <?php endif; ?>
                 </div>
-                <?php endforeach; wp_reset_postdata();
-                else: foreach ($logo_files as $path):
-                    $fn = basename($path); ?>
-                <div class="logo-slider__item">
-                    <img src="<?php echo esc_url($logos_url . rawurlencode($fn)); ?>" alt="<?php echo esc_attr(pathinfo($fn, PATHINFO_FILENAME)); ?>">
-                </div>
-                <?php endforeach; endif; ?>
+                <?php endforeach; ?>
             </div>
-            <?php endfor; ?>
         </div>
     </section>
 <?php endif; ?>
@@ -149,22 +131,20 @@ if ($services->have_posts()):
                 </div>
                 <div class="services-section__media">
                     <?php
-                    $services->rewind_posts();
+                    $page_to_cpt = [20 => 38, 21 => 39, 22 => 40, 23 => 41];
+                    $cpt_ids = array_values($page_to_cpt);
                     $idx = 0;
-                    while ($services->have_posts()):
-                        $services->the_post();
-                        $accordion_img = get_field('service_accordion_image');
-                        $img_url = is_array($accordion_img) ? ($accordion_img['url'] ?? '') : ($accordion_img ?: '');
-                        if (!$img_url) $img_url = get_the_post_thumbnail_url(null, 'medium_large');
+                    foreach ($cpt_ids as $cpt_id):
+                        $img_url = get_the_post_thumbnail_url($cpt_id, 'medium_large');
                         ?>
                         <div class="services-section__image<?php echo $idx === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $idx; ?>">
                             <?php if ($img_url): ?>
-                                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr(get_the_title($cpt_id)); ?>">
                             <?php else: ?>
                                 <div class="services-section__placeholder" aria-hidden="true"></div>
                             <?php endif; ?>
                         </div>
-                    <?php $idx++; endwhile; ?>
+                    <?php $idx++; endforeach; ?>
                 </div>
             </div>
         </div>
@@ -486,7 +466,14 @@ $has_partners = !empty($partner_cards);
             ?>
             <div class="<?php echo esc_attr($card_class); ?>">
                 <div class="partner-card__logo">
-                    <?php if ($logo_url): ?><img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>"><?php endif; ?>
+                    <?php if ($logo_url): 
+                        $partner_url = get_field('partner_url', $p->ID);
+                        if ($partner_url): ?>
+                            <a href="<?php echo esc_url($partner_url); ?>" target="_blank" rel="noopener noreferrer"><img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>"></a>
+                        <?php else: ?>
+                            <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </div>
                 <?php if ($card_type === 'video'): 
                     $thumb = get_field('partner_video_thumb', $p->ID) ?: get_template_directory_uri() . '/assets/images/power.png';
@@ -515,7 +502,7 @@ $has_partners = !empty($partner_cards);
             <?php $card_index++; endforeach; wp_reset_postdata();
             else: /* Fallback to original if no partners in admin */ ?>
             <div class="partner-card">
-                <div class="partner-card__logo"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p1.png" alt="Vokal"></div>
+                <div class="partner-card__logo"><a href="https://www.vokal.io/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p1.png" alt="Vokal"></a></div>
                 <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-1.png" alt="Vokal office"></div>
                 <p class="partner-card__text">Vokal is a digital agency driving measurable growth through strategic digital value creation and performance marketing.</p>
             </div>
@@ -528,9 +515,9 @@ $has_partners = !empty($partner_cards);
                     Download case study
                 </a>
             </div>
-            <div class="partner-card partner-card--video">
-                <div class="partner-card__logo"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper"></div>
-                <div class="partner-card__video" id="partner-video-0"><div class="partner-card__thumbnail" data-video-id="" onclick="neamobPlayPartnerVideo(this)"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/power.png" alt="Video thumbnail"></div></div>
+            <div class="partner-card">
+                <div class="partner-card__logo"><a href="https://www.snappper.com/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper"></a></div>
+                <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/power.png" alt="Snappper"></div>
                 <p class="partner-card__text">Snappper is an award-winning creative and video production agency crafting engaging branded content with proven reach and results.</p>
             </div>
             <?php endif; ?>
