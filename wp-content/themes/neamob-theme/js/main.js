@@ -484,7 +484,7 @@
             });
         });
 
-        ['wpcf7submit', 'wpcf7mailsent', 'wpcf7mailfailed', 'wpcf7spam'].forEach(function(eventName) {
+        ['wpcf7submit', 'wpcf7mailsent', 'wpcf7mailfailed', 'wpcf7spam', 'wpcf7invalid'].forEach(function(eventName) {
             document.addEventListener(eventName, function(ev) {
                 var unitTag = ev.detail && ev.detail.unitTag;
                 var wpcf7El = unitTag ? document.querySelector('#' + unitTag.replace(/^#/, '')) : document.querySelector('.wpcf7');
@@ -509,6 +509,8 @@
                     if (textEl) textEl.textContent = "We couldn't submit your request. Please try again.";
                     submitWrap.classList.add('is-error');
                     submitBtn.style.display = 'none';
+                } else if (eventName === 'wpcf7invalid' || eventName === 'wpcf7submit') {
+                    submitBtn.style.display = '';
                 }
             });
         });
