@@ -62,7 +62,7 @@ $blocks = get_field('portfolio_blocks');
 
     <!-- Portfolio Blocks -->
     <?php if ($blocks): foreach ($blocks as $block): ?>
-    <section class="portfolio-block">
+    <section class="portfolio-block" id="<?php echo esc_attr(sanitize_title($block['block_label'])); ?>">
         <div class="container">
             <div class="portfolio-block__layout <?php echo $block['block_layout'] === 'video' ? 'portfolio-block__layout--video' : ''; ?>">
                 <div class="portfolio-block__content">

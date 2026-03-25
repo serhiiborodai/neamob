@@ -35,9 +35,9 @@
                             <a href="<?php echo esc_url(home_url('/portfolio/')); ?>">Portfolio</a>
                         </h4>
                         <ul class="footer-column__links">
-                            <li><a href="<?php echo esc_url(home_url('/portfolio/creative-showcase/')); ?>">Creative Showcase</a></li>
-                            <li><a href="<?php echo esc_url(home_url('/portfolio/web-projects/')); ?>">Web Projects</a></li>
-                            <li><a href="<?php echo esc_url(home_url('/portfolio/social-media-campaigns/')); ?>">Social Media Campaigns</a></li>
+                            <li><a href="<?php echo esc_url(home_url('/portfolio/#branding')); ?>">Creative Showcase</a></li>
+                            <li><a href="<?php echo esc_url(home_url('/portfolio/#web-projects')); ?>">Web Projects</a></li>
+                            <li><a href="<?php echo esc_url(home_url('/portfolio/#social-media-campaigns')); ?>">Social Media Campaigns</a></li>
                         </ul>
                     </div>
 
@@ -62,13 +62,11 @@
                     <?php
                     $footer_email = neamob_get_theme_option('footer_email', 'info@neamob.com');
                     $social_fb = neamob_get_theme_option('footer_social_facebook', 'https://facebook.com/neamob');
-                    $social_ig = neamob_get_theme_option('footer_social_instagram', 'https://instagram.com/neamob');
+                    $social_ig = neamob_get_theme_option('footer_social_instagram', 'https://www.instagram.com/neamob.tech/');
                     $social_li = neamob_get_theme_option('footer_social_linkedin', 'https://linkedin.com/company/neamob');
                     ?>
                     <div class="footer-column">
-                        <h4 class="footer-column__title">
-                            <a href="<?php echo esc_url(home_url('/contact/')); ?>">Connect</a>
-                        </h4>
+                        <h4 class="footer-column__title">Connect</h4>
                         <ul class="footer-column__links">
                             <li><a href="<?php echo esc_url(home_url('/contact/')); ?>">Let's Chat</a></li>
                             <?php if ($footer_email): ?><li><a href="mailto:<?php echo esc_attr($footer_email); ?>"><?php echo esc_html($footer_email); ?></a></li><?php endif; ?>
