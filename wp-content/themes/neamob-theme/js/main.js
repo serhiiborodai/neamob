@@ -680,10 +680,12 @@
 
         var backdrop = overlay.querySelector('.case-study-form-overlay__backdrop');
         var closeBtn = overlay.querySelector('.case-study-form-overlay__close');
-        var REDIRECT_URL = 'https://docs.google.com/presentation/d/1Uu3wqB5EI-SIGIweGL30J6Uk2z_lvYLWAd4KijiZACo/edit?slide=id.g29fd362bea0_0_154#slide=id.g29fd362bea0_0_154';
+        var activeRedirectUrl = '';
 
         function openForm(e) {
             e.preventDefault();
+            var btn = e.currentTarget;
+            activeRedirectUrl = btn.getAttribute('data-redirect-url') || '';
             overlay.classList.add('is-active');
             document.body.style.overflow = 'hidden';
         }
@@ -711,9 +713,10 @@
             if (!formEl) return;
             var unitTag = ev.detail && ev.detail.unitTag;
             if (unitTag && formEl.id === unitTag.replace(/^#/, '')) {
+                var url = activeRedirectUrl;
                 setTimeout(function () {
                     closeForm();
-                    window.open(REDIRECT_URL, '_blank');
+                    if (url) window.open(url, '_blank');
                 }, 500);
             }
         });

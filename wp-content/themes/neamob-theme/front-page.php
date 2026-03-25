@@ -496,10 +496,19 @@ $has_partners = !empty($partner_cards);
                     $is_case_study = (strpos($cta['url'], 'docs.google.com/presentation') !== false);
                 ?>
                 <?php if ($is_case_study): ?>
-                <button type="button" class="partner-card__cta" data-open-case-study-form>
-                    <span class="partner-card__cta-dot"></span>
-                    <?php echo esc_html($cta['title'] ?: 'Download case study'); ?>
-                </button>
+                <div class="partner-card__downloads">
+                    <span class="partner-card__downloads-label"><?php echo esc_html($cta['title'] ?: 'Download case study'); ?></span>
+                    <div class="partner-card__downloads-buttons">
+                        <button type="button" class="partner-card__download-btn" data-open-case-study-form data-redirect-url="https://drive.google.com/file/d/1grv4J3BA92UEglwit5LaFVnm0XzhP-bG/view">
+                            <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.076 14.3571H9.18743C10.5737 14.3571 11.2634 13.654 11.2634 12.2611V6.18086H6.41514C5.558 6.18086 5.15629 5.77228 5.15629 4.91514V0H2.076C0.696572 0 0 0.709714 0 2.10286V12.2611C0 13.6606 0.696572 14.3571 2.076 14.3571ZM6.43543 5.26343H11.1897C11.1429 4.98886 10.9486 4.72086 10.634 4.39286L6.93743 0.636286C6.62943 0.314857 6.34829 0.120571 6.06686 0.0734286V4.902C6.06686 5.14286 6.19429 5.26343 6.43543 5.26343Z" fill="currentColor"/></svg>
+                            Illumin
+                        </button>
+                        <button type="button" class="partner-card__download-btn" data-open-case-study-form data-redirect-url="<?php echo esc_url($cta['url']); ?>">
+                            <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.076 14.3571H9.18743C10.5737 14.3571 11.2634 13.654 11.2634 12.2611V6.18086H6.41514C5.558 6.18086 5.15629 5.77228 5.15629 4.91514V0H2.076C0.696572 0 0 0.709714 0 2.10286V12.2611C0 13.6606 0.696572 14.3571 2.076 14.3571ZM6.43543 5.26343H11.1897C11.1429 4.98886 10.9486 4.72086 10.634 4.39286L6.93743 0.636286C6.62943 0.314857 6.34829 0.120571 6.06686 0.0734286V4.902C6.06686 5.14286 6.19429 5.26343 6.43543 5.26343Z" fill="currentColor"/></svg>
+                            NeaMob
+                        </button>
+                    </div>
+                </div>
                 <?php else: ?>
                 <a href="<?php echo esc_url($cta['url']); ?>" class="partner-card__cta" <?php echo !empty($cta['target']) ? 'target="' . esc_attr($cta['target']) . '"' : ''; ?>>
                     <span class="partner-card__cta-dot"></span>
@@ -516,13 +525,22 @@ $has_partners = !empty($partner_cards);
                 <p class="partner-card__text">Vokal is a digital agency driving measurable growth through strategic digital value creation and performance marketing.</p>
             </div>
             <div class="partner-card">
-                <div class="partner-card__logo"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners"></div>
+                <div class="partner-card__logo"><a href="https://illumin.com/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners"></a></div>
                 <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-2.png" alt="illumin platform"></div>
                 <p class="partner-card__text">illumin is a journey advertising platform that helps brands plan, activate, and optimize digital campaigns across channels with real-time insights.</p>
-                <button type="button" class="partner-card__cta" data-open-case-study-form>
-                    <span class="partner-card__cta-dot"></span>
-                    Download case study
-                </button>
+                <div class="partner-card__downloads">
+                    <span class="partner-card__downloads-label">Download case study</span>
+                    <div class="partner-card__downloads-buttons">
+                        <button type="button" class="partner-card__download-btn" data-open-case-study-form data-redirect-url="https://drive.google.com/file/d/1grv4J3BA92UEglwit5LaFVnm0XzhP-bG/view">
+                            <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.076 14.3571H9.18743C10.5737 14.3571 11.2634 13.654 11.2634 12.2611V6.18086H6.41514C5.558 6.18086 5.15629 5.77228 5.15629 4.91514V0H2.076C0.696572 0 0 0.709714 0 2.10286V12.2611C0 13.6606 0.696572 14.3571 2.076 14.3571ZM6.43543 5.26343H11.1897C11.1429 4.98886 10.9486 4.72086 10.634 4.39286L6.93743 0.636286C6.62943 0.314857 6.34829 0.120571 6.06686 0.0734286V4.902C6.06686 5.14286 6.19429 5.26343 6.43543 5.26343Z" fill="currentColor"/></svg>
+                            Illumin
+                        </button>
+                        <button type="button" class="partner-card__download-btn" data-open-case-study-form data-redirect-url="https://docs.google.com/presentation/d/1Uu3wqB5EI-SIGIweGL30J6Uk2z_lvYLWAd4KijiZACo/edit?slide=id.g29fd362bea0_0_154#slide=id.g29fd362bea0_0_154">
+                            <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.076 14.3571H9.18743C10.5737 14.3571 11.2634 13.654 11.2634 12.2611V6.18086H6.41514C5.558 6.18086 5.15629 5.77228 5.15629 4.91514V0H2.076C0.696572 0 0 0.709714 0 2.10286V12.2611C0 13.6606 0.696572 14.3571 2.076 14.3571ZM6.43543 5.26343H11.1897C11.1429 4.98886 10.9486 4.72086 10.634 4.39286L6.93743 0.636286C6.62943 0.314857 6.34829 0.120571 6.06686 0.0734286V4.902C6.06686 5.14286 6.19429 5.26343 6.43543 5.26343Z" fill="currentColor"/></svg>
+                            NeaMob
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="partner-card">
                 <div class="partner-card__logo"><a href="https://www.snappper.com/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper"></a></div>

@@ -1462,7 +1462,7 @@ body.page-simple .site-main .page-content ul li:before {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 .our-partners .partner-card__logo {
   margin-bottom: 28px;
@@ -1473,6 +1473,9 @@ body.page-simple .site-main .page-content ul li:before {
 .our-partners .partner-card__text {
   font-size: 18px;
   line-height: 1.5;
+}
+.our-partners .partner-card__image {
+  margin-bottom: 11px;
 }
 .our-partners .partner-card__cta {
   display: inline-block;
@@ -1498,6 +1501,44 @@ body.page-simple .site-main .page-content ul li:before {
   background: #0094ff;
   top: 8px;
   left: 4px;
+}
+.our-partners .partner-card__downloads {
+  margin: 21px 0 0;
+}
+.our-partners .partner-card__downloads-label {
+  display: block;
+  color: #fff;
+  font-weight: 500;
+  font-size: 18px;
+  text-transform: capitalize;
+  margin-bottom: 8px;
+}
+.our-partners .partner-card__downloads-buttons {
+  display: flex;
+  gap: 10px;
+}
+.our-partners .partner-card__download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: #fff;
+  border-radius: 4px;
+  color: #000;
+  padding: 3px 5px 3px;
+  font-size: 16px;
+  line-height: 1.25;
+}
+.our-partners .partner-card__download-btn svg {
+  flex-shrink: 0;
+  color: #0094ff;
+}
+.our-partners .partner-card__download-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 
 .faq-section {
@@ -4689,3 +4730,5 @@ body.page-simple .site-main .page-content ul li:before {
     display: none;
   }
 }
+
+/*# sourceMappingURL=style.css.map */

@@ -1499,6 +1499,40 @@ body.page-simple .site-main .page-content ul li:before {
   top: 8px;
   left: 4px;
 }
+.our-partners .partner-card__downloads {
+  margin: 21px 0 13px;
+}
+.our-partners .partner-card__downloads-label {
+  display: block;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+.our-partners .partner-card__downloads-buttons {
+  display: flex;
+  gap: 10px;
+}
+.our-partners .partner-card__download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 8px 16px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.our-partners .partner-card__download-btn svg {
+  flex-shrink: 0;
+}
+.our-partners .partner-card__download-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
 
 .faq-section {
   margin-bottom: 41px;
