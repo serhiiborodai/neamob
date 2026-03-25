@@ -31,7 +31,7 @@ if (empty($challenge) && empty($solution) && empty($results)) {
                     <h1 class="single-case__title"><?php the_title(); ?></h1>
                     
                     <?php if ($case_excerpt): ?>
-                        <p class="single-case__excerpt"><?php echo esc_html($case_excerpt); ?></p>
+                        <p class="single-case__excerpt"><?php echo wp_kses_post($case_excerpt); ?></p>
                     <?php endif; ?>
 
                     <?php if ($tags): ?>

@@ -966,6 +966,14 @@ function neamob_register_acf_fields() {
                 'name' => 'case_excerpt',
                 'type' => 'textarea',
                 'rows' => 3,
+                'new_lines' => 'br',
+            ],
+            [
+                'key' => 'field_case_read_more_url',
+                'label' => 'Read More URL',
+                'name' => 'case_read_more_url',
+                'type' => 'text',
+                'instructions' => 'Custom URL for the "Read More" link. Leave empty to use the default case study page.',
             ],
             [
                 'key' => 'field_case_tags',
@@ -1045,6 +1053,32 @@ function neamob_register_acf_fields() {
                 'type' => 'wysiwyg',
                 'toolbar' => 'basic',
                 'media_upload' => 0,
+            ],
+            [
+                'key' => 'field_case_show_on_homepage',
+                'label' => 'Show on Homepage',
+                'name' => 'show_on_homepage',
+                'type' => 'true_false',
+                'ui' => 1,
+                'instructions' => 'If enabled, this case study will appear on the homepage and will be hidden from the Case Studies archive page.',
+            ],
+            [
+                'key' => 'field_case_homepage_description',
+                'label' => 'Homepage Description',
+                'name' => 'homepage_description',
+                'type' => 'textarea',
+                'rows' => 3,
+                'new_lines' => 'br',
+                'instructions' => 'Text shown on the homepage card. Only used when "Show on Homepage" is enabled.',
+                'conditional_logic' => [
+                    [
+                        [
+                            'field' => 'field_case_show_on_homepage',
+                            'operator' => '==',
+                            'value' => '1',
+                        ],
+                    ],
+                ],
             ],
         ],
         'location' => [

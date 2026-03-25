@@ -10,6 +10,18 @@ $case_studies = new WP_Query([
     'posts_per_page' => -1,
     'orderby' => 'date',
     'order' => 'DESC',
+    'meta_query' => [
+        'relation' => 'OR',
+        [
+            'key' => 'show_on_homepage',
+            'value' => '1',
+            'compare' => '!=',
+        ],
+        [
+            'key' => 'show_on_homepage',
+            'compare' => 'NOT EXISTS',
+        ],
+    ],
 ]);
 
 $first_post = null;
@@ -38,6 +50,8 @@ if ($case_studies->have_posts()) {
             $tags = get_field('case_tags', $first_post->ID) ?: [];
             $excerpt = get_field('case_excerpt', $first_post->ID) ?: get_the_excerpt($first_post->ID);
             $image = get_the_post_thumbnail_url($first_post->ID, 'large');
+            $custom_url = get_field('case_read_more_url', $first_post->ID);
+            $link_url = $custom_url ?: get_permalink($first_post->ID);
         ?>
         <!-- Featured Case Study -->
         <article class="case-featured">
@@ -60,10 +74,10 @@ if ($case_studies->have_posts()) {
                 <h2 class="case-featured__title"><?php echo esc_html($first_post->post_title); ?></h2>
                 
                 <?php if ($excerpt): ?>
-                    <p class="case-featured__excerpt"><?php echo esc_html($excerpt); ?></p>
+                    <p class="case-featured__excerpt"><?php echo wp_kses_post($excerpt); ?></p>
                 <?php endif; ?>
                 
-                <a href="<?php echo get_permalink($first_post->ID); ?>" class="case-featured__link">
+                <a href="<?php echo esc_url($link_url); ?>" class="case-featured__link"<?php echo $custom_url ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
                     <span class="link-dot"></span>
                     Learn More
                 </a>
@@ -78,9 +92,12 @@ if ($case_studies->have_posts()) {
                 $tags = get_field('case_tags', $post->ID) ?: [];
                 $excerpt = get_field('case_excerpt', $post->ID) ?: get_the_excerpt($post->ID);
                 $image = get_the_post_thumbnail_url($post->ID, 'medium_large');
+                $custom_url = get_field('case_read_more_url', $post->ID);
+                $card_link = $custom_url ?: get_permalink($post->ID);
+                $link_attrs = $custom_url ? ' target="_blank" rel="noopener noreferrer"' : '';
             ?>
             <article class="case-card">
-                <a href="<?php echo get_permalink($post->ID); ?>" class="case-card__image-link">
+                <a href="<?php echo esc_url($card_link); ?>" class="case-card__image-link"<?php echo $link_attrs; ?>>
                     <?php if ($image): ?>
                         <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($post->post_title); ?>" class="case-card__image">
                     <?php else: ?>
@@ -90,11 +107,11 @@ if ($case_studies->have_posts()) {
                 
                 <div class="case-card__content">
                     <h3 class="case-card__title">
-                        <a href="<?php echo get_permalink($post->ID); ?>"><?php echo esc_html($post->post_title); ?></a>
+                        <a href="<?php echo esc_url($card_link); ?>"<?php echo $link_attrs; ?>><?php echo esc_html($post->post_title); ?></a>
                     </h3>
                     
                     <?php if ($excerpt): ?>
-                        <p class="case-card__excerpt"><?php echo esc_html($excerpt); ?></p>
+                        <p class="case-card__excerpt"><?php echo wp_kses_post($excerpt); ?></p>
                     <?php endif; ?>
                     
                     <?php if ($tags): ?>

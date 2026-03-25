@@ -244,7 +244,16 @@ endif;
 
 <!-- Case Studies Section -->
 <?php
-$case_studies = neamob_get_case_studies(['posts_per_page' => 2]);
+$case_studies = neamob_get_case_studies([
+    'posts_per_page' => -1,
+    'meta_query' => [
+        [
+            'key' => 'show_on_homepage',
+            'value' => '1',
+            'compare' => '=',
+        ],
+    ],
+]);
 if ($case_studies->have_posts()):
     ?>
     <section class="case-studies-section">
@@ -283,9 +292,25 @@ if ($case_studies->have_posts()):
                             <?php endif; ?>
                         </div>
                         <div class="case-card__content">
-                            <p class="case-card__text"><?php echo wp_trim_words(get_the_excerpt(), 50); ?></p>
+                            <?php
+                            $hp_desc = get_field('homepage_description');
+                            if (!$hp_desc) {
+                                $hp_desc = get_field('case_excerpt');
+                            }
+                            if (!$hp_desc) {
+                                $hp_desc = wp_trim_words(get_the_excerpt(), 50);
+                            }
+                            ?>
+                            <p class="case-card__text"><?php echo wp_kses_post($hp_desc); ?></p>
+                            <?php
+                            $read_more_url = get_field('case_read_more_url');
+                            if ($read_more_url): ?>
+                                <a href="<?php echo esc_attr($read_more_url); ?>" class="case-card__link">
+                                    <span class="link-dot"></span>
+                                    Read More
+                                </a>
+                            <?php endif; ?>
                         </div>
-                        <a href="<?php the_permalink(); ?>" class="case-card__link">Read More</a>
                     </article>
                 <?php endwhile; ?>
             </div>

@@ -21,6 +21,20 @@ function neamob_admin_base_tag() {
 }
 add_action('admin_head', 'neamob_admin_base_tag', 1);
 
+/**
+ * Return 404 for homepage-only case studies (no individual page).
+ */
+function neamob_block_homepage_case_studies() {
+    if (is_singular('case_study') && get_field('show_on_homepage', get_the_ID())) {
+        global $wp_query;
+        $wp_query->set_404();
+        status_header(404);
+        nocache_headers();
+        include get_404_template();
+        exit;
+    }
+}
+add_action('template_redirect', 'neamob_block_homepage_case_studies');
 
 /**
  * Theme Setup

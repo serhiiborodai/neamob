@@ -1153,6 +1153,7 @@ body.page-simple .site-main .page-content ul li:before {
   box-sizing: border-box;
   color: #fff;
   position: relative;
+  flex: 0 0 50%;
 }
 .case-studies-grid .case-card__logo {
   margin-bottom: 51px;
@@ -1202,10 +1203,11 @@ body.page-simple .site-main .page-content ul li:before {
   border-radius: 6px;
 }
 .case-studies-grid .case-card__content {
-  margin-bottom: 41px;
+  margin-bottom: 0;
 }
 .case-studies-grid .case-card__text {
   line-height: 1.35;
+  margin-bottom: 30px;
 }
 .case-studies-grid .case-card__link {
   display: inline-block;
@@ -2193,6 +2195,9 @@ body.page-simple .site-main .page-content ul li:before {
   }
   .blog-section .blog-grid {
     justify-content: initial;
+  }
+  .case-studies-grid {
+    flex-direction: column;
   }
 }
 @media screen and (max-width: 779px) {
