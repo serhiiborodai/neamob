@@ -145,7 +145,7 @@ if (!$beliefs) {
                         // Цвет: сначала из департамента (taxonomy term), иначе из персоны
                         $term_color = $dept_term ? get_field('dept_badge_color', 'team_department_' . $dept_term->term_id) : null;
                         $person_color = get_field('team_department_color', $post_id);
-                        $valid_colors = ['green', 'blue', 'purple', 'orange'];
+                        $valid_colors = ['none', 'green', 'blue', 'purple', 'orange'];
                         $dept_color = ($term_color && in_array($term_color, $valid_colors, true))
                             ? $term_color
                             : (($person_color && in_array($person_color, $valid_colors, true)) ? $person_color : 'green');

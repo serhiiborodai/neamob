@@ -2873,6 +2873,10 @@ body.page-simple .site-main .page-content ul li:before {
 .about-team .team-card__dept--orange {
   background: #ff9800;
 }
+.about-team .team-card__dept--none {
+  opacity: 0;
+  pointer-events: none;
+}
 
 .about-join {
   padding: 120px 0;

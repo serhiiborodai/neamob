@@ -495,6 +495,7 @@ function neamob_register_acf_fields() {
                 'name' => 'team_department_color',
                 'type' => 'select',
                 'choices' => [
+                    'none' => 'None',
                     'green' => 'Green (Campaign Management)',
                     'blue' => 'Blue (Creative & Design)',
                     'purple' => 'Purple (Analytics & Reporting)',
@@ -544,6 +545,7 @@ function neamob_register_acf_fields() {
                 'name' => 'dept_badge_color',
                 'type' => 'select',
                 'choices' => [
+                    'none' => 'None',
                     'green' => 'Green (Campaign Management)',
                     'blue' => 'Blue (Creative & Design)',
                     'purple' => 'Purple (Analytics & Reporting)',

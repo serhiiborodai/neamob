@@ -289,6 +289,11 @@
       &--orange {
         background: #ff9800;
       }
+
+      &--none {
+        opacity: 0;
+        pointer-events: none;
+      }
     }
   }
 }
