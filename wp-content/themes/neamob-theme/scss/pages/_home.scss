@@ -550,8 +550,10 @@
     }
 
     .comparison-image {
-        //border: 1px solid #d8e3eb;
-        border-radius: 8px;
+        img {
+            width: 100%;
+            height: auto;
+        }
     }
 }
 
@@ -1573,5 +1575,9 @@
         margin: 0 auto;
         width: 340px;
         max-width: 100%;
+    }
+
+    #case-study-form-overlay .case-study-form-overlay__title {
+        font-size: 32px;
     }
 }

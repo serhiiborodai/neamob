@@ -298,6 +298,10 @@
         &__image {
             flex: 0 0 510px;
             height: 351px;
+
+            img {
+                margin-top: -40px;
+            }
         }
 
         &__content {
@@ -437,6 +441,10 @@
 
                 &__image {
                     height: auto;
+
+                    img {
+                        margin-top: 0;
+                    }
                 }
 
                 &__content {

@@ -1311,8 +1311,9 @@ body.page-simple .site-main .page-content ul li:before {
 .comparison-section .comparison-grid__row svg {
   width: 25px;
 }
-.comparison-section .comparison-image {
-  border-radius: 8px;
+.comparison-section .comparison-image img {
+  width: 100%;
+  height: auto;
 }
 
 .blog-section {
@@ -1818,6 +1819,49 @@ body.page-simple .site-main .page-content ul li:before {
   font-weight: 600;
 }
 
+#case-study-form-overlay {
+  color: #fff;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 999999;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+#case-study-form-overlay.is-active {
+  display: flex;
+}
+#case-study-form-overlay .case-study-form-overlay__form {
+  max-width: 96%;
+}
+#case-study-form-overlay .case-study-form-overlay__close {
+  position: absolute;
+  background: transparent;
+  font-size: 40px;
+  color: #fff;
+  border: 2px solid;
+  border-radius: 4px;
+  right: 20px;
+  top: 20px;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 0;
+}
+#case-study-form-overlay .case-study-form-overlay__title {
+  font-size: 46px;
+  font-weight: 500;
+  margin-bottom: 13px;
+}
+#case-study-form-overlay .cf7-submit-wrap {
+  padding-top: 20px;
+}
+
 @media screen and (max-width: 1239px) {
   .services-section__media {
     display: none;
@@ -2134,6 +2178,9 @@ body.page-simple .site-main .page-content ul li:before {
     margin: 0 auto;
     width: 340px;
     max-width: 100%;
+  }
+  #case-study-form-overlay .case-study-form-overlay__title {
+    font-size: 32px;
   }
 }
 .careers-hero .container {
@@ -4207,6 +4254,9 @@ body.page-simple .site-main .page-content ul li:before {
   flex: 0 0 510px;
   height: 351px;
 }
+.bi-page .bi-apart__image img {
+  margin-top: -40px;
+}
 .bi-page .bi-apart__content {
   padding: 62px 0 0;
 }
@@ -4313,6 +4363,9 @@ body.page-simple .site-main .page-content ul li:before {
   }
   .bi-page .bi-section .bi-apart__image {
     height: auto;
+  }
+  .bi-page .bi-section .bi-apart__image img {
+    margin-top: 0;
   }
   .bi-page .bi-section .bi-apart__content {
     padding: 22px 0 64px;

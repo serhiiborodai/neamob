@@ -365,14 +365,14 @@ endif;
 <!-- Why Choose Us - Comparison Section -->
 <?php
 $comparison_title = get_field('comparison_title') ?: 'Why choose NeaMob Tech?';
-$comparison_image = get_field('comparison_image') ?: get_template_directory_uri() . '/assets/images/table.png';
+$comparison_image = get_field('comparison_image') ?: get_template_directory_uri() . '/assets/images/comparison-table.webp';
 ?>
 <section class="comparison-section">
     <div class="container">
         <h2 class="comparison-section__title"><?php echo esc_html($comparison_title); ?></h2>
         <div class="comparison-image">
             <picture>
-                <source media="(max-width: 639px)" srcset="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/compare-mobile.jpeg">
+                <source media="(max-width: 639px)" srcset="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/comparison-table-mobile.webp">
                 <img src="<?php echo esc_url($comparison_image); ?>" alt="<?php echo esc_attr($comparison_title); ?>">
             </picture>
         </div>

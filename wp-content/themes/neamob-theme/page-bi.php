@@ -183,7 +183,7 @@ $apart_image = get_field('bi_apart_image');
                         <?php if ($apart_image): ?>
                             <img src="<?php echo esc_url($apart_image['url']); ?>" alt="<?php echo esc_attr($apart_image['alt']); ?>">
                         <?php else: ?>
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi/apart-image.png" alt="What sets us apart">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi_set_us_apart.png" alt="What sets us apart">
                         <?php endif; ?>
                     </div>
                     <div class="bi-apart__content">
