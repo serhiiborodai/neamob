@@ -492,11 +492,20 @@ $has_partners = !empty($partner_cards);
                 </div>
                 <?php endif; ?>
                 <?php if ($desc): ?><p class="partner-card__text"><?php echo esc_html($desc); ?></p><?php endif; ?>
-                <?php if ($cta && !empty($cta['url'])): ?>
+                <?php if ($cta && !empty($cta['url'])): 
+                    $is_case_study = (strpos($cta['url'], 'docs.google.com/presentation') !== false);
+                ?>
+                <?php if ($is_case_study): ?>
+                <button type="button" class="partner-card__cta" data-open-case-study-form>
+                    <span class="partner-card__cta-dot"></span>
+                    <?php echo esc_html($cta['title'] ?: 'Download case study'); ?>
+                </button>
+                <?php else: ?>
                 <a href="<?php echo esc_url($cta['url']); ?>" class="partner-card__cta" <?php echo !empty($cta['target']) ? 'target="' . esc_attr($cta['target']) . '"' : ''; ?>>
                     <span class="partner-card__cta-dot"></span>
                     <?php echo esc_html($cta['title'] ?: 'Learn More'); ?>
                 </a>
+                <?php endif; ?>
                 <?php endif; ?>
             </div>
             <?php $card_index++; endforeach; wp_reset_postdata();
@@ -510,10 +519,10 @@ $has_partners = !empty($partner_cards);
                 <div class="partner-card__logo"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners"></div>
                 <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-2.png" alt="illumin platform"></div>
                 <p class="partner-card__text">illumin is a journey advertising platform that helps brands plan, activate, and optimize digital campaigns across channels with real-time insights.</p>
-                <a href="https://docs.google.com/presentation/d/1Uu3wqB5EI-SIGIweGL30J6Uk2z_lvYLWAd4KijiZACo/edit" class="partner-card__cta" target="_blank" rel="noopener noreferrer">
+                <button type="button" class="partner-card__cta" data-open-case-study-form>
                     <span class="partner-card__cta-dot"></span>
                     Download case study
-                </a>
+                </button>
             </div>
             <div class="partner-card">
                 <div class="partner-card__logo"><a href="https://www.snappper.com/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper"></a></div>
@@ -575,6 +584,21 @@ if ($faqs->have_posts()):
     wp_reset_postdata();
 endif;
 ?>
+
+<!-- Case Study Download Form (overlay) -->
+<div class="case-study-form-overlay" id="case-study-form-overlay">
+    <div class="case-study-form-overlay__backdrop"></div>
+    <div class="case-study-form-overlay__form">
+        <button type="button" class="case-study-form-overlay__close" aria-label="Close">&times;</button>
+        <h3 class="case-study-form-overlay__title">Download Case Study</h3>
+        <p class="case-study-form-overlay__text">Enter your details to access the presentation.</p>
+        <?php
+        if (class_exists('WPCF7')) {
+            echo do_shortcode('[contact-form-7 id="6261" title="Case Study Download"]');
+        }
+        ?>
+    </div>
+</div>
 
 <!-- Contact Form Section -->
 <?php get_template_part('template-parts/contact-form'); ?>

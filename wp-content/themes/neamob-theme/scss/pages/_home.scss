@@ -747,6 +747,11 @@
             font-weight: 500;
             font-size: 16px;
             margin: 21px 0 13px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            text-decoration: none;
 
             &:before {
                 content: '';
@@ -875,7 +880,8 @@
     }
 }
 
-.contact-form-section {
+.contact-form-section,
+.case-study-form-overlay {
     background: #061526;
 
     .container {
@@ -1101,6 +1107,55 @@
                 font-weight: 600;
             }
         }
+    }
+}
+
+#case-study-form-overlay {
+    color: #fff;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 999999;
+    align-items: center;
+    justify-content: center;
+    display: none;
+
+    &.is-active {
+        display: flex;
+    }
+
+    .case-study-form-overlay {
+        &__form {
+            max-width: 96%;
+        }
+        &__close {
+            position: absolute;
+            background: transparent;
+            font-size: 40px;
+            color: #fff;
+            border: 2px solid;
+            border-radius: 4px;
+            right: 20px;
+            top: 20px;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 0;
+        }
+
+        &__title {
+            font-size: 46px;
+            font-weight: 500;
+            margin-bottom: 13px;
+        }
+    }
+
+    .cf7-submit-wrap {
+        padding-top: 20px;
     }
 }
 

@@ -20,6 +20,7 @@
         initTestimonialsSlider();
         initFaqAccordion();
         initContactForm();
+        initCaseStudyForm();
     });
 
     function initLogoSliderClone() {
@@ -672,6 +673,51 @@
 
         return new Swiper(container, { ...defaultOptions, ...options });
     };
+
+    function initCaseStudyForm() {
+        var overlay = document.getElementById('case-study-form-overlay');
+        if (!overlay) return;
+
+        var backdrop = overlay.querySelector('.case-study-form-overlay__backdrop');
+        var closeBtn = overlay.querySelector('.case-study-form-overlay__close');
+        var REDIRECT_URL = 'https://docs.google.com/presentation/d/1Uu3wqB5EI-SIGIweGL30J6Uk2z_lvYLWAd4KijiZACo/edit?slide=id.g29fd362bea0_0_154#slide=id.g29fd362bea0_0_154';
+
+        function openForm(e) {
+            e.preventDefault();
+            overlay.classList.add('is-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeForm() {
+            overlay.classList.remove('is-active');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('[data-open-case-study-form]').forEach(function (btn) {
+            btn.addEventListener('click', openForm);
+        });
+
+        if (closeBtn) closeBtn.addEventListener('click', closeForm);
+        if (backdrop) backdrop.addEventListener('click', closeForm);
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && overlay.classList.contains('is-active')) {
+                closeForm();
+            }
+        });
+
+        document.addEventListener('wpcf7mailsent', function (ev) {
+            var formEl = overlay.querySelector('.wpcf7');
+            if (!formEl) return;
+            var unitTag = ev.detail && ev.detail.unitTag;
+            if (unitTag && formEl.id === unitTag.replace(/^#/, '')) {
+                setTimeout(function () {
+                    closeForm();
+                    window.open(REDIRECT_URL, '_blank');
+                }, 500);
+            }
+        });
+    }
 
 })();
 
