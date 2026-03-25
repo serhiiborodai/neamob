@@ -418,6 +418,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
     position: relative;
   }
   #masthead .site-header__inner .menu-item-has-children > .sub-menu {
+    border-radius: 0 0 4px 4px;
     position: absolute;
     z-index: 99;
     background: rgba(0, 0, 0, 0.9);
@@ -4655,6 +4656,32 @@ body.page-simple .site-main .page-content ul li:before {
 }
 .single-case__nav {
   display: none;
+}
+.single-case__post-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  margin-top: 16px;
+  border-top: 1px solid rgb(249, 250, 251);
+  margin-top: -41px;
+}
+.single-case__post-nav .case-post-nav__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Raleway", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.single-case__post-nav .case-post-nav__item:hover {
+  color: #111;
+}
+.single-case__post-nav .case-post-nav__item svg {
+  flex-shrink: 0;
 }
 .single-case__image-mobile {
   display: none;

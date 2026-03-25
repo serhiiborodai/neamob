@@ -30,7 +30,14 @@ function neamob_block_homepage_case_studies() {
         $wp_query->set_404();
         status_header(404);
         nocache_headers();
-        include get_404_template();
+        $template = get_404_template();
+        if ($template) {
+            include $template;
+        } else {
+            get_header();
+            echo '<main style="padding:80px 20px;text-align:center;"><h1>404 — Page not found</h1></main>';
+            get_footer();
+        }
         exit;
     }
 }

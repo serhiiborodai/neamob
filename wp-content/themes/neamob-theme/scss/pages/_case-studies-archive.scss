@@ -271,6 +271,36 @@
         display: none;
     }
 
+    &__post-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 0;
+        margin-top: 16px;
+        border-top: 1px solid rgb(249, 250, 251);
+        margin-top: -41px;
+
+        .case-post-nav__item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: #6b7280;
+            text-decoration: none;
+            transition: color 0.2s;
+
+            &:hover {
+                color: #111;
+            }
+
+            svg {
+                flex-shrink: 0;
+            }
+        }
+    }
+
     &__image-mobile {
         display: none;
     }

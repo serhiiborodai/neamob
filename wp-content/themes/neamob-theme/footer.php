@@ -35,7 +35,6 @@
                             <a href="<?php echo esc_url(home_url('/portfolio/')); ?>">Portfolio</a>
                         </h4>
                         <ul class="footer-column__links">
-                            <li><a href="<?php echo esc_url(home_url('/case-studies/')); ?>">Case Studies</a></li>
                             <li><a href="<?php echo esc_url(home_url('/portfolio/creative-showcase/')); ?>">Creative Showcase</a></li>
                             <li><a href="<?php echo esc_url(home_url('/portfolio/web-projects/')); ?>">Web Projects</a></li>
                             <li><a href="<?php echo esc_url(home_url('/portfolio/social-media-campaigns/')); ?>">Social Media Campaigns</a></li>

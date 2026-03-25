@@ -110,12 +110,24 @@ if (empty($challenge) && empty($solution) && empty($results)) {
                 <?php endif; ?>
 
                 <!-- Navigation -->
-                <nav class="single-case__nav">
-                    <?php
+                <?php
+                $prev_post = get_previous_post();
+                while ($prev_post && get_field('show_on_homepage', $prev_post->ID)) {
+                    $GLOBALS['post'] = $prev_post;
+                    setup_postdata($prev_post);
                     $prev_post = get_previous_post();
+                }
+                wp_reset_postdata();
+
+                $next_post = get_next_post();
+                while ($next_post && get_field('show_on_homepage', $next_post->ID)) {
+                    $GLOBALS['post'] = $next_post;
+                    setup_postdata($next_post);
                     $next_post = get_next_post();
-                    ?>
-                    
+                }
+                wp_reset_postdata();
+                ?>
+                <nav class="single-case__nav">
                     <a href="<?php echo get_post_type_archive_link('case_study'); ?>" class="case-nav-back">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -141,6 +153,32 @@ if (empty($challenge) && empty($solution) && empty($results)) {
                         <?php endif; ?>
                     </div>
                 </nav>
+
+                <?php if ($prev_post || $next_post): ?>
+                <nav class="single-case__post-nav">
+                    <?php if ($prev_post): ?>
+                        <a href="<?php echo get_permalink($prev_post->ID); ?>" class="case-post-nav__item case-post-nav__item--prev">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Previous post</span>
+                        </a>
+                    <?php else: ?>
+                        <span class="case-post-nav__item case-post-nav__item--prev"></span>
+                    <?php endif; ?>
+
+                    <?php if ($next_post): ?>
+                        <a href="<?php echo get_permalink($next_post->ID); ?>" class="case-post-nav__item case-post-nav__item--next">
+                            <span>Next post</span>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    <?php else: ?>
+                        <span class="case-post-nav__item case-post-nav__item--next"></span>
+                    <?php endif; ?>
+                </nav>
+                <?php endif; ?>
             </div>
         </div>
 
