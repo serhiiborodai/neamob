@@ -13,6 +13,14 @@ if (!defined('ABSPATH')) {
 // Include ACF fields registration
 require_once get_template_directory() . '/inc/acf-fields.php';
 
+/**
+ * Fix relative URLs in wp-admin by setting <base> to admin_url().
+ */
+function neamob_admin_base_tag() {
+    echo '<base href="' . esc_url(admin_url()) . '">' . "\n";
+}
+add_action('admin_head', 'neamob_admin_base_tag', 1);
+
 
 /**
  * Theme Setup
