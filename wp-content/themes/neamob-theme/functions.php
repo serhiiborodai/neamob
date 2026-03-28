@@ -135,11 +135,20 @@ function neamob_enqueue_scripts()
         true
     );
 
+    // Lenis smooth scroll
+    wp_enqueue_script(
+        'lenis-js',
+        'https://unpkg.com/lenis@1/dist/lenis.min.js',
+        [],
+        '1.0.0',
+        true
+    );
+
     // Theme custom JS
     wp_enqueue_script(
         'neamob-script',
         get_template_directory_uri() . '/js/main.js',
-        ['swiper-js'],
+        ['swiper-js', 'lenis-js'],
         wp_get_theme()->get('Version'),
         true
     );

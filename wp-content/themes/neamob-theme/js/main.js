@@ -6,10 +6,25 @@
 (function () {
     'use strict';
 
+    function initLenis() {
+        if (typeof Lenis === 'undefined') return;
+        var lenis = new Lenis({
+            duration: 1.2,
+            easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+            touchMultiplier: 2,
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+    }
+
     /**
      * Initialize when DOM is ready
      */
     document.addEventListener('DOMContentLoaded', function () {
+        initLenis();
         initLogoSliderClone();
         initSwiperSliders();
         initMobileMenu();
