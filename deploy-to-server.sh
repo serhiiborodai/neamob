@@ -3,6 +3,10 @@
 # Локальный скрипт деплоя. Запускай из корня проекта.
 # Загружает архив, SQL и deploy.sh на сервер и запускает деплой.
 #
+# Использование:
+#   ./deploy-to-server.sh          — полный деплой (сборка + код + БД + медиа)
+#   ./deploy-to-server.sh media    — только portfolio media
+#
 # Требуется: build/neamob.tar.gz, build/neamob.sql
 # Перед первым запуском: chmod +x deploy-to-server.sh
 #
@@ -11,13 +15,33 @@ set -e
 
 SSH_KEY="${SSH_KEY:-$HOME/.ssh/twyx-server}"
 SSH_HOST="${SSH_HOST:-ubuntu@185.233.119.8}"
+SSH_CMD="ssh -i $SSH_KEY"
+
+PORTFOLIO_LOCAL="wp-content/uploads/portfolio/"
+PORTFOLIO_REMOTE="/home/nb/public_html/nb.twyx.us/wp-content/uploads/portfolio/"
+
+sync_portfolio_media() {
+    if [ ! -d "$PORTFOLIO_LOCAL" ]; then
+        echo "Папка $PORTFOLIO_LOCAL не найдена, пропускаем."
+        return
+    fi
+    echo "Синхронизация portfolio media..."
+    rsync -avz --delete --exclude='._*' --exclude='.DS_Store' --progress -e "$SSH_CMD" "$PORTFOLIO_LOCAL" "${SSH_HOST}:${PORTFOLIO_REMOTE}"
+    echo "Portfolio media синхронизированы."
+}
+
+# Режим «только медиа»
+if [ "${1:-}" = "media" ]; then
+    sync_portfolio_media
+    echo "Готово."
+    exit 0
+fi
 
 BUILD_DIR="build"
 ARCHIVE="$BUILD_DIR/neamob.tar.gz"
 SQL="$BUILD_DIR/neamob.sql"
 DEPLOY_SH="$BUILD_DIR/deploy.sh"
 
-# Всегда собираем перед деплоем (npm run build + экспорт БД + архив)
 echo "Сборка..."
 ./build.sh
 
@@ -39,16 +63,8 @@ echo "Загрузка на сервер..."
 scp -i "$SSH_KEY" "$ARCHIVE" "$SQL" "$DEPLOY_SH" "${SSH_HOST}:/tmp/"
 
 echo "Запуск деплоя..."
-ssh -i "$SSH_KEY" "$SSH_HOST" "sudo bash /tmp/deploy.sh"
+$SSH_CMD "$SSH_HOST" "sudo bash /tmp/deploy.sh"
 
-# Portfolio media (большие файлы вне git, rsync по дельте)
-PORTFOLIO_LOCAL="wp-content/uploads/portfolio/"
-PORTFOLIO_REMOTE="/var/www/html/wp-content/uploads/portfolio/"
-
-if [ -d "$PORTFOLIO_LOCAL" ]; then
-    echo "Синхронизация portfolio media..."
-    rsync -avz --progress -e "ssh -i $SSH_KEY" "$PORTFOLIO_LOCAL" "${SSH_HOST}:${PORTFOLIO_REMOTE}"
-    echo "Portfolio media синхронизированы."
-fi
+sync_portfolio_media
 
 echo "Готово."

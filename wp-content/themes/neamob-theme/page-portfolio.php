@@ -30,6 +30,7 @@ foreach ($media_folders as $folder => $tab_category) {
     if (!is_dir($dir)) continue;
     $files = array_diff(scandir($dir), ['.', '..']);
     foreach ($files as $file) {
+        if (strpos($file, '._') === 0) continue;
         $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
         $is_video = in_array($ext, ['mp4', 'mov', 'webm']);
         $portfolio_items[] = [
@@ -78,7 +79,7 @@ shuffle($portfolio_items);
                 <?php foreach ($portfolio_items as $item): ?>
                 <div class="portfolio-gallery__item<?php echo $item['is_video'] ? ' portfolio-gallery__item--video' : ''; ?>" data-category="<?php echo esc_attr($item['category']); ?>">
                     <?php if ($item['is_video']): ?>
-                        <video src="<?php echo esc_url($item['url']); ?>" muted loop playsinline preload="none"></video>
+                        <video src="<?php echo esc_url($item['url']); ?>" autoplay muted loop playsinline preload="metadata"></video>
                     <?php else: ?>
                         <img src="<?php echo esc_url($item['url']); ?>" alt="Portfolio" loading="lazy">
                     <?php endif; ?>
@@ -179,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var cls = 'portfolio-gallery__item' + (item.is_video ? ' portfolio-gallery__item--video' : '');
             html += '<div class="' + cls + '" data-category="' + item.category + '">';
             if (item.is_video) {
-                html += '<video src="' + item.url + '" muted loop playsinline preload="none"></video>';
+                html += '<video src="' + item.url + '" autoplay muted loop playsinline preload="metadata"></video>';
             } else {
                 html += '<img src="' + item.url + '" alt="Portfolio" loading="lazy">';
             }
