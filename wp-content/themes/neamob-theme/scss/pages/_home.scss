@@ -357,6 +357,7 @@
         color: #fff;
         position: relative;
         flex: 0 0 50%;
+        height: 318px;
 
         &__logo {
             margin-bottom: 51px;
@@ -428,11 +429,12 @@
 
         &__link {
             display: inline-block;
-            position: relative;
             padding: 0px 0 0 27px;
             color: #fff;
             font-weight: 500;
             margin-bottom: 12px;
+            position: absolute;
+            bottom: 18px;
 
             &:before {
                 content: '';
@@ -815,6 +817,19 @@
             &:hover {
                 background: rgba(255, 255, 255, 0.2);
                 color: #fff;
+            }
+        }
+
+        &:nth-child(3) {
+            .partner-card__image {
+                margin: -9px 0 26px;
+
+                img {
+                    max-height: 220px;
+                    width: 100%;
+                    object-fit: cover;
+                    border-radius: 8px;
+                }
             }
         }
     }
@@ -1343,6 +1358,11 @@
             font-size: 32px;
             line-height: 1.25;
             font-weight: 500;
+        }
+
+        .case-studies-grid .case-card__link {
+            position: relative;
+            bottom: auto;
         }
 
         .case-studies-section__link {

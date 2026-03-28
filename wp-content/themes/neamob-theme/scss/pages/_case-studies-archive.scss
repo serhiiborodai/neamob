@@ -249,6 +249,13 @@
 
     &__image {
         flex: 0 0 580px;
+        position: relative;
+        padding-bottom: 140px;
+
+        &-sticky {
+            position: sticky;
+            top: 120px;
+        }
     }
 
     .case-services {

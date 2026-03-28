@@ -1155,6 +1155,7 @@ body.page-simple .site-main .page-content ul li:before {
   color: #fff;
   position: relative;
   flex: 0 0 50%;
+  height: 318px;
 }
 .case-studies-grid .case-card__logo {
   margin-bottom: 51px;
@@ -1212,11 +1213,12 @@ body.page-simple .site-main .page-content ul li:before {
 }
 .case-studies-grid .case-card__link {
   display: inline-block;
-  position: relative;
   padding: 0px 0 0 27px;
   color: #fff;
   font-weight: 500;
   margin-bottom: 12px;
+  position: absolute;
+  bottom: 18px;
 }
 .case-studies-grid .case-card__link:before {
   content: "";
@@ -1542,6 +1544,15 @@ body.page-simple .site-main .page-content ul li:before {
 .our-partners .partner-card__download-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
+}
+.our-partners .partner-card:nth-child(3) .partner-card__image {
+  margin: -9px 0 26px;
+}
+.our-partners .partner-card:nth-child(3) .partner-card__image img {
+  max-height: 220px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .faq-section {
@@ -2010,6 +2021,10 @@ body.page-simple .site-main .page-content ul li:before {
     font-size: 32px;
     line-height: 1.25;
     font-weight: 500;
+  }
+  .case-studies-section .case-studies-grid .case-card__link {
+    position: relative;
+    bottom: auto;
   }
   .case-studies-section .case-studies-section__link {
     position: absolute;
@@ -4639,6 +4654,12 @@ body.page-simple .site-main .page-content ul li:before {
 }
 .single-case__image {
   flex: 0 0 580px;
+  position: relative;
+  padding-bottom: 140px;
+}
+.single-case__image-sticky {
+  position: sticky;
+  top: 120px;
 }
 .single-case .case-services {
   display: flex;
