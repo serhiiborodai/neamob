@@ -43,25 +43,36 @@ if (!$beliefs) {
     </section>
 
     <!-- Gallery -->
-    <section class="about-gallery">
+    <section class="about-gallery" id="aboutGallery">
+        <div class="about-gallery__cursor">
+            <svg class="about-gallery__cursor-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
         <div class="about-gallery__track">
-            <?php 
+            <?php
             $gallery = get_field('about_gallery');
-            if ($gallery && is_array($gallery) && !empty($gallery)): 
-                foreach ($gallery as $img): 
-                    $url = is_array($img) ? ($img['url'] ?? '') : $img;
-                    $alt = is_array($img) ? ($img['alt'] ?? 'About photo') : 'About photo';
-            ?>
+            $gallery_items = [];
+            if ($gallery && is_array($gallery) && !empty($gallery)):
+                foreach ($gallery as $img):
+                    $gallery_items[] = [
+                        'url' => is_array($img) ? ($img['url'] ?? '') : $img,
+                        'alt' => is_array($img) ? ($img['alt'] ?? 'About photo') : 'About photo',
+                    ];
+                endforeach;
+            else:
+                for ($i = 1; $i <= 7; $i++):
+                    $gallery_items[] = [
+                        'url' => get_template_directory_uri() . '/assets/images/about/' . $i . '.webp',
+                        'alt' => 'About photo ' . $i,
+                    ];
+                endfor;
+            endif;
+            foreach ($gallery_items as $item): ?>
             <div class="about-gallery__item">
-                <img src="<?php echo esc_url($url); ?>" alt="<?php echo esc_attr($alt); ?>">
+                <img src="<?php echo esc_url($item['url']); ?>" alt="<?php echo esc_attr($item['alt']); ?>">
             </div>
-            <?php endforeach;
-            else: /* Fallback to static images */
-                for ($i = 1; $i <= 7; $i++) : ?>
-            <div class="about-gallery__item">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/about/<?php echo $i; ?>.webp" alt="About photo <?php echo $i; ?>">
-            </div>
-            <?php endfor; endif; ?>
+            <?php endforeach; ?>
         </div>
     </section>
 
@@ -227,22 +238,149 @@ if (!$beliefs) {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // About Gallery Slider
-    if (document.getElementById('aboutGallerySlider')) {
-        new Swiper('#aboutGallerySlider', {
-            slidesPerView: 'auto',
-            centeredSlides: true,
-            spaceBetween: 20,
-            loop: true,
-            speed: 4000,
-            autoplay: {
-                delay: 0,
-                disableOnInteraction: false,
-            },
-            allowTouchMove: true,
-            freeMode: true,
+    // About Gallery — desktop: cursor-based scroll, mobile: swiper
+    (function() {
+        var gallery = document.getElementById('aboutGallery');
+        if (!gallery) return;
+
+        var track = gallery.querySelector('.about-gallery__track');
+        var cursor = gallery.querySelector('.about-gallery__cursor');
+        var items = track.querySelectorAll('.about-gallery__item');
+        if (!items.length) return;
+
+        var isDesktop = window.innerWidth >= 1200;
+        var swiperInstance = null;
+
+        function initMobileSwiper() {
+            track.classList.add('swiper-wrapper');
+            items.forEach(function(item) { item.classList.add('swiper-slide'); });
+            gallery.classList.add('swiper');
+            swiperInstance = new Swiper(gallery, {
+                slidesPerView: 'auto',
+                spaceBetween: 20,
+                loop: true,
+                freeMode: true,
+            });
+        }
+
+        function destroyMobileSwiper() {
+            if (swiperInstance) {
+                swiperInstance.destroy(true, true);
+                swiperInstance = null;
+            }
+            gallery.classList.remove('swiper');
+            track.classList.remove('swiper-wrapper');
+            items.forEach(function(item) { item.classList.remove('swiper-slide'); });
+        }
+
+        function initDesktopScroll() {
+            var origHTML = track.innerHTML;
+            track.innerHTML = origHTML + origHTML + origHTML;
+
+            var scrollPos = 0;
+            var speed = 0;
+            var rafId = null;
+            var totalWidth = 0;
+
+            // Cursor lerp state
+            var mouseX = 0, mouseY = 0;
+            var cursorX = 0, cursorY = 0;
+            var cursorArrow = cursor.querySelector('.about-gallery__cursor-arrow');
+
+            function measureWidth() {
+                var allItems = track.querySelectorAll('.about-gallery__item');
+                var oneSetCount = items.length;
+                totalWidth = 0;
+                for (var i = 0; i < oneSetCount; i++) {
+                    totalWidth += allItems[i].offsetWidth + 20;
+                }
+            }
+            measureWidth();
+
+            scrollPos = totalWidth;
+            track.style.transform = 'translateX(' + (-scrollPos) + 'px)';
+
+            function animate() {
+                scrollPos += speed;
+                if (scrollPos >= totalWidth * 2) {
+                    scrollPos -= totalWidth;
+                } else if (scrollPos < 0) {
+                    scrollPos += totalWidth;
+                }
+                track.style.transform = 'translateX(' + (-scrollPos) + 'px)';
+
+                // Smooth cursor follow (lerp)
+                cursorX += (mouseX - cursorX) * 0.12;
+                cursorY += (mouseY - cursorY) * 0.12;
+                cursor.style.left = cursorX + 'px';
+                cursor.style.top = cursorY + 'px';
+
+                rafId = requestAnimationFrame(animate);
+            }
+            rafId = requestAnimationFrame(animate);
+
+            function onEnter() {
+                cursor.classList.add('is-visible');
+            }
+
+            function onLeave() {
+                cursor.classList.remove('is-visible');
+                speed = 0;
+            }
+
+            function onMove(e) {
+                var rect = gallery.getBoundingClientRect();
+                mouseX = e.clientX - rect.left;
+                mouseY = e.clientY - rect.top;
+
+                var ratio = mouseX / rect.width;
+                var maxSpeed = 3;
+                if (ratio > 0.5) {
+                    speed = (ratio - 0.5) * 2 * maxSpeed;
+                    cursorArrow.innerHTML = '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+                } else {
+                    speed = -(0.5 - ratio) * 2 * maxSpeed;
+                    cursorArrow.innerHTML = '<path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+                }
+            }
+
+            gallery.addEventListener('mouseenter', onEnter);
+            gallery.addEventListener('mouseleave', onLeave);
+            gallery.addEventListener('mousemove', onMove);
+
+            return function cleanup() {
+                cancelAnimationFrame(rafId);
+                gallery.removeEventListener('mouseenter', onEnter);
+                gallery.removeEventListener('mouseleave', onLeave);
+                gallery.removeEventListener('mousemove', onMove);
+                track.innerHTML = origHTML;
+                track.style.transform = '';
+                speed = 0;
+            };
+        }
+
+        var cleanupDesktop = null;
+
+        function setup() {
+            var nowDesktop = window.innerWidth >= 1200;
+            if (nowDesktop === isDesktop && (swiperInstance || cleanupDesktop)) return;
+            isDesktop = nowDesktop;
+
+            if (isDesktop) {
+                destroyMobileSwiper();
+                cleanupDesktop = initDesktopScroll();
+            } else {
+                if (cleanupDesktop) { cleanupDesktop(); cleanupDesktop = null; }
+                initMobileSwiper();
+            }
+        }
+
+        setup();
+        window.addEventListener('resize', function() {
+            var nowDesktop = window.innerWidth >= 1200;
+            if (nowDesktop !== isDesktop) setup();
         });
-    }
+    })();
 
     // Team Slider
     if (document.getElementById('teamSlider')) {

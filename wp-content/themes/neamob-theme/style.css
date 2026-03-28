@@ -2676,7 +2676,7 @@ body.page-simple .site-main .page-content ul li:before {
   width: 380px;
   background: linear-gradient(to right, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 75%);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 .about-gallery::after {
   content: "";
@@ -2687,12 +2687,35 @@ body.page-simple .site-main .page-content ul li:before {
   width: 380px;
   background: linear-gradient(to left, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0) 75%);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
+}
+.about-gallery__cursor {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.about-gallery__cursor.is-visible {
+  opacity: 1;
+}
+.about-gallery__cursor-arrow {
+  width: 24px;
+  height: 24px;
 }
 .about-gallery__track {
   display: flex;
-  justify-content: center;
   gap: 20px;
+  will-change: transform;
 }
 .about-gallery__item {
   width: 380px;
@@ -2705,6 +2728,8 @@ body.page-simple .site-main .page-content ul li:before {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .about-who .container {
