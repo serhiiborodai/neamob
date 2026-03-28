@@ -249,6 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
         new Swiper('#teamSlider', {
             slidesPerView: 1,
             spaceBetween: 24,
+            loop: true,
             navigation: {
                 nextEl: '.about-team__nav-next',
                 prevEl: '.about-team__nav-prev',

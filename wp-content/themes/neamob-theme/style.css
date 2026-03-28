@@ -2590,6 +2590,7 @@ body.page-simple .site-main .page-content ul li:before {
     font-size: 32px;
     line-height: 1.35;
     margin-bottom: 37px;
+    white-space: break-spaces;
   }
   .single-job-page .single-job-body h2 {
     margin-bottom: 12px;
@@ -2829,6 +2830,9 @@ body.page-simple .site-main .page-content ul li:before {
   color: #fff;
   border-radius: 2px;
 }
+.about-team__nav-btn svg {
+  color: #fff;
+}
 .about-team .team-card__image {
   position: relative;
   margin-bottom: 61px;
@@ -2955,6 +2959,9 @@ body.page-simple .site-main .page-content ul li:before {
   .about-hero__text {
     width: auto;
     line-height: 1.55;
+  }
+  .about-gallery:before, .about-gallery:after {
+    width: 30%;
   }
   .about-gallery__item {
     height: auto;
@@ -3869,6 +3876,7 @@ body.page-simple .site-main .page-content ul li:before {
   background: transparent;
   border-radius: 4px;
   padding: 1px 10px 1px;
+  color: #495b75;
 }
 .portfolio-page .portfolio-tabs__btn.active {
   color: #fff;
