@@ -8,10 +8,39 @@ get_header();
 $hero_title = get_field('portfolio_title') ?: 'Portfolio';
 $hero_description = get_field('portfolio_description');
 $portfolio_categories = get_field('portfolio_categories') ?: ['All', 'Static', 'Video', 'UGC-Video'];
-$portfolio_gallery = get_field('portfolio_gallery');
 
 // Blocks
 $blocks = get_field('portfolio_blocks');
+
+// Scan portfolio media directory
+$upload_dir = wp_upload_dir();
+$portfolio_base = $upload_dir['basedir'] . '/portfolio';
+$portfolio_url = $upload_dir['baseurl'] . '/portfolio';
+
+$media_folders = [
+    'static'  => 'static',
+    'ugc'     => 'ugc-video',
+    'videos'  => 'video',
+];
+
+$portfolio_items = [];
+
+foreach ($media_folders as $folder => $tab_category) {
+    $dir = $portfolio_base . '/' . $folder;
+    if (!is_dir($dir)) continue;
+    $files = array_diff(scandir($dir), ['.', '..']);
+    foreach ($files as $file) {
+        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        $is_video = in_array($ext, ['mp4', 'mov', 'webm']);
+        $portfolio_items[] = [
+            'url'      => $portfolio_url . '/' . $folder . '/' . rawurlencode($file),
+            'category' => $tab_category,
+            'is_video' => $is_video,
+        ];
+    }
+}
+
+shuffle($portfolio_items);
 ?>
 
 <main class="portfolio-page">
@@ -36,28 +65,27 @@ $blocks = get_field('portfolio_blocks');
                 <?php endforeach; ?>
             </div>
 
-            <!-- Portfolio Gallery -->
-            <section class="portfolio-gallery">
-                <div class="portfolio-gallery__track">
-                    <?php 
-                    if ($portfolio_gallery && is_array($portfolio_gallery) && !empty($portfolio_gallery)): 
-                        foreach ($portfolio_gallery as $img): 
-                            $url = is_array($img) ? ($img['url'] ?? '') : $img;
-                            $alt = is_array($img) ? ($img['alt'] ?? 'Portfolio') : 'Portfolio';
-                    ?>
-                    <div class="portfolio-gallery__item">
-                        <img src="<?php echo esc_url($url); ?>" alt="<?php echo esc_attr($alt); ?>">
-                    </div>
-                    <?php endforeach;
-                    else: 
-                        for ($i = 1; $i <= 5; $i++) : ?>
-                    <div class="portfolio-gallery__item">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/<?php echo $i; ?>.png" alt="Portfolio item <?php echo $i; ?>">
-                    </div>
-                    <?php endfor; endif; ?>
-                </div>
-            </section>
         </div>
+
+        <!-- Portfolio Gallery (full-width, outside container) -->
+        <section class="portfolio-gallery" id="portfolioGallery">
+            <div class="portfolio-gallery__cursor">
+                <svg class="portfolio-gallery__cursor-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="portfolio-gallery__track">
+                <?php foreach ($portfolio_items as $item): ?>
+                <div class="portfolio-gallery__item<?php echo $item['is_video'] ? ' portfolio-gallery__item--video' : ''; ?>" data-category="<?php echo esc_attr($item['category']); ?>">
+                    <?php if ($item['is_video']): ?>
+                        <video src="<?php echo esc_url($item['url']); ?>" muted loop playsinline preload="none"></video>
+                    <?php else: ?>
+                        <img src="<?php echo esc_url($item['url']); ?>" alt="Portfolio" loading="lazy">
+                    <?php endif; ?>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
     </section>
 
     <!-- Portfolio Blocks -->
@@ -127,51 +155,200 @@ $blocks = get_field('portfolio_blocks');
 
 </main>
 
-<?php 
-// Contact Form before footer
-get_template_part('template-parts/contact-form');
-
-get_footer(); 
-?>
-
 <script>
+var portfolioItemsData = <?php echo json_encode($portfolio_items); ?>;
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Portfolio Swiper
-    const portfolioSwiper = new Swiper('.portfolio-swiper', {
-        slidesPerView: 'auto',
-        spaceBetween: 20,
-        centeredSlides: false,
-        loop: false,
-        grabCursor: true,
+    var gallery = document.getElementById('portfolioGallery');
+    if (!gallery) return;
+
+    var track = gallery.querySelector('.portfolio-gallery__track');
+    var cursorEl = gallery.querySelector('.portfolio-gallery__cursor');
+    var isDesktop = window.innerWidth >= 1200;
+    var swiperInstance = null;
+    var cleanupDesktop = null;
+    var currentFilter = 'all';
+
+    function buildItemsHTML(filter) {
+        var items = filter === 'all'
+            ? portfolioItemsData
+            : portfolioItemsData.filter(function(item) { return item.category === filter; });
+
+        var html = '';
+        items.forEach(function(item) {
+            var cls = 'portfolio-gallery__item' + (item.is_video ? ' portfolio-gallery__item--video' : '');
+            html += '<div class="' + cls + '" data-category="' + item.category + '">';
+            if (item.is_video) {
+                html += '<video src="' + item.url + '" muted loop playsinline preload="none"></video>';
+            } else {
+                html += '<img src="' + item.url + '" alt="Portfolio" loading="lazy">';
+            }
+            html += '</div>';
+        });
+        return { html: html, count: items.length };
+    }
+
+    function manageVideos(galleryEl, trackEl) {
+        var galleryRect = galleryEl.getBoundingClientRect();
+        var videos = trackEl.querySelectorAll('video');
+        for (var i = 0; i < videos.length; i++) {
+            var vRect = videos[i].getBoundingClientRect();
+            var visible = vRect.right > galleryRect.left - 200 && vRect.left < galleryRect.right + 200;
+            if (visible && videos[i].paused) {
+                videos[i].play().catch(function(){});
+            } else if (!visible && !videos[i].paused) {
+                videos[i].pause();
+            }
+        }
+    }
+
+    function initMobileSwiper() {
+        var data = buildItemsHTML(currentFilter);
+        track.innerHTML = data.html;
+
+        var slideItems = track.querySelectorAll('.portfolio-gallery__item');
+        slideItems.forEach(function(item) { item.classList.add('swiper-slide'); });
+        track.classList.add('swiper-wrapper');
+        gallery.classList.add('swiper');
+
+        swiperInstance = new Swiper(gallery, {
+            slidesPerView: 'auto',
+            spaceBetween: 20,
+            loop: true,
+            freeMode: true,
+        });
+    }
+
+    function destroyMobileSwiper() {
+        if (swiperInstance) {
+            swiperInstance.destroy(true, true);
+            swiperInstance = null;
+        }
+        gallery.classList.remove('swiper');
+        track.classList.remove('swiper-wrapper');
+        var slideItems = track.querySelectorAll('.portfolio-gallery__item');
+        slideItems.forEach(function(item) { item.classList.remove('swiper-slide'); });
+    }
+
+    function initDesktopScroll() {
+        var data = buildItemsHTML(currentFilter);
+        var origHTML = data.html;
+        var oneSetCount = data.count;
+
+        if (!oneSetCount) { track.innerHTML = ''; return function(){}; }
+
+        track.innerHTML = origHTML + origHTML + origHTML;
+
+        var scrollPos = 0;
+        var speed = 0;
+        var rafId = null;
+        var totalWidth = 0;
+        var mouseX = 0, mouseY = 0;
+        var cursorX = 0, cursorY = 0;
+        var cursorArrow = cursorEl.querySelector('.portfolio-gallery__cursor-arrow');
+        var videoFrame = 0;
+
+        function measureWidth() {
+            var allItems = track.querySelectorAll('.portfolio-gallery__item');
+            totalWidth = 0;
+            for (var i = 0; i < oneSetCount; i++) {
+                totalWidth += allItems[i].offsetWidth + 20;
+            }
+        }
+        measureWidth();
+
+        scrollPos = totalWidth;
+        track.style.transform = 'translateX(' + (-scrollPos) + 'px)';
+
+        function animate() {
+            scrollPos += speed;
+            if (scrollPos >= totalWidth * 2) scrollPos -= totalWidth;
+            else if (scrollPos < 0) scrollPos += totalWidth;
+            track.style.transform = 'translateX(' + (-scrollPos) + 'px)';
+
+            cursorX += (mouseX - cursorX) * 0.12;
+            cursorY += (mouseY - cursorY) * 0.12;
+            cursorEl.style.left = cursorX + 'px';
+            cursorEl.style.top = cursorY + 'px';
+
+            videoFrame++;
+            if (videoFrame % 20 === 0) manageVideos(gallery, track);
+
+            rafId = requestAnimationFrame(animate);
+        }
+        rafId = requestAnimationFrame(animate);
+
+        function onEnter() { cursorEl.classList.add('is-visible'); }
+        function onLeave() { cursorEl.classList.remove('is-visible'); speed = 0; }
+
+        function onMove(e) {
+            var rect = gallery.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+            var ratio = mouseX / rect.width;
+            var maxSpeed = 3;
+            if (ratio > 0.5) {
+                speed = (ratio - 0.5) * 2 * maxSpeed;
+                cursorArrow.innerHTML = '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+            } else {
+                speed = -(0.5 - ratio) * 2 * maxSpeed;
+                cursorArrow.innerHTML = '<path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+            }
+        }
+
+        gallery.addEventListener('mouseenter', onEnter);
+        gallery.addEventListener('mouseleave', onLeave);
+        gallery.addEventListener('mousemove', onMove);
+
+        return function cleanup() {
+            cancelAnimationFrame(rafId);
+            gallery.removeEventListener('mouseenter', onEnter);
+            gallery.removeEventListener('mouseleave', onLeave);
+            gallery.removeEventListener('mousemove', onMove);
+            var videos = track.querySelectorAll('video');
+            for (var i = 0; i < videos.length; i++) videos[i].pause();
+            track.innerHTML = '';
+            track.style.transform = '';
+            speed = 0;
+        };
+    }
+
+    function setup() {
+        var nowDesktop = window.innerWidth >= 1200;
+        isDesktop = nowDesktop;
+        if (isDesktop) {
+            destroyMobileSwiper();
+            cleanupDesktop = initDesktopScroll();
+        } else {
+            if (cleanupDesktop) { cleanupDesktop(); cleanupDesktop = null; }
+            initMobileSwiper();
+        }
+    }
+
+    setup();
+
+    window.addEventListener('resize', function() {
+        var nowDesktop = window.innerWidth >= 1200;
+        if (nowDesktop !== isDesktop) setup();
     });
 
     // Tab filtering
-    const tabs = document.querySelectorAll('.portfolio-tabs__btn');
-    const slides = document.querySelectorAll('.portfolio-swiper .swiper-slide');
-    
-    tabs.forEach(tab => {
+    var tabs = document.querySelectorAll('.portfolio-tabs__btn');
+    tabs.forEach(function(tab) {
         tab.addEventListener('click', function() {
-            tabs.forEach(t => t.classList.remove('active'));
+            tabs.forEach(function(t) { t.classList.remove('active'); });
             this.classList.add('active');
-            
-            const filter = this.dataset.filter;
-            
-            slides.forEach(slide => {
-                if (filter === 'all' || slide.dataset.category === filter) {
-                    slide.style.display = '';
-                } else {
-                    slide.style.display = 'none';
-                }
-            });
-            
-            portfolioSwiper.update();
+            currentFilter = this.dataset.filter;
+            if (cleanupDesktop) { cleanupDesktop(); cleanupDesktop = null; }
+            destroyMobileSwiper();
+            setup();
         });
     });
 
-    // Video play
-    document.querySelectorAll('.video-wrapper').forEach(wrapper => {
+    // Video play for portfolio blocks (YouTube embeds below gallery)
+    document.querySelectorAll('.video-wrapper').forEach(function(wrapper) {
         wrapper.addEventListener('click', function() {
-            const videoId = this.dataset.videoId;
+            var videoId = this.dataset.videoId;
             if (videoId) {
                 this.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
             }
@@ -179,4 +356,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<?php 
+// Contact Form before footer
+get_template_part('template-parts/contact-form');
+
+get_footer(); 
+?>
 

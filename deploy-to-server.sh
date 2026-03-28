@@ -41,4 +41,14 @@ scp -i "$SSH_KEY" "$ARCHIVE" "$SQL" "$DEPLOY_SH" "${SSH_HOST}:/tmp/"
 echo "Запуск деплоя..."
 ssh -i "$SSH_KEY" "$SSH_HOST" "sudo bash /tmp/deploy.sh"
 
+# Portfolio media (большие файлы вне git, rsync по дельте)
+PORTFOLIO_LOCAL="wp-content/uploads/portfolio/"
+PORTFOLIO_REMOTE="/var/www/html/wp-content/uploads/portfolio/"
+
+if [ -d "$PORTFOLIO_LOCAL" ]; then
+    echo "Синхронизация portfolio media..."
+    rsync -avz --progress -e "ssh -i $SSH_KEY" "$PORTFOLIO_LOCAL" "${SSH_HOST}:${PORTFOLIO_REMOTE}"
+    echo "Portfolio media синхронизированы."
+fi
+
 echo "Готово."
