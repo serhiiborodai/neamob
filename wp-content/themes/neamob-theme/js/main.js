@@ -324,6 +324,8 @@
             const paginationTotal = container.querySelector('.testimonial-pagination__total');
             const prevBtn = container.querySelector('.testimonial-nav__prev');
             const nextBtn = container.querySelector('.testimonial-nav__next');
+            var section = container.closest('.testimonials-section');
+            const cursorEl = section ? section.querySelector('.testimonial-cursor') : null;
 
             if (!swiperEl) return;
 
@@ -353,6 +355,42 @@
                     }
                 }
             });
+
+            if (cursorEl && window.innerWidth >= 1200) {
+                var mouseX = 0, mouseY = 0, cX = 0, cY = 0;
+                var isVisible = false;
+                var rafId = null;
+
+                function animateCursor() {
+                    cX += (mouseX - cX) * 0.12;
+                    cY += (mouseY - cY) * 0.12;
+                    cursorEl.style.left = cX + 'px';
+                    cursorEl.style.top = cY + 'px';
+                    rafId = requestAnimationFrame(animateCursor);
+                }
+
+                section.addEventListener('mouseenter', function () {
+                    cursorEl.classList.add('is-visible');
+                    isVisible = true;
+                    if (!rafId) rafId = requestAnimationFrame(animateCursor);
+                });
+
+                section.addEventListener('mouseleave', function () {
+                    cursorEl.classList.remove('is-visible');
+                    isVisible = false;
+                    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                });
+
+                section.addEventListener('mousemove', function (e) {
+                    var rect = section.getBoundingClientRect();
+                    mouseX = e.clientX - rect.left;
+                    mouseY = e.clientY - rect.top;
+                });
+
+                swiperEl.addEventListener('click', function () {
+                    swiper.slideNext();
+                });
+            }
         });
 
         function updatePagination(swiper, currentEl, totalEl) {

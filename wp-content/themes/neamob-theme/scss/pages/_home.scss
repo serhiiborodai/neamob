@@ -453,12 +453,19 @@
 
 .testimonials-section {
     background: #061526;
+    position: relative;
 
     .container {
         margin: 0 auto;
         width: 1180px;
         color: #fff;
         padding: 60px 0 62px;
+    }
+
+    .testimonial-slider {
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
     }
 
     .testimonial-card {
@@ -495,6 +502,38 @@
         text-align: right;
         font-size: 18px;
         font-family: 'Raleway';
+    }
+
+    .testimonial-cursor {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #0094ff;
+        color: #fff;
+        font-family: 'Raleway', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        z-index: 10;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition:
+            opacity 0.3s,
+            transform 0.3s;
+        will-change: left, top;
+
+        &.is-visible {
+            opacity: 1;
+        }
+
+        @media (max-width: 1199px) {
+            display: none;
+        }
     }
 }
 

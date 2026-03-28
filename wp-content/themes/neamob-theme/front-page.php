@@ -328,6 +328,7 @@ if ($testimonials->have_posts()):
     $total = $testimonials->post_count;
     ?>
         <section class="testimonials-section"> <div class="testimonials-section__bg"></div>
+        <div class="testimonial-cursor">Next</div>
         <div class="container">
             <div class="testimonial-slider">
                 <div class="swiper">
