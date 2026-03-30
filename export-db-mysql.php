@@ -4,8 +4,11 @@
  * Usage: php export-db-mysql.php > neamob.sql
  */
 $sqlitePath = __DIR__ . '/wp-content/database/.ht.sqlite';
-$oldDomain = 'http://localhost:8080';
-$newDomain = 'https://nb.twyx.us';
+$replacements = [
+    'http://localhost:8080' => 'https://neamob.com',
+    'https://nb.twyx.us'   => 'https://neamob.com',
+    'http://nb.twyx.us'    => 'https://neamob.com',
+];
 
 $pdo = new PDO('sqlite:' . $sqlitePath);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -13,11 +16,13 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $tables = $pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name")
     ->fetchAll(PDO::FETCH_COLUMN);
 
-echo "-- WordPress database dump for nb.twyx.us\n";
-echo "-- Generated: " . date('Y-m-d H:i:s') . "\n\n";
+echo "-- WordPress database dump for neamob.com\n";
+echo "-- Generated: " . date('Y-m-d H:i:s') . "\n";
+echo "-- Target: MySQL 8, PHP 8.3\n\n";
 echo "SET NAMES utf8mb4;\n";
 echo "SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION';\n";
-echo "SET FOREIGN_KEY_CHECKS = 0;\n\n";
+echo "SET FOREIGN_KEY_CHECKS = 0;\n";
+echo "SET @@SESSION.information_schema_stats_expiry = 0;\n\n";
 
 foreach ($tables as $table) {
     if ($table === '_mysql_data_types_cache') continue;
@@ -61,7 +66,7 @@ foreach ($tables as $table) {
             }
         }
         $sql = "INSERT INTO `$table` ($colList) VALUES (" . implode(',', $values) . ");\n";
-        $sql = str_replace($oldDomain, $newDomain, $sql);
+        $sql = str_replace(array_keys($replacements), array_values($replacements), $sql);
         echo $sql;
     }
     echo "\n";

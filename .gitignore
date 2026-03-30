@@ -27,6 +27,10 @@ Thumbs.db
 *.swp
 *.swo
 
+# Build & Backup
+build/
+backup/
+
 # Logs
 *.log
 .sass-cache/
