@@ -833,28 +833,86 @@ add_filter('template_include', function($template) {
 }, 5);
 
 /**
- * SMTP через mail.adm.tools (если заданы константы в wp-config)
- * Добавь в wp-config.php:
- *   define('NEAMOB_SMTP_HOST', 'mail.adm.tools');
- *   define('NEAMOB_SMTP_USER', 'neamob@twyx.us');
- *   define('NEAMOB_SMTP_PASS', 'твой_пароль');
- *   define('NEAMOB_SMTP_PORT', 465);
- *   define('NEAMOB_SMTP_SECURE', 'ssl');
+ * Resend HTTP API для отправки писем (обход блокировки SMTP-портов на DigitalOcean).
+ *
+ * wp-config.php:
+ *   define('NEAMOB_RESEND_API_KEY', 're_...');
+ *   define('NEAMOB_MAIL_FROM', 'onboarding@resend.dev');
  */
-add_action('phpmailer_init', function ($phpmailer) {
-    if (!defined('NEAMOB_SMTP_HOST') || !NEAMOB_SMTP_HOST) {
-        return;
+add_filter('pre_wp_mail', function ($null, $atts) {
+    if (!defined('NEAMOB_RESEND_API_KEY') || !NEAMOB_RESEND_API_KEY) {
+        return null;
     }
-    $phpmailer->isSMTP();
-    $phpmailer->Host = NEAMOB_SMTP_HOST;
-    $phpmailer->Port = defined('NEAMOB_SMTP_PORT') ? (int) NEAMOB_SMTP_PORT : 465;
-    $phpmailer->SMTPAuth = true;
-    $phpmailer->Username = NEAMOB_SMTP_USER;
-    $phpmailer->Password = NEAMOB_SMTP_PASS;
-    $phpmailer->SMTPSecure = defined('NEAMOB_SMTP_SECURE') ? NEAMOB_SMTP_SECURE : 'ssl';
-    $phpmailer->From = defined('NEAMOB_SMTP_FROM') ? NEAMOB_SMTP_FROM : NEAMOB_SMTP_USER;
-    $phpmailer->FromName = get_bloginfo('name');
-});
+
+    $to = is_array($atts['to']) ? $atts['to'] : [$atts['to']];
+    $subject = $atts['subject'] ?? '';
+    $message = $atts['message'] ?? '';
+    $from = defined('NEAMOB_MAIL_FROM') ? NEAMOB_MAIL_FROM : 'onboarding@resend.dev';
+
+    $headers = $atts['headers'] ?? [];
+    if (is_string($headers)) {
+        $headers = explode("\n", str_replace("\r\n", "\n", $headers));
+    }
+
+    $reply_to = [];
+    $from_header = '';
+    foreach ($headers as $header) {
+        if (preg_match('/^Reply-To:\s*(.+)$/i', trim($header), $m)) {
+            $reply_to[] = trim($m[1]);
+        }
+        if (preg_match('/^From:\s*(.+)$/i', trim($header), $m)) {
+            $from_header = trim($m[1]);
+        }
+    }
+
+    $is_html = false;
+    foreach ($headers as $header) {
+        if (preg_match('/^Content-Type:\s*text\/html/i', trim($header))) {
+            $is_html = true;
+            break;
+        }
+    }
+
+    $payload = [
+        'from' => $from_header ?: (get_bloginfo('name') . ' <' . $from . '>'),
+        'to'   => $to,
+        'subject' => $subject,
+    ];
+
+    if ($is_html) {
+        $payload['html'] = $message;
+    } else {
+        $payload['text'] = $message;
+    }
+
+    if (!empty($reply_to)) {
+        $payload['reply_to'] = $reply_to[0];
+    }
+
+    $response = wp_remote_post('https://api.resend.com/emails', [
+        'timeout' => 15,
+        'headers' => [
+            'Authorization' => 'Bearer ' . NEAMOB_RESEND_API_KEY,
+            'Content-Type'  => 'application/json',
+        ],
+        'body' => wp_json_encode($payload),
+    ]);
+
+    if (is_wp_error($response)) {
+        error_log('[Neamob Resend] WP Error: ' . $response->get_error_message());
+        return false;
+    }
+
+    $code = wp_remote_retrieve_response_code($response);
+    $body = wp_remote_retrieve_body($response);
+
+    if ($code >= 200 && $code < 300) {
+        return true;
+    }
+
+    error_log('[Neamob Resend] API error (HTTP ' . $code . '): ' . $body);
+    return false;
+}, 10, 2);
 
 // light-footer на Cookie Policy, Privacy Policy, Careers, Blog, Case Studies и page-simple
 add_filter('body_class', function ($classes) {
