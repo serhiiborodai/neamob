@@ -148,8 +148,8 @@
   .blog-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     margin-bottom: 80px;
+    gap: 0 19px;
   }
 
   .blog-card {

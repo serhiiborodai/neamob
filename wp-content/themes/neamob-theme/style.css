@@ -645,11 +645,11 @@ body.page-simple .site-main .page-content ul li:before {
 }
 
 .cf7-status--loading {
-  color: #0094FF;
+  color: #0094ff;
 }
 
 .cf7-status--success {
-  color: #00C853;
+  color: #00c853;
 }
 
 .cf7-status--error .cf7-status__text {
@@ -661,7 +661,7 @@ body.page-simple .site-main .page-content ul li:before {
 }
 
 .wpcf7-not-valid {
-  border-bottom-color: #EF4444 !important;
+  border-bottom-color: #ef4444 !important;
 }
 
 .cf7-status__icon--spinner {
@@ -722,6 +722,10 @@ body.page-simple .site-main .page-content ul li:before {
   background: #495b75 !important;
   border-color: #495b75 !important;
   border-radius: 4px;
+}
+
+.wpcf7-not-valid {
+  border-color: #ef4444 !important;
 }
 
 .logo-slider {
@@ -3290,8 +3294,8 @@ body.page-simple .site-main .page-content ul li:before {
 .blog-grid-section .blog-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   margin-bottom: 80px;
+  gap: 0 19px;
 }
 .blog-grid-section .blog-card {
   width: calc(33.3334% - 13px);

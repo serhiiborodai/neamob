@@ -604,11 +604,11 @@ body.page-simple .site-main {
 }
 
 .cf7-status--loading {
-  color: #0094FF;
+  color: #0094ff;
 }
 
 .cf7-status--success {
-  color: #00C853;
+  color: #00c853;
 }
 
 .cf7-status--error .cf7-status__text {
@@ -620,7 +620,7 @@ body.page-simple .site-main {
 }
 
 .wpcf7-not-valid {
-  border-bottom-color: #EF4444 !important;
+  border-bottom-color: #ef4444 !important;
 }
 
 // CF7 status icons (для всех форм)
@@ -688,4 +688,8 @@ body.page-simple .site-main {
       border-radius: 4px;
     }
   }
+}
+
+.wpcf7-not-valid {
+  border-color: #ef4444 !important;
 }
