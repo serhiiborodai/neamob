@@ -39,7 +39,7 @@
   }
 
   &__category {
-    background: #0094ff;
+    background: #9e9e9e;
     border-radius: 4px;
     color: #fff;
     text-transform: uppercase;
@@ -56,11 +56,8 @@
     &--purple {
       background: #8a6aff;
     }
-    &--orange {
-      background: #ff9800;
-    }
-    &--red {
-      background: #f44336;
+    &--grey {
+      background: #9e9e9e;
     }
   }
 
@@ -205,11 +202,8 @@
       &--purple {
         background: #8a6aff;
       }
-      &--orange {
-        background: #ff9800;
-      }
-      &--red {
-        background: #f44336;
+      &--grey {
+        background: #9e9e9e;
       }
     }
 
@@ -362,11 +356,8 @@
     &--purple {
       background: #8a6aff;
     }
-    &--orange {
-      background: #ff9800;
-    }
-    &--red {
-      background: #f44336;
+    &--grey {
+      background: #9e9e9e;
     }
   }
 

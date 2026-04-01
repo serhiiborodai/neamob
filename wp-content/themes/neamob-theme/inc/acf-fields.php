@@ -496,10 +496,10 @@ function neamob_register_acf_fields() {
                 'type' => 'select',
                 'choices' => [
                     'none' => 'None',
+                    'purple' => 'Purple (Creative & Design)',
                     'green' => 'Green (Campaign Management)',
-                    'blue' => 'Blue (Creative & Design)',
-                    'purple' => 'Purple (Analytics & Reporting)',
-                    'orange' => 'Orange',
+                    'blue' => 'Blue (Analytics & Reporting)',
+                    'grey' => 'Grey (Default)',
                 ],
                 'default_value' => 'green',
             ],
@@ -546,10 +546,10 @@ function neamob_register_acf_fields() {
                 'type' => 'select',
                 'choices' => [
                     'none' => 'None',
+                    'purple' => 'Purple (Creative & Design)',
                     'green' => 'Green (Campaign Management)',
-                    'blue' => 'Blue (Creative & Design)',
-                    'purple' => 'Purple (Analytics & Reporting)',
-                    'orange' => 'Orange',
+                    'blue' => 'Blue (Analytics & Reporting)',
+                    'grey' => 'Grey (Default)',
                 ],
                 'default_value' => 'green',
                 'instructions' => 'Color of the department badge on About Us slider. Overrides per-person color if set.',
@@ -708,11 +708,10 @@ function neamob_register_acf_fields() {
                 'name' => 'job_category_color',
                 'type' => 'select',
                 'choices' => [
-                    'green' => 'Green (Creative & Design)',
-                    'blue' => 'Blue (Campaign Management)',
-                    'purple' => 'Purple (Analytics & Reporting)',
-                    'orange' => 'Orange',
-                    'red' => 'Red',
+                    'purple' => 'Purple (Creative & Design)',
+                    'green' => 'Green (Campaign Management)',
+                    'blue' => 'Blue (Analytics & Reporting)',
+                    'grey' => 'Grey (Default)',
                 ],
                 'default_value' => 'green',
             ],
@@ -756,11 +755,10 @@ function neamob_register_acf_fields() {
                 'name' => 'category_color',
                 'type' => 'select',
                 'choices' => [
-                    'green' => 'Green (Creative & Design)',
-                    'blue' => 'Blue (Campaign Management / Analytics)',
-                    'purple' => 'Purple (Analytics & Reporting)',
-                    'orange' => 'Orange',
-                    'red' => 'Red',
+                    'purple' => 'Purple (Creative & Design)',
+                    'green' => 'Green (Campaign Management)',
+                    'blue' => 'Blue (Analytics & Reporting)',
+                    'grey' => 'Grey (Default)',
                 ],
                 'default_value' => 'blue',
                 'instructions' => 'Color for the category badge on blog list and single post',
@@ -1754,18 +1752,17 @@ add_action('acf/init', 'neamob_register_theme_options');
  */
 function neamob_get_category_color($category) {
     if (!$category || !is_object($category)) {
-        return 'blue';
+        return 'grey';
     }
     $color = get_field('category_color', 'category_' . $category->term_id);
     if ($color) {
         return $color;
     }
-    // Fallback by slug (Campaign Management=green, Creative & Design=purple)
     $slug = $category->slug ?? '';
     if (strpos($slug, 'analytics') !== false) return 'blue';
     if (strpos($slug, 'creative') !== false) return 'purple';
     if (strpos($slug, 'campaign') !== false) return 'green';
-    return 'blue';
+    return 'grey';
 }
 
 /**
