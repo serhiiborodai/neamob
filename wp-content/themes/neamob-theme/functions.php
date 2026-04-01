@@ -894,6 +894,21 @@ add_filter('pre_wp_mail', function ($null, $atts) {
         $payload['reply_to'] = $reply_to[0];
     }
 
+    if (!empty($atts['attachments'])) {
+        $resend_attachments = [];
+        foreach ((array) $atts['attachments'] as $file_path) {
+            if (is_file($file_path) && is_readable($file_path)) {
+                $resend_attachments[] = [
+                    'filename' => basename($file_path),
+                    'content'  => base64_encode(file_get_contents($file_path)),
+                ];
+            }
+        }
+        if ($resend_attachments) {
+            $payload['attachments'] = $resend_attachments;
+        }
+    }
+
     $response = wp_remote_post('https://api.resend.com/emails', [
         'timeout' => 15,
         'headers' => [
