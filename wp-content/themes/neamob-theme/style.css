@@ -728,6 +728,11 @@ body.page-simple .site-main .page-content ul li:before {
   border-color: #ef4444 !important;
 }
 
+.required-asterisk {
+  color: #ef4444;
+  font-weight: 500;
+}
+
 .logo-slider {
   position: relative;
   margin: -117px 0 0;

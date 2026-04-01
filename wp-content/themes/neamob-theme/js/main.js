@@ -494,6 +494,21 @@
         if (!forms.length) return;
 
         forms.forEach(function(form) {
+            form.querySelectorAll('[aria-required="true"]').forEach(function(input) {
+                var label = input.closest('label');
+                if (!label || label.querySelector('.required-asterisk')) return;
+                for (var i = 0; i < label.childNodes.length; i++) {
+                    var node = label.childNodes[i];
+                    if (node.nodeType === 3 && node.textContent.trim()) {
+                        var asterisk = document.createElement('span');
+                        asterisk.className = 'required-asterisk';
+                        asterisk.textContent = ' *';
+                        node.after(asterisk);
+                        break;
+                    }
+                }
+            });
+
             form.querySelectorAll('select').forEach(function(sel) {
                 var label = sel.closest('label');
                 if (label) label.classList.add('has-select');
