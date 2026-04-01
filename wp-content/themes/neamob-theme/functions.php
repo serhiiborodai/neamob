@@ -889,13 +889,16 @@ add_filter('pre_wp_mail', function ($null, $atts) {
         $payload['reply_to'] = $reply_to[0];
     }
 
+    $json_body = wp_json_encode($payload);
+    error_log('[Neamob Resend] Sending: ' . $json_body);
+
     $response = wp_remote_post('https://api.resend.com/emails', [
         'timeout' => 15,
         'headers' => [
             'Authorization' => 'Bearer ' . NEAMOB_RESEND_API_KEY,
             'Content-Type'  => 'application/json',
         ],
-        'body' => wp_json_encode($payload),
+        'body' => $json_body,
     ]);
 
     if (is_wp_error($response)) {
@@ -905,12 +908,12 @@ add_filter('pre_wp_mail', function ($null, $atts) {
 
     $code = wp_remote_retrieve_response_code($response);
     $body = wp_remote_retrieve_body($response);
+    error_log('[Neamob Resend] Response (HTTP ' . $code . '): ' . $body);
 
     if ($code >= 200 && $code < 300) {
         return true;
     }
 
-    error_log('[Neamob Resend] API error (HTTP ' . $code . '): ' . $body);
     return false;
 }, 10, 2);
 
