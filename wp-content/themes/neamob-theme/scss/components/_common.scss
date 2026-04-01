@@ -564,6 +564,65 @@ body.page-simple .site-main {
   }
 }
 
+// CF7 status base styles (для всех форм)
+.cf7-status {
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.cf7-status--error {
+  justify-content: space-between;
+}
+
+.cf7-status__text {
+  flex: 1;
+}
+
+.cf7-status__retry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(#fff, 0.1);
+  border: 1px solid rgba(#fff, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(#fff, 0.2);
+  }
+}
+
+.cf7-status--loading {
+  color: #0094FF;
+}
+
+.cf7-status--success {
+  color: #00C853;
+}
+
+.cf7-status--error .cf7-status__text {
+  color: #ff7a00;
+}
+
+.wpcf7-response-output {
+  display: none !important;
+}
+
+.wpcf7-not-valid {
+  border-bottom-color: #EF4444 !important;
+}
+
 // CF7 status icons (для всех форм)
 .cf7-status__icon--spinner {
   display: block;
