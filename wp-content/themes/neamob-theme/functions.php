@@ -873,8 +873,13 @@ add_filter('pre_wp_mail', function ($null, $atts) {
         }
     }
 
+    $from_name = get_bloginfo('name');
+    if ($from_header && preg_match('/^(.+?)\s*</', $from_header, $nm)) {
+        $from_name = trim($nm[1], '" ');
+    }
+
     $payload = [
-        'from' => $from_header ?: (get_bloginfo('name') . ' <' . $from . '>'),
+        'from' => $from_name . ' <' . $from . '>',
         'to'   => $to,
         'subject' => $subject,
     ];
