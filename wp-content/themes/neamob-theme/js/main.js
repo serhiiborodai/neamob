@@ -502,8 +502,8 @@
                     if (node.nodeType === 3 && node.textContent.trim()) {
                         var asterisk = document.createElement('span');
                         asterisk.className = 'required-asterisk';
-                        asterisk.textContent = ' *';
-                        node.after(asterisk);
+                        asterisk.textContent = '* ';
+                        node.before(asterisk);
                         break;
                     }
                 }
