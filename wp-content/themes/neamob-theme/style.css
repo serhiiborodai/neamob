@@ -783,6 +783,10 @@ body.page-simple .site-main .page-content ul li:before {
   background: #000;
 }
 
+.partner-card__play-icon {
+  display: none;
+}
+
 .partner-card__image--playable {
   position: relative;
   cursor: pointer;
