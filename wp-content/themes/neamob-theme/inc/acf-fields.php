@@ -415,6 +415,14 @@ function neamob_register_acf_fields() {
                 'type' => 'image',
                 'return_format' => 'url',
             ],
+            [
+                'key' => 'field_testimonial_order',
+                'label' => 'Display Order',
+                'name' => 'testimonial_order',
+                'type' => 'number',
+                'default_value' => 0,
+                'instructions' => 'Lower number = shown first',
+            ],
         ],
         'location' => [
             [
@@ -1105,7 +1113,8 @@ function neamob_get_testimonials($count = -1) {
     return new WP_Query([
         'post_type' => 'testimonial',
         'posts_per_page' => $count,
-        'orderby' => 'menu_order',
+        'meta_key' => 'testimonial_order',
+        'orderby' => 'meta_value_num',
         'order' => 'ASC',
     ]);
 }
