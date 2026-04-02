@@ -1111,11 +1111,21 @@ add_action('acf/init', 'neamob_register_acf_fields');
  */
 function neamob_get_testimonials($count = -1) {
     return new WP_Query([
-        'post_type' => 'testimonial',
+        'post_type'      => 'testimonial',
         'posts_per_page' => $count,
-        'meta_key' => 'testimonial_order',
-        'orderby' => 'meta_value_num',
-        'order' => 'ASC',
+        'meta_query'     => [
+            'relation' => 'OR',
+            'order_clause' => [
+                'key'     => 'testimonial_order',
+                'compare' => 'EXISTS',
+                'type'    => 'NUMERIC',
+            ],
+            [
+                'key'     => 'testimonial_order',
+                'compare' => 'NOT EXISTS',
+            ],
+        ],
+        'orderby' => ['order_clause' => 'ASC'],
     ]);
 }
 
