@@ -428,6 +428,7 @@ body .cky-prefrence-btn-wrapper .cky-btn {
     gap: 20px;
     padding: 40px 20px 20px;
     left: -50%;
+    min-width: 242px;
     display: none;
   }
   #masthead .site-header__inner .menu-item-has-children > .menu-placeholder {

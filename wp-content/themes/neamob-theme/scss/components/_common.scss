@@ -359,6 +359,7 @@ body {
           gap: 20px;
           padding: 40px 20px 20px;
           left: -50%;
+          min-width: 242px;
           display: none;
         }
 
@@ -709,7 +710,9 @@ body.page-simple .site-main {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
+  transition:
+    opacity 0.3s,
+    visibility 0.3s;
 
   &.is-active {
     opacity: 1;
@@ -756,6 +759,10 @@ body.page-simple .site-main {
   }
 }
 
+.partner-card__play-icon {
+  display: none;
+}
+
 .partner-card__image--playable {
   position: relative;
   cursor: pointer;
@@ -766,7 +773,9 @@ body.page-simple .site-main {
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0.85;
-    transition: opacity 0.2s, transform 0.2s;
+    transition:
+      opacity 0.2s,
+      transform 0.2s;
   }
 
   &:hover .partner-card__play-icon {
