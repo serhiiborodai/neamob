@@ -60,6 +60,10 @@
             background: #0094ff;
             width: 197px;
 
+            &:hover {
+                opacity: 0.9;
+            }
+
             .btn-dot {
                 display: block;
                 position: absolute;

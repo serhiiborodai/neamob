@@ -167,6 +167,9 @@ select {
   top: 20px;
   left: 51px;
 }
+#masthead .header-cta .btn--cta:hover {
+  color: #0094ff;
+}
 
 #page {
   padding-top: 87px;
@@ -1021,6 +1024,9 @@ body.page-simple .site-main .page-content ul li:before {
   position: relative;
   background: #0094ff;
   width: 197px;
+}
+.hero-section .btn--hero:hover {
+  opacity: 0.9;
 }
 .hero-section .btn--hero .btn__dot {
   display: none;
@@ -1923,7 +1929,12 @@ body.page-simple .site-main .page-content ul li:before {
   position: relative;
   margin-top: 16px;
   display: block;
+  cursor: pointer;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB2SURBVHgBfY+xDYNQDAXPTgb4I2SEZKSU6ZJJ0iBRsgJswAYwAiMwAGC+LVEgASe58VlPz4JT2oOZCuOJkPLUKD8+MkjIiS7EnpEbL2XhfyCd5KlCYcY5o0bUOckP+ouDRnOR92GKRcmv+iveNl7bBLTc8y67FUuhHyTGfz7YAAAAAElFTkSuQmCC) no-repeat 54px center;
+}
+.contact-form-section__form input.wpcf7-submit:hover,
+.case-study-form-overlay__form input.wpcf7-submit:hover {
+  color: #0094ff;
 }
 .contact-form-section__form label,
 .case-study-form-overlay__form label {
@@ -4363,6 +4374,9 @@ body.page-simple .site-main .page-content ul li:before {
   position: relative;
   background: #0094ff;
   width: 197px;
+}
+.bi-page .bi-hero__btn:hover {
+  opacity: 0.9;
 }
 .bi-page .bi-hero__btn .btn-dot {
   display: block;

@@ -40,6 +40,10 @@
         background: #0094ff;
         width: 197px;
 
+        &:hover {
+            opacity: 0.9;
+        }
+
         .btn__dot {
             display: none;
         }
@@ -1086,8 +1090,13 @@
             position: relative;
             margin-top: 16px;
             display: block;
+            cursor: pointer;
             background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB2SURBVHgBfY+xDYNQDAXPTgb4I2SEZKSU6ZJJ0iBRsgJswAYwAiMwAGC+LVEgASe58VlPz4JT2oOZCuOJkPLUKD8+MkjIiS7EnpEbL2XhfyCd5KlCYcY5o0bUOckP+ouDRnOR92GKRcmv+iveNl7bBLTc8y67FUuhHyTGfz7YAAAAAElFTkSuQmCC)
                 no-repeat 54px center;
+
+            &:hover {
+                color: #0094ff;
+            }
         }
 
         label {
