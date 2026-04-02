@@ -3792,6 +3792,9 @@ body.page-simple .site-main .page-content ul li:before {
   background: #0094ff;
   width: 197px;
 }
+.service-hero__btn:hover {
+  opacity: 0.9;
+}
 .service-hero__btn:before {
   content: "";
   display: block;
