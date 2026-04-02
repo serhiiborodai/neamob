@@ -149,7 +149,7 @@ function neamob_enqueue_scripts()
         'neamob-script',
         get_template_directory_uri() . '/js/main.js',
         ['swiper-js', 'lenis-js'],
-        wp_get_theme()->get('Version'),
+        filemtime(get_template_directory() . '/js/main.js'),
         true
     );
 
