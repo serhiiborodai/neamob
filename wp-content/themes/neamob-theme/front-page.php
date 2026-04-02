@@ -589,6 +589,7 @@ $has_partners = !empty($partner_cards);
     <div class="video-overlay__container">
         <button type="button" class="video-overlay__close" aria-label="Close">&times;</button>
         <video class="video-overlay__player" playsinline preload="metadata">
+            <source src="<?php echo get_template_directory_uri(); ?>/assets/videos/snappper.webm" type="video/webm">
             <source src="<?php echo get_template_directory_uri(); ?>/assets/videos/snappper.mp4" type="video/mp4">
         </video>
     </div>
