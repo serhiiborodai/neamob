@@ -698,3 +698,79 @@ body.page-simple .site-main {
   color: #0094ff;
   font-weight: 500;
 }
+
+// Video Overlay
+.video-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+
+  &.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+  }
+
+  &__container {
+    position: relative;
+    width: 90vw;
+    max-width: 960px;
+    z-index: 1;
+  }
+
+  &__close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__player {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    background: #000;
+  }
+}
+
+.partner-card__image--playable {
+  position: relative;
+  cursor: pointer;
+
+  .partner-card__play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.85;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  &:hover .partner-card__play-icon {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}

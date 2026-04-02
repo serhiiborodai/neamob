@@ -570,13 +570,30 @@ $has_partners = !empty($partner_cards);
             </div>
             <div class="partner-card">
                 <div class="partner-card__logo"><a href="https://www.snappper.com/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper"></a></div>
-                <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/power.png" alt="Snappper"></div>
+                <div class="partner-card__image partner-card__image--playable" data-open-video-overlay>
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/power.png" alt="Snappper">
+                    <span class="partner-card__play-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.45)"/><polygon points="19,14 36,24 19,34" fill="#fff"/></svg>
+                    </span>
+                </div>
                 <p class="partner-card__text">Snappper is an award-winning creative and video production agency crafting engaging branded content with proven reach and results.</p>
             </div>
             <?php endif; ?>
         </div>
     </div>
 </section>
+
+<!-- Video Overlay -->
+<div class="video-overlay" id="video-overlay">
+    <div class="video-overlay__backdrop"></div>
+    <div class="video-overlay__container">
+        <button type="button" class="video-overlay__close" aria-label="Close">&times;</button>
+        <video class="video-overlay__player" playsinline preload="metadata">
+            <source src="<?php echo get_template_directory_uri(); ?>/assets/videos/snappper.mp4" type="video/mp4">
+        </video>
+    </div>
+</div>
+
 <script>
 function neamobPlayPartnerVideo(el) {
     var videoId = el.dataset.videoId;
