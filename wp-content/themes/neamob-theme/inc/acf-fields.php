@@ -39,7 +39,7 @@ function neamob_register_testimonials_cpt() {
         'hierarchical'        => false,
         'menu_position'       => 6,
         'menu_icon'           => 'dashicons-format-quote',
-        'supports'            => ['title'],
+        'supports'            => ['title', 'page-attributes'],
         'show_in_rest'        => true,
     ];
 
