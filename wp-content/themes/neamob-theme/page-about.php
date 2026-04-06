@@ -71,9 +71,16 @@ if (!$beliefs) {
                     ];
                 }
             }
-            foreach ($gallery_items as $item): ?>
+            foreach ($gallery_items as $item):
+                $ext = strtolower(pathinfo($item['url'], PATHINFO_EXTENSION));
+                $is_video = in_array($ext, ['mp4', 'mov', 'webm']);
+            ?>
             <div class="about-gallery__item">
-                <img src="<?php echo esc_url($item['url']); ?>" alt="<?php echo esc_attr($item['alt']); ?>">
+                <?php if ($is_video): ?>
+                    <video src="<?php echo esc_url($item['url']); ?>" autoplay muted loop playsinline preload="metadata"></video>
+                <?php else: ?>
+                    <img src="<?php echo esc_url($item['url']); ?>" alt="<?php echo esc_attr($item['alt']); ?>">
+                <?php endif; ?>
             </div>
             <?php endforeach; ?>
         </div>
