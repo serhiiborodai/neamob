@@ -24,13 +24,31 @@ function neamob_gallery_metaboxes() {
     $portfolio_page = get_page_by_path('portfolio');
     if ($portfolio_page && $post->ID === $portfolio_page->ID) {
         add_meta_box(
-            'neamob_portfolio_gallery',
-            'Portfolio Gallery',
+            'neamob_portfolio_static',
+            'Portfolio — Static',
             'neamob_render_gallery_metabox',
             'page',
             'normal',
             'high',
-            ['meta_key' => '_neamob_portfolio_gallery']
+            ['meta_key' => '_neamob_portfolio_static']
+        );
+        add_meta_box(
+            'neamob_portfolio_video',
+            'Portfolio — Video',
+            'neamob_render_gallery_metabox',
+            'page',
+            'normal',
+            'high',
+            ['meta_key' => '_neamob_portfolio_video']
+        );
+        add_meta_box(
+            'neamob_portfolio_ugc',
+            'Portfolio — UGC-Video',
+            'neamob_render_gallery_metabox',
+            'page',
+            'normal',
+            'high',
+            ['meta_key' => '_neamob_portfolio_ugc']
         );
     }
 }
@@ -67,7 +85,7 @@ function neamob_gallery_save($post_id) {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
     if (!current_user_can('edit_post', $post_id)) return;
 
-    $keys = ['_neamob_about_gallery', '_neamob_portfolio_gallery'];
+    $keys = ['_neamob_about_gallery', '_neamob_portfolio_static', '_neamob_portfolio_video', '_neamob_portfolio_ugc'];
     foreach ($keys as $key) {
         if (isset($_POST[$key])) {
             $ids = array_filter(array_map('intval', explode(',', sanitize_text_field($_POST[$key]))));

@@ -12,21 +12,30 @@ $portfolio_categories = get_field('portfolio_categories') ?: ['All', 'Static', '
 // Blocks
 $blocks = get_field('portfolio_blocks');
 
-// Get portfolio items from admin gallery meta box
-$gallery_images = neamob_get_gallery_images('_neamob_portfolio_gallery');
-$portfolio_items = [];
+// Get portfolio items from admin gallery meta boxes (per category)
+$gallery_sources = [
+    'static'    => neamob_get_gallery_images('_neamob_portfolio_static'),
+    'video'     => neamob_get_gallery_images('_neamob_portfolio_video'),
+    'ugc-video' => neamob_get_gallery_images('_neamob_portfolio_ugc'),
+];
 
-if (!empty($gallery_images)) {
-    foreach ($gallery_images as $img) {
+$portfolio_items = [];
+$has_gallery = false;
+
+foreach ($gallery_sources as $category => $images) {
+    if (!empty($images)) $has_gallery = true;
+    foreach ($images as $img) {
         $ext = strtolower(pathinfo($img['url'], PATHINFO_EXTENSION));
         $is_video = in_array($ext, ['mp4', 'mov', 'webm']);
         $portfolio_items[] = [
             'url'      => $img['url'],
-            'category' => 'all',
+            'category' => $category,
             'is_video' => $is_video,
         ];
     }
-} else {
+}
+
+if (!$has_gallery) {
     $upload_dir = wp_upload_dir();
     $portfolio_base = $upload_dir['basedir'] . '/portfolio';
     $portfolio_url = $upload_dir['baseurl'] . '/portfolio';
