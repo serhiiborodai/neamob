@@ -20,6 +20,19 @@ function neamob_gallery_metaboxes() {
             ['meta_key' => '_neamob_about_gallery']
         );
     }
+
+    $portfolio_page = get_page_by_path('portfolio');
+    if ($portfolio_page && $post->ID === $portfolio_page->ID) {
+        add_meta_box(
+            'neamob_portfolio_gallery',
+            'Portfolio Gallery',
+            'neamob_render_gallery_metabox',
+            'page',
+            'normal',
+            'high',
+            ['meta_key' => '_neamob_portfolio_gallery']
+        );
+    }
 }
 add_action('add_meta_boxes_page', 'neamob_gallery_metaboxes');
 
@@ -54,9 +67,12 @@ function neamob_gallery_save($post_id) {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
     if (!current_user_can('edit_post', $post_id)) return;
 
-    if (isset($_POST['_neamob_about_gallery'])) {
-        $ids = array_filter(array_map('intval', explode(',', sanitize_text_field($_POST['_neamob_about_gallery']))));
-        update_post_meta($post_id, '_neamob_about_gallery', $ids);
+    $keys = ['_neamob_about_gallery', '_neamob_portfolio_gallery'];
+    foreach ($keys as $key) {
+        if (isset($_POST[$key])) {
+            $ids = array_filter(array_map('intval', explode(',', sanitize_text_field($_POST[$key]))));
+            update_post_meta($post_id, $key, $ids);
+        }
     }
 }
 add_action('save_post_page', 'neamob_gallery_save');

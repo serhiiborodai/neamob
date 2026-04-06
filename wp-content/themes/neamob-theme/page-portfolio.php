@@ -12,32 +12,45 @@ $portfolio_categories = get_field('portfolio_categories') ?: ['All', 'Static', '
 // Blocks
 $blocks = get_field('portfolio_blocks');
 
-// Scan portfolio media directory
-$upload_dir = wp_upload_dir();
-$portfolio_base = $upload_dir['basedir'] . '/portfolio';
-$portfolio_url = $upload_dir['baseurl'] . '/portfolio';
-
-$media_folders = [
-    'static'  => 'static',
-    'ugc'     => 'ugc-video',
-    'videos'  => 'video',
-];
-
+// Get portfolio items from admin gallery meta box
+$gallery_images = neamob_get_gallery_images('_neamob_portfolio_gallery');
 $portfolio_items = [];
 
-foreach ($media_folders as $folder => $tab_category) {
-    $dir = $portfolio_base . '/' . $folder;
-    if (!is_dir($dir)) continue;
-    $files = array_diff(scandir($dir), ['.', '..']);
-    foreach ($files as $file) {
-        if (strpos($file, '._') === 0) continue;
-        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+if (!empty($gallery_images)) {
+    foreach ($gallery_images as $img) {
+        $ext = strtolower(pathinfo($img['url'], PATHINFO_EXTENSION));
         $is_video = in_array($ext, ['mp4', 'mov', 'webm']);
         $portfolio_items[] = [
-            'url'      => $portfolio_url . '/' . $folder . '/' . rawurlencode($file),
-            'category' => $tab_category,
+            'url'      => $img['url'],
+            'category' => 'all',
             'is_video' => $is_video,
         ];
+    }
+} else {
+    $upload_dir = wp_upload_dir();
+    $portfolio_base = $upload_dir['basedir'] . '/portfolio';
+    $portfolio_url = $upload_dir['baseurl'] . '/portfolio';
+
+    $media_folders = [
+        'static'  => 'static',
+        'ugc'     => 'ugc-video',
+        'videos'  => 'video',
+    ];
+
+    foreach ($media_folders as $folder => $tab_category) {
+        $dir = $portfolio_base . '/' . $folder;
+        if (!is_dir($dir)) continue;
+        $files = array_diff(scandir($dir), ['.', '..']);
+        foreach ($files as $file) {
+            if (strpos($file, '._') === 0) continue;
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            $is_video = in_array($ext, ['mp4', 'mov', 'webm']);
+            $portfolio_items[] = [
+                'url'      => $portfolio_url . '/' . $folder . '/' . rawurlencode($file),
+                'category' => $tab_category,
+                'is_video' => $is_video,
+            ];
+        }
     }
 }
 
