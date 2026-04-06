@@ -51,23 +51,26 @@ if (!$beliefs) {
         </div>
         <div class="about-gallery__track">
             <?php
-            $gallery = get_field('about_gallery');
-            $gallery_items = [];
-            if ($gallery && is_array($gallery) && !empty($gallery)):
-                foreach ($gallery as $img):
-                    $gallery_items[] = [
-                        'url' => is_array($img) ? ($img['url'] ?? '') : $img,
-                        'alt' => is_array($img) ? ($img['alt'] ?? 'About photo') : 'About photo',
-                    ];
-                endforeach;
-            else:
-                for ($i = 1; $i <= 7; $i++):
+            $gallery_items = neamob_get_gallery_images('_neamob_about_gallery');
+            if (empty($gallery_items) && function_exists('get_field')) {
+                $acf_gallery = get_field('about_gallery');
+                if ($acf_gallery && is_array($acf_gallery)) {
+                    foreach ($acf_gallery as $img) {
+                        $gallery_items[] = [
+                            'url' => is_array($img) ? ($img['url'] ?? '') : $img,
+                            'alt' => is_array($img) ? ($img['alt'] ?? 'About photo') : 'About photo',
+                        ];
+                    }
+                }
+            }
+            if (empty($gallery_items)) {
+                for ($i = 1; $i <= 7; $i++) {
                     $gallery_items[] = [
                         'url' => get_template_directory_uri() . '/assets/images/about/' . $i . '.webp',
                         'alt' => 'About photo ' . $i,
                     ];
-                endfor;
-            endif;
+                }
+            }
             foreach ($gallery_items as $item): ?>
             <div class="about-gallery__item">
                 <img src="<?php echo esc_url($item['url']); ?>" alt="<?php echo esc_attr($item['alt']); ?>">
