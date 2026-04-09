@@ -4,7 +4,8 @@
  */
 get_header();
 
-// Get post data
+if (have_posts()): the_post();
+
 $categories = get_the_category();
 $category = !empty($categories) ? $categories[0] : null;
 $cat_color = $category ? neamob_get_category_color($category) : 'blue';
@@ -12,8 +13,6 @@ $author_id = get_the_author_meta('ID');
 $author_name = get_the_author();
 $author_position = get_the_author_meta('description') ?: 'Author at NeaMob';
 $author_avatar = get_avatar_url($author_id, ['size' => 60]);
-
-// Get previous and next posts
 $prev_post = get_previous_post();
 $next_post = get_next_post();
 ?>
@@ -275,4 +274,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<?php endif; ?>
 <?php get_footer(); ?>

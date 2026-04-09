@@ -30,6 +30,11 @@
     background: #fff;
     overflow: hidden;
     height: 380px;
+
+    img {
+      min-width: 100%;
+      min-height: 100%;
+    }
   }
 
   &__meta {
