@@ -621,21 +621,6 @@ function neamob_register_jobs_cpt()
         'show_in_rest' => true,
     ]);
 
-    // Register Job Category Taxonomy
-    register_taxonomy('job_category', 'job', [
-        'labels' => [
-            'name' => 'Job Categories',
-            'singular_name' => 'Job Category',
-            'search_items' => 'Search Categories',
-            'all_items' => 'All Categories',
-            'edit_item' => 'Edit Category',
-            'add_new_item' => 'Add New Category',
-        ],
-        'hierarchical' => true,
-        'public' => true,
-        'rewrite' => ['slug' => 'job-category'],
-        'show_in_rest' => true,
-    ]);
 }
 add_action('init', 'neamob_register_jobs_cpt');
 

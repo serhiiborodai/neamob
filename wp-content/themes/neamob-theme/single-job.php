@@ -9,9 +9,9 @@ get_header();
 
 while (have_posts()):
     the_post();
-    $categories = get_the_terms(get_the_ID(), 'job_category');
-    $category_name = $categories ? $categories[0]->name : '';
     $category_color = get_field('job_category_color') ?: 'green';
+    $color_labels = ['purple' => 'Creative & Design', 'green' => 'Campaign Management', 'blue' => 'Analytics & Reporting', 'grey' => ''];
+    $category_name = isset($color_labels[$category_color]) ? $color_labels[$category_color] : '';
     $applications = (int) get_field('job_applications_count') ?: 0;
     $job_id = get_the_ID();
     ?>

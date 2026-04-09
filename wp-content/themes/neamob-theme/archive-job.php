@@ -34,9 +34,9 @@ $jobs = neamob_get_jobs(10, $paged);
                     class="jobs-list">
                     <?php while ($jobs->have_posts()):
                         $jobs->the_post();
-                        $categories = get_the_terms(get_the_ID(), 'job_category');
-                        $category_name = $categories ? $categories[0]->name : '';
                         $category_color = get_field('job_category_color') ?: 'green';
+                        $color_labels = ['purple' => 'Creative & Design', 'green' => 'Campaign Management', 'blue' => 'Analytics & Reporting', 'grey' => ''];
+                        $category_name = isset($color_labels[$category_color]) ? $color_labels[$category_color] : '';
                         $company = get_field('job_company') ?: 'Neamob Tech';
                         $applications = (int) get_field('job_applications_count') ?: 0;
                         ?>
