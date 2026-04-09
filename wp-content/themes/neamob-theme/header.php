@@ -35,12 +35,10 @@ f.parentNode.insertBefore(j, f);
     <?php wp_head(); ?>
     </head>
 
-    <body
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TQB84FGB"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-        <?php body_class(); ?>>
+    <body <?php body_class(); ?>>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TQB84FGB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
         <?php wp_body_open(); ?>
 
         <div id="page" class="site">
