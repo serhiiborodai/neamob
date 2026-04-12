@@ -3291,6 +3291,9 @@ body.page-simple .site-main .page-content ul li:before {
   min-width: 100%;
   min-height: 100%;
 }
+.blog-latest__content {
+  position: relative;
+}
 .blog-latest__meta {
   display: flex;
   justify-content: space-between;
@@ -3332,16 +3335,17 @@ body.page-simple .site-main .page-content ul li:before {
   font-size: 16px;
   padding-top: 20px;
   line-height: 1.45;
-  height: 185px;
+  max-height: 185px;
   overflow: hidden;
   margin-bottom: 26px;
 }
 .blog-latest__link {
   display: inline-block;
-  position: relative;
+  position: absolute;
   padding: 0px 0 0 27px;
   color: #000a18;
   font-weight: 500;
+  bottom: 0;
 }
 .blog-latest__link:before {
   content: "";

@@ -37,6 +37,10 @@
     }
   }
 
+  &__content {
+    position: relative;
+  }
+
   &__meta {
     display: flex;
     justify-content: space-between;
@@ -85,17 +89,18 @@
     font-size: 16px;
     padding-top: 20px;
     line-height: 1.45;
-    height: 185px;
+    max-height: 185px;
     overflow: hidden;
     margin-bottom: 26px;
   }
 
   &__link {
     display: inline-block;
-    position: relative;
+    position: absolute;
     padding: 0px 0 0 27px;
     color: #000a18;
     font-weight: 500;
+    bottom: 0;
 
     &:before {
       content: '';
