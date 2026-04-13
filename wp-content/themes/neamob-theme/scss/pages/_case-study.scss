@@ -1,0 +1,435 @@
+// ==========================================================================
+// Case Study — Rehab Center
+// ==========================================================================
+
+.cs-rehab {
+
+  // ── Fade-in animation ──
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // ── Tag (section label) ──
+  &__tag {
+    display: inline-block;
+    background: rgba($primary-color, 0.15);
+    color: $primary-color;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 6px 16px;
+    border-radius: $radius-full;
+    margin-bottom: $spacing-6;
+  }
+
+  &__section-tag {
+    display: inline-block;
+    color: $primary-color;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: $spacing-4;
+  }
+
+  // ── Hero ──
+  &__hero {
+    position: relative;
+    padding: 180px 0 120px;
+    background: $bg-dark;
+    overflow: hidden;
+    color: #fff;
+  }
+
+  &__hero-waves {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba($primary-color, 0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 80% at 90% 30%, rgba(#0050cc, 0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 30% 80%, rgba($primary-color, 0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  &__hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__hero-title {
+    font-family: $font-family-heading;
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: $spacing-5;
+    span { color: $primary-color; }
+  }
+
+  &__hero-text {
+    font-size: $font-size-lg;
+    color: rgba(#fff, 0.7);
+    line-height: 1.7;
+    margin-bottom: $spacing-8;
+    max-width: 480px;
+  }
+
+  &__hero-actions {
+    display: flex;
+    gap: $spacing-4;
+    flex-wrap: wrap;
+  }
+
+  // ── Buttons ──
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: $radius;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: $transition;
+    border: 2px solid transparent;
+  }
+
+  &__btn--primary {
+    background: $primary-color;
+    color: #fff;
+    border-color: $primary-color;
+    &:hover {
+      background: $primary-dark;
+      border-color: $primary-dark;
+    }
+  }
+
+  &__btn--outline {
+    background: transparent;
+    color: #fff;
+    border-color: rgba(#fff, 0.3);
+    &:hover {
+      background: rgba(#fff, 0.1);
+      border-color: rgba(#fff, 0.5);
+    }
+  }
+
+  &__btn-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00c853;
+    display: inline-block;
+  }
+
+  // ── Hero stat cards ──
+  &__hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  &__stat-card {
+    background: rgba(#fff, 0.07);
+    backdrop-filter: blur(12px);
+    border-radius: $radius-lg;
+    padding: 28px 24px;
+    border: 1px solid rgba(#fff, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &__stat-number {
+    font-size: 40px;
+    font-weight: 800;
+    color: $primary-color;
+    line-height: 1;
+    margin-bottom: 8px;
+    font-family: $font-family-heading;
+    &--green { color: #00c853; }
+  }
+
+  &__stat-label {
+    font-size: $font-size-sm;
+    color: rgba(#fff, 0.6);
+    line-height: 1.4;
+  }
+
+  // ── Sections ──
+  &__section {
+    padding: 100px 0;
+    background: #fff;
+  }
+
+  &__section--light {
+    background: $bg-light;
+  }
+
+  &__section-title {
+    font-family: $font-family-heading;
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 800;
+    color: $text-dark;
+    margin-bottom: $spacing-4;
+  }
+
+  &__section-subtitle {
+    font-size: $font-size-lg;
+    color: $text-light;
+    max-width: 640px;
+    line-height: 1.7;
+    margin-bottom: $spacing-12;
+  }
+
+  // ── Challenge ──
+  &__challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+
+  &__challenge-card {
+    background: $bg-light;
+    border-radius: $radius-lg;
+    padding: 28px 24px;
+    border: 1px solid $border-color;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+    }
+    h3 {
+      font-family: $font-family-heading;
+      font-size: $font-size-base;
+      font-weight: $font-weight-bold;
+      color: $text-dark;
+      margin-bottom: $spacing-2;
+    }
+    p {
+      font-size: $font-size-sm;
+      color: $text-light;
+      line-height: 1.6;
+    }
+  }
+
+  &__challenge-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba($primary-color, 0.1);
+    border-radius: $radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $spacing-4;
+  }
+
+  // ── Results ──
+  &__results-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: $spacing-10;
+  }
+
+  &__result-card {
+    background: #fff;
+    border-radius: $radius-lg;
+    padding: 32px 24px;
+    border: 1px solid $border-color;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+    }
+  }
+
+  &__result-number {
+    font-size: 44px;
+    font-weight: 800;
+    color: $primary-color;
+    line-height: 1;
+    margin-bottom: 8px;
+    font-family: $font-family-heading;
+    &--green { color: #00c853; }
+  }
+
+  &__result-label {
+    font-size: $font-size-sm;
+    color: $text-light;
+  }
+
+  &__results-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+    max-width: 640px;
+  }
+
+  &__results-item {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-3;
+    p {
+      font-size: $font-size-base;
+      color: $text-color;
+      line-height: 1.6;
+    }
+  }
+
+  &__check {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background: rgba($primary-color, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary-color;
+    svg { width: 14px; height: 14px; }
+  }
+
+  // ── Before/After Table ──
+  &__table-wrap {
+    overflow-x: auto;
+    border-radius: $radius-lg;
+    border: 1px solid $border-color;
+    background: #fff;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: $font-size-sm;
+    th, td {
+      padding: 18px 24px;
+      text-align: left;
+      border-bottom: 1px solid $border-color;
+    }
+    th {
+      background: $bg-dark;
+      color: #fff;
+      font-weight: $font-weight-semibold;
+      font-size: $font-size-xs;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      &:first-child { border-radius: $radius-lg 0 0 0; }
+      &:last-child { border-radius: 0 $radius-lg 0 0; }
+    }
+    td { color: $text-color; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: $bg-light; }
+  }
+
+  &__table-before {
+    color: #dc3545 !important;
+    font-weight: $font-weight-medium;
+  }
+
+  &__table-after {
+    color: #00c853 !important;
+    font-weight: $font-weight-medium;
+  }
+
+  // ── Services Grid ──
+  &__services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  &__service-card {
+    background: #fff;
+    border-radius: $radius-lg;
+    padding: 32px 28px;
+    border: 1px solid $border-color;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+    }
+    h3 {
+      font-family: $font-family-heading;
+      font-size: $font-size-base;
+      font-weight: $font-weight-bold;
+      color: $text-dark;
+      margin-bottom: $spacing-2;
+    }
+    p {
+      font-size: $font-size-sm;
+      color: $text-light;
+      line-height: 1.6;
+      margin-bottom: $spacing-4;
+    }
+  }
+
+  &__service-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba($primary-color, 0.1);
+    border-radius: $radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $spacing-4;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    span {
+      background: $bg-light;
+      color: $text-light;
+      font-size: 11px;
+      font-weight: $font-weight-medium;
+      padding: 4px 10px;
+      border-radius: $radius-full;
+      border: 1px solid $border-color;
+    }
+  }
+
+  // ── Responsive ──
+  @media (max-width: $breakpoint-lg) {
+    &__hero { padding: 140px 0 80px; }
+    &__hero-grid { grid-template-columns: 1fr; gap: 48px; }
+    &__hero-stats { max-width: 420px; }
+    &__challenge-grid { grid-template-columns: repeat(3, 1fr); }
+    &__results-grid { grid-template-columns: repeat(2, 1fr); }
+    &__services-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: $breakpoint-md) {
+    &__hero { padding: 120px 0 60px; }
+    &__hero-title { font-size: 32px; }
+    &__section { padding: 64px 0; }
+    &__challenge-grid { grid-template-columns: 1fr 1fr; }
+    &__services-grid { grid-template-columns: 1fr; }
+    &__table th, &__table td { padding: 14px 16px; font-size: 13px; }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    &__hero-title { font-size: 28px; }
+    &__hero-actions { flex-direction: column; }
+    &__hero-actions .cs-rehab__btn { width: 100%; justify-content: center; }
+    &__hero-stats { grid-template-columns: 1fr 1fr; }
+    &__challenge-grid { grid-template-columns: 1fr; }
+    &__results-grid { grid-template-columns: 1fr 1fr; }
+    &__result-number { font-size: 36px; }
+  }
+}
