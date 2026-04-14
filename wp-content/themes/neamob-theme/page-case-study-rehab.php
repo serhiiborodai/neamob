@@ -59,13 +59,18 @@ get_header();
     $cs_content = '';
     if (have_posts()):
         while (have_posts()): the_post();
-            $cs_content = trim(get_the_content());
-        endwhile;
-    endif;
-    add_filter('the_content', 'wpautop');
+        $cs_content = trim(get_the_content());
+    endwhile;
+endif;
+add_filter('the_content', 'wpautop');
 
-    if ($cs_content): ?>
-        <?php echo apply_filters('the_content', $cs_content); ?>
+if ($cs_content):
+    $cs_content = preg_replace('/<section\s+class="cs-rehab__hero"[\s\S]*?<\/section>/i', '', $cs_content, 1);
+    $cs_content = trim($cs_content);
+endif;
+
+if ($cs_content): ?>
+    <?php echo apply_filters('the_content', $cs_content); ?>
     <?php else: ?>
 
     <!-- Challenge -->
