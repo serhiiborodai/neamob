@@ -9,21 +9,8 @@ get_header();
 ?>
 
 <main class="cs-rehab">
-<?php
-remove_filter('the_content', 'wpautop');
-$cs_content = '';
-if (have_posts()):
-    while (have_posts()): the_post();
-        $cs_content = trim(get_the_content());
-    endwhile;
-endif;
-add_filter('the_content', 'wpautop');
 
-if ($cs_content): ?>
-    <?php echo apply_filters('the_content', $cs_content); ?>
-<?php else: ?>
-
-    <!-- Hero -->
+    <!-- Hero (always from template — needs PHP for image paths) -->
     <section class="cs-rehab__hero">
         <div class="cs-rehab__hero-bg">
             <picture>
@@ -65,6 +52,21 @@ if ($cs_content): ?>
             </div>
         </div>
     </section>
+
+    <!-- Sections: from WP editor if available, otherwise fallback -->
+    <?php
+    remove_filter('the_content', 'wpautop');
+    $cs_content = '';
+    if (have_posts()):
+        while (have_posts()): the_post();
+            $cs_content = trim(get_the_content());
+        endwhile;
+    endif;
+    add_filter('the_content', 'wpautop');
+
+    if ($cs_content): ?>
+        <?php echo apply_filters('the_content', $cs_content); ?>
+    <?php else: ?>
 
     <!-- Challenge -->
     <section class="cs-rehab__section cs-rehab__section--light" id="cs-challenge">
@@ -339,7 +341,8 @@ if ($cs_content): ?>
         </div>
     </section>
 
-<?php endif; ?>
+    <?php endif; ?>
+
 </main>
 
 <?php
