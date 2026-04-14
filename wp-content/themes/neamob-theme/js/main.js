@@ -831,5 +831,54 @@
         });
     }
 
+    // ── GTM dataLayer: CF7 form submissions ──────────────────────
+    (function() {
+        var formMap = {
+            '60':   'contact',
+            '61':   'job_application',
+            '6261': 'case_study_download'
+        };
+
+        var pageSlug = document.body.className.match(/page-template-page-([^\s]+)/);
+        var pageType = 'other';
+        if (document.body.classList.contains('home')) {
+            pageType = 'home';
+        } else if (document.body.classList.contains('single-post')) {
+            pageType = 'blog_post';
+        } else if (document.body.classList.contains('single-case_study')) {
+            pageType = 'case_study';
+        } else if (document.body.classList.contains('single-job')) {
+            pageType = 'job';
+        } else if (pageSlug) {
+            pageType = pageSlug[1].replace(/-/g, '_');
+        }
+
+        document.addEventListener('wpcf7mailsent', function(ev) {
+            var detail = ev.detail || {};
+            var formId = String(detail.contactFormId || '');
+            var formName = formMap[formId] || 'unknown_' + formId;
+            var inputs = detail.inputs || [];
+
+            var fieldData = {};
+            inputs.forEach(function(input) {
+                if (input.name && input.value) {
+                    fieldData[input.name] = input.value;
+                }
+            });
+
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'cf7_submission',
+                form_id: formName,
+                form_cf7_id: formId,
+                page_type: pageType,
+                page_url: window.location.pathname,
+                page_title: document.title,
+                user_email: fieldData['your-email'] || '',
+                user_name: (fieldData['full-name'] || '') + (fieldData['last-name'] ? ' ' + fieldData['last-name'] : '')
+            });
+        });
+    })();
+
 })();
 
