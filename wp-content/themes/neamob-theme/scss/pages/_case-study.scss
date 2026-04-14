@@ -39,9 +39,25 @@ $cs-tag-bg: #e8f1fc;
   // ── Hero ──────────────────────────────────────────────────────
   &__hero {
     position: relative;
-    background: $cs-hero-bg url('../assets/images/case-study-rehab-bg.jpg') center / cover no-repeat;
+    background: $cs-hero-bg;
     overflow: hidden;
     color: #fff;
+  }
+
+  &__hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  &__hero-bg-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   &__hero-inner {
