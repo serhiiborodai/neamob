@@ -25,9 +25,6 @@ if ($cs_content): ?>
 
     <!-- Hero -->
     <section class="cs-rehab__hero">
-        <div class="cs-rehab__hero-bg">
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/case-study-rehab-bg.jpg" alt="" class="cs-rehab__hero-bg-img">
-        </div>
         <div class="container">
             <div class="cs-rehab__hero-inner">
                 <div class="cs-rehab__hero-content">

@@ -5071,19 +5071,15 @@ body.page-simple .site-main .page-content ul li:before {
   overflow: hidden;
   color: #fff;
 }
-.cs-rehab__hero-bg {
+.cs-rehab__hero::before {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  background: url("../assets/images/case-study-rehab-bg.jpg") center/cover no-repeat;
   z-index: 1;
-}
-.cs-rehab__hero-bg-img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 .cs-rehab__hero-inner {
   position: relative;
