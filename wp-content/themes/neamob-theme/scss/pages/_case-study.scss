@@ -4,8 +4,8 @@
 // ==========================================================================
 
 // Figma: DM Sans for titles/numbers/tags, Raleway for body text
-$cs-title: $font-family;          // DM Sans
-$cs-body: $font-family-heading;   // Raleway
+$cs-title: $font-family; // DM Sans
+$cs-body: $font-family-heading; // Raleway
 
 $cs-dark-blue: #1863dc;
 $cs-hero-bg: #000a18;
@@ -19,7 +19,6 @@ $cs-results-border: #112a40;
 $cs-tag-bg: #e8f1fc;
 
 .cs-rehab {
-
   .container {
     width: 1180px;
     margin: 0 auto;
@@ -28,7 +27,9 @@ $cs-tag-bg: #e8f1fc;
   .fade-in {
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
     &.visible {
       opacity: 1;
       transform: translateY(0);
@@ -126,14 +127,19 @@ $cs-tag-bg: #e8f1fc;
     background: $primary-color;
     color: #fff;
     border-color: $primary-color;
-    &:hover { background: $primary-dark; border-color: $primary-dark; }
+    &:hover {
+      background: $primary-dark;
+      border-color: $primary-dark;
+    }
   }
 
   &__btn--outline {
     background: transparent;
     color: #fff;
     border-color: #fff;
-    &:hover { background: rgba(#fff, 0.08); }
+    &:hover {
+      background: rgba(#fff, 0.08);
+    }
   }
 
   &__btn-dot {
@@ -143,8 +149,12 @@ $cs-tag-bg: #e8f1fc;
     display: inline-block;
   }
 
-  &__btn--primary &__btn-dot { background: #fff; }
-  &__btn--outline &__btn-dot { background: $primary-color; }
+  &__btn--primary &__btn-dot {
+    background: #fff;
+  }
+  &__btn--outline &__btn-dot {
+    background: $primary-color;
+  }
 
   // ── Hero stat cards ──
   &__hero-stats {
@@ -164,8 +174,13 @@ $cs-tag-bg: #e8f1fc;
     display: flex;
     flex-direction: column;
     gap: 4px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    &:hover { transform: translateY(-4px); box-shadow: 0 8px 36px rgba(0, 0, 0, 0.1); }
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 36px rgba(0, 0, 0, 0.1);
+    }
   }
 
   &__stat-number {
@@ -174,7 +189,9 @@ $cs-tag-bg: #e8f1fc;
     font-weight: 500;
     line-height: 1.3;
     color: $cs-dark-blue;
-    &--green { color: #16a34a; }
+    &--green {
+      color: #16a34a;
+    }
   }
 
   &__stat-label {
@@ -190,8 +207,13 @@ $cs-tag-bg: #e8f1fc;
     padding: 60px 0;
   }
 
-  &__section--light { background: $cs-card-bg; }
-  &__section--dark { background: $cs-results-bg; color: #fff; }
+  &__section--light {
+    background: $cs-card-bg;
+  }
+  &__section--dark {
+    background: $cs-results-bg;
+    color: #fff;
+  }
 
   &__section-header {
     display: flex;
@@ -222,7 +244,9 @@ $cs-tag-bg: #e8f1fc;
     font-weight: 500;
     line-height: 1.3;
     color: $text-dark;
-    .cs-rehab__section--dark & { color: #fff; }
+    .cs-rehab__section--dark & {
+      color: #fff;
+    }
   }
 
   &__section-subtitle {
@@ -232,7 +256,9 @@ $cs-tag-bg: #e8f1fc;
     line-height: 1.5;
     color: $cs-text-body;
     max-width: 580px;
-    .cs-rehab__section--dark & { color: $cs-text-on-dark; }
+    .cs-rehab__section--dark & {
+      color: $cs-text-on-dark;
+    }
   }
 
   // ── Challenge ─────────────────────────────────────────────────
@@ -250,8 +276,13 @@ $cs-tag-bg: #e8f1fc;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    &:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); }
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    }
   }
 
   &__challenge-icon {
@@ -263,7 +294,9 @@ $cs-tag-bg: #e8f1fc;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    svg { stroke: $primary-color; }
+    svg {
+      stroke: $primary-color;
+    }
   }
 
   &__challenge-body {
@@ -319,7 +352,10 @@ $cs-tag-bg: #e8f1fc;
     display: flex;
     align-items: center;
     justify-content: center;
-    svg { width: 24px; height: 24px; }
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   &__result-number {
@@ -328,7 +364,9 @@ $cs-tag-bg: #e8f1fc;
     font-weight: 500;
     line-height: 1.32;
     color: $primary-color;
-    &--green { color: #00c853; }
+    &--green {
+      color: #00c853;
+    }
   }
 
   &__result-label {
@@ -399,7 +437,9 @@ $cs-tag-bg: #e8f1fc;
     font-weight: 600;
     line-height: 1.25;
     text-align: center;
-    &--empty { visibility: hidden; }
+    &--empty {
+      visibility: hidden;
+    }
     &--before {
       background: $cs-text-on-dark;
       color: $cs-text-body;
@@ -464,8 +504,13 @@ $cs-tag-bg: #e8f1fc;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    &:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); }
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    }
   }
 
   &__service-icon {
@@ -477,7 +522,9 @@ $cs-tag-bg: #e8f1fc;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    svg { stroke: $primary-color; }
+    svg {
+      stroke: $primary-color;
+    }
   }
 
   &__service-body {
@@ -519,57 +566,142 @@ $cs-tag-bg: #e8f1fc;
 
   // ── Responsive ────────────────────────────────────────────────
   @media (max-width: $breakpoint-lg) {
-    .container { width: auto; padding: 0 20px; }
-    &__hero-inner { flex-direction: column; gap: 48px; padding: 80px 0; }
-    &__hero-content { width: 100%; }
-    &__hero-stats { width: 100%; max-width: 478px; }
-    &__hero-title { font-size: 48px; }
-    &__section-title { font-size: 40px; }
-    &__challenge-grid { grid-template-columns: repeat(2, 1fr); }
-    &__results-grid { grid-template-columns: repeat(2, 1fr); }
-    &__results-list { grid-template-columns: repeat(2, 1fr); }
-    &__services-grid { grid-template-columns: repeat(2, 1fr); }
-    &__comparison-cell { padding: 0 16px; font-size: 14px; }
+    .container {
+      width: auto;
+      padding: 0 20px;
+    }
+    &__hero-inner {
+      flex-direction: column;
+      gap: 48px;
+      padding: 80px 0;
+    }
+    &__hero-content {
+      width: 100%;
+    }
+    &__hero-stats {
+      width: 100%;
+      max-width: 478px;
+    }
+    &__hero-title {
+      font-size: 48px;
+    }
+    &__section-title {
+      font-size: 40px;
+    }
+    &__challenge-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &__results-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &__results-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &__services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &__comparison-cell {
+      padding: 0 16px;
+      font-size: 14px;
+    }
   }
 
   @media (max-width: $breakpoint-md) {
-    &__hero-inner { padding: 60px 0; }
-    &__hero-title { font-size: 40px; }
-    &__hero-stats { grid-template-columns: 1fr 1fr; }
-    &__stat-number { font-size: 40px; }
-    &__section { padding: 40px 0; }
-    &__section-title { font-size: 32px; }
-    &__challenge-grid { grid-template-columns: 1fr; }
-    &__services-grid { grid-template-columns: 1fr; }
-    &__results-grid { grid-template-columns: 1fr 1fr; }
-    &__results-list { grid-template-columns: 1fr 1fr; }
-    &__comparison-headers { display: none; }
-    &__comparison-row {
+    &__hero-inner {
+      padding: 60px 0;
+    }
+    &__hero-title {
+      font-size: 40px;
+    }
+    &__hero-stats {
+      grid-template-columns: 1fr 1fr;
+    }
+    &__stat-number {
+      font-size: 40px;
+    }
+    &__section {
+      padding: 40px 0;
+    }
+    &__section-title {
+      font-size: 32px;
+    }
+    &__challenge-grid {
       grid-template-columns: 1fr;
-      gap: 4px;
-      padding: 16px 0;
-      height: auto;
+    }
+    &__services-grid {
+      grid-template-columns: 1fr;
+    }
+    &__results-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    &__results-list {
+      grid-template-columns: 1fr 1fr;
+    }
+    &__comparison-headers {
+      gap: 0;
+    }
+    &__comparison-row {
+      gap: 0;
     }
     &__comparison-cell {
-      padding: 4px 0;
       height: auto;
-      &--before::before { content: 'Before: '; font-weight: 600; color: $cs-text-body; }
-      &--after::before { content: 'After: '; font-weight: 600; color: $primary-color; }
-      &--before, &--after { background: none; }
+      padding: 12px 10px;
+      &--before::before {
+      }
+      &--after::before {
+      }
+      &--before,
+      &--after {
+      }
     }
-    &__result-number { font-size: 36px; }
-    &__challenge-body h3 { font-size: 20px; }
-    &__service-body h3 { font-size: 20px; }
+    &__result-number {
+      font-size: 36px;
+    }
+    &__challenge-body h3 {
+      font-size: 20px;
+    }
+    &__service-body h3 {
+      font-size: 20px;
+    }
   }
 
   @media (max-width: $breakpoint-sm) {
-    &__hero-title { font-size: 32px; }
-    &__hero-actions { flex-direction: column; }
-    &__hero-actions .cs-rehab__btn { width: 100%; justify-content: center; }
-    &__hero-stats { gap: 12px; }
-    &__stat-number { font-size: 32px; }
-    &__section-title { font-size: 28px; }
-    &__results-grid { grid-template-columns: 1fr; }
-    &__results-list { grid-template-columns: 1fr; }
+    &__hero-title {
+      font-size: 32px;
+    }
+    &__hero-actions {
+      flex-direction: column;
+    }
+    &__hero-actions .cs-rehab__btn {
+      width: 100%;
+      justify-content: center;
+    }
+    &__hero-stats {
+      gap: 12px;
+    }
+    &__stat-number {
+      font-size: 32px;
+    }
+    &__section-title {
+      font-size: 28px;
+    }
+    &__results-grid {
+      grid-template-columns: 1fr;
+    }
+    &__results-list {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media screen and (max-width: 1279px) {
+  .cs-rehab__hero-inner {
+    flex-direction: column;
+  }
+
+  .cs-rehab__challenge-grid,
+  .cs-rehab__results-list,
+  .cs-rehab__services-grid {
+    grid-template-columns: none;
   }
 }

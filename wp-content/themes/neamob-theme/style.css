@@ -5603,30 +5603,14 @@ body.page-simple .site-main .page-content ul li:before {
     grid-template-columns: 1fr 1fr;
   }
   .cs-rehab__comparison-headers {
-    display: none;
+    gap: 0;
   }
   .cs-rehab__comparison-row {
-    grid-template-columns: 1fr;
-    gap: 4px;
-    padding: 16px 0;
-    height: auto;
+    gap: 0;
   }
   .cs-rehab__comparison-cell {
-    padding: 4px 0;
     height: auto;
-  }
-  .cs-rehab__comparison-cell--before::before {
-    content: "Before: ";
-    font-weight: 600;
-    color: #495b75;
-  }
-  .cs-rehab__comparison-cell--after::before {
-    content: "After: ";
-    font-weight: 600;
-    color: #0094ff;
-  }
-  .cs-rehab__comparison-cell--before, .cs-rehab__comparison-cell--after {
-    background: none;
+    padding: 12px 10px;
   }
   .cs-rehab__result-number {
     font-size: 36px;
@@ -5663,6 +5647,17 @@ body.page-simple .site-main .page-content ul li:before {
   }
   .cs-rehab__results-list {
     grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 1279px) {
+  .cs-rehab__hero-inner {
+    flex-direction: column;
+  }
+  .cs-rehab__challenge-grid,
+  .cs-rehab__results-list,
+  .cs-rehab__services-grid {
+    grid-template-columns: none;
   }
 }
 
