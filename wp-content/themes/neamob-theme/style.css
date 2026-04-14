@@ -5071,15 +5071,18 @@ body.page-simple .site-main .page-content ul li:before {
   overflow: hidden;
   color: #fff;
 }
-.cs-rehab__hero::before {
-  content: "";
+.cs-rehab__hero-bg {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: url("../assets/images/case-study-rehab-bg.jpg") center/cover no-repeat;
   z-index: 1;
+}
+.cs-rehab__hero-bg-img {
+  position: absolute;
+  width: 3024px;
+  height: 1680px;
 }
 .cs-rehab__hero-inner {
   position: relative;
@@ -5540,6 +5543,13 @@ body.page-simple .site-main .page-content ul li:before {
   font-weight: 500;
   padding: 4px 10px;
   border-radius: 9999px;
+}
+@media (max-width: 750px) {
+  .cs-rehab__hero-bg-img {
+    width: 100%;
+    height: auto;
+    bottom: 0;
+  }
 }
 @media (max-width: 1024px) {
   .cs-rehab .container {

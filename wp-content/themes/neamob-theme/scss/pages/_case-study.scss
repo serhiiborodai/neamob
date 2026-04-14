@@ -42,17 +42,21 @@ $cs-tag-bg: #e8f1fc;
     background: $cs-hero-bg;
     overflow: hidden;
     color: #fff;
+  }
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url('../assets/images/case-study-rehab-bg.jpg') center / cover no-repeat;
-      z-index: 1;
-    }
+  &__hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  &__hero-bg-img {
+    position: absolute;
+    width: 3024px;
+    height: 1680px;
   }
 
   &__hero-inner {
@@ -576,6 +580,14 @@ $cs-tag-bg: #e8f1fc;
   }
 
   // ── Responsive ────────────────────────────────────────────────
+  @media (max-width: 750px) {
+    &__hero-bg-img {
+      width: 100%;
+      height: auto;
+      bottom: 0;
+    }
+  }
+
   @media (max-width: $breakpoint-lg) {
     .container {
       width: auto;

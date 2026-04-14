@@ -9,6 +9,12 @@ get_header();
 ?>
 
 <main class="cs-rehab">
+<div class="cs-rehab__hero-bg">
+    <picture>
+        <source media="(max-width: 750px)" srcset="<?php echo get_template_directory_uri(); ?>/assets/images/hp-mobile.png">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/hp.webp" alt="" class="cs-rehab__hero-bg-img">
+    </picture>
+</div>
 <?php
 remove_filter('the_content', 'wpautop');
 $cs_content = '';
