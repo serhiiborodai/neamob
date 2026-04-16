@@ -172,6 +172,10 @@ $cs-tag-bg: #e8f1fc;
   }
   &__btn--outline &__btn-dot {
     background: $primary-color;
+    transition: $transition;
+  }
+  &__btn--outline:hover &__btn-dot {
+    background: #fff;
   }
 
   // ── Hero stat cards ──

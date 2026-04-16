@@ -5185,6 +5185,10 @@ body.page-simple .site-main .page-content ul li:before {
 }
 .cs-rehab__btn--outline .cs-rehab__btn-dot {
   background: #0094ff;
+  transition: all 0.3s ease;
+}
+.cs-rehab__btn--outline:hover .cs-rehab__btn-dot {
+  background: #fff;
 }
 .cs-rehab__hero-stats {
   display: grid;
