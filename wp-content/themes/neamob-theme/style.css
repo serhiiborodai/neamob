@@ -5160,8 +5160,8 @@ body.page-simple .site-main .page-content ul li:before {
   border-color: #0094ff;
 }
 .cs-rehab__btn--primary:hover {
-  background: #0078cc;
-  border-color: #0078cc;
+  opacity: 0.8;
+  color: #fff;
 }
 .cs-rehab__btn--outline {
   background: transparent;
