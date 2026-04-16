@@ -5455,6 +5455,12 @@ body.page-simple .site-main .page-content ul li:before {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
 }
+.cs-rehab__comparison-row:last-child .cs-rehab__comparison-cell--before {
+  border-radius: 0 0 8px 8px;
+}
+.cs-rehab__comparison-row:last-child .cs-rehab__comparison-cell--after {
+  border-radius: 0 0 8px 8px;
+}
 .cs-rehab__comparison-cell {
   padding: 0 28px;
   display: flex;
