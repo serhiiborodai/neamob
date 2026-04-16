@@ -27,7 +27,7 @@ get_header();
                         <p class="cs-rehab__hero-text">How NeaMob transformed a leading Canadian rehabilitation center's digital strategy, driving revenue growth while reducing acquisition costs.</p>
                     </div>
                     <div class="cs-rehab__hero-actions">
-                        <a href="#cs-contact" class="cs-rehab__btn cs-rehab__btn--primary"><span class="cs-rehab__btn-dot"></span>Get similar results</a>
+                        <a href="#contact-form" class="cs-rehab__btn cs-rehab__btn--primary"><span class="cs-rehab__btn-dot"></span>Get similar results</a>
                         <a href="#cs-approach" class="cs-rehab__btn cs-rehab__btn--outline"><span class="cs-rehab__btn-dot"></span>See how we did it</a>
                     </div>
                 </div>
