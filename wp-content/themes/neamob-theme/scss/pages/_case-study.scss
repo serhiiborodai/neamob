@@ -143,7 +143,8 @@ $cs-tag-bg: #e8f1fc;
     color: #fff;
     border-color: $primary-color;
     &:hover {
-      opacity: 0.8;
+      background: #0056A7;
+      border-color: #0056A7;
       color: #fff;
     }
   }
