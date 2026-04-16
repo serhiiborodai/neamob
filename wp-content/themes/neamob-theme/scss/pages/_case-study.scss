@@ -154,7 +154,9 @@ $cs-tag-bg: #e8f1fc;
     color: #fff;
     border-color: #fff;
     &:hover {
-      background: rgba(#fff, 0.08);
+      background: #1863DC;
+      border-color: #1863DC;
+      color: #fff;
     }
   }
 

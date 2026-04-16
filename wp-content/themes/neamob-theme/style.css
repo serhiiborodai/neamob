@@ -5170,7 +5170,9 @@ body.page-simple .site-main .page-content ul li:before {
   border-color: #fff;
 }
 .cs-rehab__btn--outline:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: #1863DC;
+  border-color: #1863DC;
+  color: #fff;
 }
 .cs-rehab__btn-dot {
   width: 8px;
