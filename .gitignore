@@ -37,3 +37,4 @@ backup/
 # Logs
 *.log
 .sass-cache/
+latest.zip
