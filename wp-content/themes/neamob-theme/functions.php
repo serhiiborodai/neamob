@@ -949,6 +949,24 @@ add_action('wp_head', function () {
 }, 1);
 
 /**
+ * 301 Redirects for shortened case study URLs (SEO audit recommendation #6)
+ * After adding these, change post slugs in WP Admin to the new short versions.
+ */
+add_action('template_redirect', function () {
+    $redirects = [
+        '/case-study/scaling-sensibos-smart-home-business-35-profit-growth-through-performance-marketing/' => '/case-study/sensibo-performance-marketing/',
+        '/case-study/driving-qualified-leads-for-canadian-centre-for-addictions-through-strategic-digital-marketing/' => '/case-study/ccfa-digital-marketing/',
+    ];
+
+    $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+    if (isset($redirects[$request])) {
+        wp_redirect(home_url($redirects[$request]), 301);
+        exit;
+    }
+});
+
+/**
  * FAQ Schema (JSON-LD) — auto-generated based on context:
  * - Single blog post: uses _neamob_faq post meta (custom metabox Q&A pairs)
  * - Homepage: uses FAQ CPT items (post title = question, faq_answer ACF field = answer)

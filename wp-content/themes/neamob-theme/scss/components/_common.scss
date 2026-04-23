@@ -546,6 +546,16 @@ body.page-simple .site-main {
       }
     }
   }
+
+  .cf7-submit-wrap {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .hero-section .btn--hero,
+  .service-hero__btn {
+    margin-left: calc(100% - 197px);
+  }
 }
 
 // CF7 submit wrap — видимость по состояниям (для всех форм Contact Form 7)

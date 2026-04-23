@@ -596,6 +596,14 @@ body.page-simple .site-main .page-content ul li:before {
   body.page-simple .site-main .page-content {
     width: 100%;
   }
+  .cf7-submit-wrap {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .hero-section .btn--hero,
+  .service-hero__btn {
+    margin-left: calc(100% - 197px);
+  }
 }
 .cf7-submit-wrap .cf7-status {
   display: none !important;
