@@ -15,7 +15,7 @@ get_header();
         <div class="cs-rehab__hero-bg">
             <picture>
                 <source media="(max-width: 750px)" srcset="<?php echo get_template_directory_uri(); ?>/assets/images/hp-mobile.png">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/hp.webp" alt="" class="cs-rehab__hero-bg-img">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/hp.webp" alt="" class="cs-rehab__hero-bg-img" width="3024" height="1680">
             </picture>
         </div>
         <div class="container">

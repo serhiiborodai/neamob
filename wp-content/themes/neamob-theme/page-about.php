@@ -225,9 +225,9 @@ if (!$beliefs) {
             <div class="about-join__grid">
                 <div class="about-join__image">
                     <?php if ($join_image) : ?>
-                        <img src="<?php echo esc_url($join_image['sizes']['large']); ?>" alt="<?php echo esc_attr($join_image['alt']); ?>">
+                        <img src="<?php echo esc_url($join_image['sizes']['large']); ?>" alt="<?php echo esc_attr($join_image['alt']); ?>" width="<?php echo esc_attr($join_image['width']); ?>" height="<?php echo esc_attr($join_image['height']); ?>" loading="lazy">
                     <?php else : ?>
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/about_tech.png" alt="Join NeaMob Tech">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/about_tech.png" alt="Join NeaMob Tech" width="515" height="380" loading="lazy">
                     <?php endif; ?>
                 </div>
                 <div class="about-join__content">

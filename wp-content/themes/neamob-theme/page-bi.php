@@ -87,7 +87,7 @@ $apart_image = get_field('bi_apart_image');
                     </div>
                     
                     <div class="bi-hero__mobile">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi/hero-mobile.png" alt="BI Dashboard Mobile">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi/hero-mobile.png" alt="BI Dashboard Mobile" width="686" height="496" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -181,9 +181,9 @@ $apart_image = get_field('bi_apart_image');
                 <div class="bi-apart">
                     <div class="bi-apart__image">
                         <?php if ($apart_image): ?>
-                            <img src="<?php echo esc_url($apart_image['url']); ?>" alt="<?php echo esc_attr($apart_image['alt']); ?>">
+                            <img src="<?php echo esc_url($apart_image['url']); ?>" alt="<?php echo esc_attr($apart_image['alt']); ?>" width="<?php echo esc_attr($apart_image['width']); ?>" height="<?php echo esc_attr($apart_image['height']); ?>" loading="lazy">
                         <?php else: ?>
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi_set_us_apart.png" alt="What sets us apart">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi_set_us_apart.png" alt="What sets us apart" width="430" height="456" loading="lazy">
                         <?php endif; ?>
                     </div>
                     <div class="bi-apart__content">
@@ -195,11 +195,11 @@ $apart_image = get_field('bi_apart_image');
                 </div>
             <?php elseif ($section['section_image']): ?>
                 <div class="bi-section__image">
-                    <img src="<?php echo esc_url($section['section_image']['url']); ?>" alt="<?php echo esc_attr($section['section_image']['alt']); ?>">
+                    <img src="<?php echo esc_url($section['section_image']['url']); ?>" alt="<?php echo esc_attr($section['section_image']['alt']); ?>" width="<?php echo esc_attr($section['section_image']['width']); ?>" height="<?php echo esc_attr($section['section_image']['height']); ?>" loading="lazy">
                 </div>
             <?php else: ?>
                 <div class="bi-section__image">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi/section-<?php echo $section_index + 1; ?>.png" alt="<?php echo esc_attr($section['section_title']); ?>">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/bi/section-<?php echo $section_index + 1; ?>.png" alt="<?php echo esc_attr($section['section_title']); ?>" width="1180" height="380" loading="lazy">
                 </div>
             <?php endif; ?>
         </div>

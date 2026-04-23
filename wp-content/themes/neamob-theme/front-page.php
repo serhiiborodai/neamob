@@ -179,7 +179,7 @@ endif;
                         src="<?php echo esc_url($value_image); ?>" alt="NeaMob Dashboard">
                     <?php else: ?>
                         <div class="value-laptop--placeholder">
-                            <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/laptop.png" alt="Our Services">
+                            <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/laptop.png" alt="Our Services" width="631" height="480" loading="lazy">
                         </div>
                     <?php endif; ?>
                 </div>
@@ -359,7 +359,7 @@ if ($testimonials->have_posts()):
                                     </div>
                                     <?php if ($company_logo): ?>
                                         <div class="testimonial-card__logo">
-                                            <img src="<?php echo esc_url($company_logo); ?>" alt="">
+                                            <img src="<?php echo esc_url($company_logo); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -371,7 +371,7 @@ if ($testimonials->have_posts()):
                     class="testimonial-footer">
                     <?php if ($author_photo): ?>
                         <div class="testimonial-avatar">
-                            <img src="<?php echo esc_url($author_photo); ?>" alt="">
+                            <img src="<?php echo esc_url($author_photo); ?>" alt="<?php echo esc_attr($author_name); ?>">
                         </div>
                     <?php endif; ?>
                     <div class="testimonial-pagination">
@@ -546,13 +546,13 @@ $has_partners = !empty($partner_cards);
             <?php $card_index++; endforeach; wp_reset_postdata();
             else: /* Fallback to original if no partners in admin */ ?>
             <div class="partner-card">
-                <div class="partner-card__logo"><a href="https://www.vokal.io/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p1.png" alt="Vokal"></a></div>
-                <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-1.png" alt="Vokal office"></div>
+                <div class="partner-card__logo"><a href="https://www.vokal.io/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p1.png" alt="Vokal" width="112" height="40"></a></div>
+                <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-1.png" alt="Vokal office" width="340" height="234" loading="lazy"></div>
                 <p class="partner-card__text">Vokal is a digital agency driving measurable growth through strategic digital value creation and performance marketing.</p>
             </div>
             <div class="partner-card">
-                <div class="partner-card__logo"><a href="https://illumin.com/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners"></a></div>
-                <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-2.png" alt="illumin platform"></div>
+                <div class="partner-card__logo"><a href="https://illumin.com/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p3.png" alt="illumin Partners" width="246" height="40"></a></div>
+                <div class="partner-card__image"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/partners/partner-2.png" alt="illumin platform" width="340" height="234" loading="lazy"></div>
                 <p class="partner-card__text">illumin is a journey advertising platform that helps brands plan, activate, and optimize digital campaigns across channels with real-time insights.</p>
                 <div class="partner-card__downloads">
                     <span class="partner-card__downloads-label">Download case study</span>
@@ -569,9 +569,9 @@ $has_partners = !empty($partner_cards);
                 </div>
             </div>
             <div class="partner-card">
-                <div class="partner-card__logo"><a href="https://www.snappper.com/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper"></a></div>
+                <div class="partner-card__logo"><a href="https://www.snappper.com/" target="_blank" rel="noopener noreferrer"><img src="<?php echo get_template_directory_uri(); ?>/assets/logos/three_partners/p2.png" alt="Snappper" width="176" height="48"></a></div>
                 <div class="partner-card__image partner-card__image--playable" data-open-video-overlay>
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/power.png" alt="Snappper">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/power.png" alt="Snappper" width="340" height="254" loading="lazy">
                     <span class="partner-card__play-icon">
                         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.45)"/><polygon points="19,14 36,24 19,34" fill="#fff"/></svg>
                     </span>

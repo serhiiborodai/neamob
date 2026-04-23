@@ -49,7 +49,7 @@ $value_tags = get_field('value_tags', $front_page_id);
                         src="<?php echo esc_url($value_image); ?>" alt="NeaMob Dashboard">
                     <?php else: ?>
                         <div class="value-laptop--placeholder">
-                            <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/laptop.png" alt="Our Services">
+                            <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/laptop.png" alt="Our Services" width="631" height="480" loading="lazy">
                         </div>
                     <?php endif; ?>
                 </div>

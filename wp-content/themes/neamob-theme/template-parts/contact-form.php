@@ -22,7 +22,7 @@ $contact_text = neamob_get_theme_option('contact_form_text', "Ready to take your
                 <h2 class="contact-form-section__title"><?php echo esc_html($contact_title); ?></h2>
                 <p class="contact-form-section__text"><?php echo esc_html($contact_text); ?></p>
                 <div class="contact-form-section__image">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/form_obj.png" alt="Get in touch">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/form_obj.png" alt="Get in touch" width="542" height="947" loading="lazy">
                 </div>
             </div>
             <div
