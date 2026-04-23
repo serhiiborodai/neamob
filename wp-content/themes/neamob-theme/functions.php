@@ -948,3 +948,66 @@ add_action('wp_head', function () {
     <?php
 }, 1);
 
+/**
+ * FAQ Schema (JSON-LD) — auto-generated based on context:
+ * - Single blog post: uses _neamob_faq post meta (custom metabox Q&A pairs)
+ * - Homepage: uses FAQ CPT items (post title = question, faq_answer ACF field = answer)
+ */
+add_action('wp_head', function () {
+    $entities = [];
+
+    if (is_singular('post')) {
+        // Blog post: pull from custom FAQ metabox
+        $faq_items = get_post_meta(get_the_ID(), '_neamob_faq', true);
+        if (is_array($faq_items)) {
+            foreach ($faq_items as $item) {
+                $q = trim($item['q'] ?? '');
+                $a = trim($item['a'] ?? '');
+                if ($q && $a) {
+                    $entities[] = [
+                        '@type'          => 'Question',
+                        'name'           => $q,
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => wp_strip_all_tags($a),
+                        ],
+                    ];
+                }
+            }
+        }
+    } elseif (is_front_page()) {
+        // Homepage: pull from FAQ CPT
+        $faq_query = neamob_get_faqs();
+        if ($faq_query->have_posts()) {
+            while ($faq_query->have_posts()) {
+                $faq_query->the_post();
+                $q = get_the_title();
+                $a = get_field('faq_answer');
+                if ($q && $a) {
+                    $entities[] = [
+                        '@type'          => 'Question',
+                        'name'           => $q,
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => wp_strip_all_tags($a),
+                        ],
+                    ];
+                }
+            }
+            wp_reset_postdata();
+        }
+    }
+
+    if (empty($entities)) {
+        return;
+    }
+
+    $schema = [
+        '@context'   => 'https://schema.org',
+        '@type'      => 'FAQPage',
+        'mainEntity' => $entities,
+    ];
+
+    echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . '</script>' . "\n";
+}, 20);
+
