@@ -1303,7 +1303,8 @@ function neamob_register_service_page_fields() {
                 'key' => 'field_service_hero_button_link',
                 'label' => 'Button Link',
                 'name' => 'service_hero_button_link',
-                'type' => 'url',
+                'type' => 'text',
+                'placeholder' => 'https://www.neamob.com/contact/',
             ],
             // Stats
             [
