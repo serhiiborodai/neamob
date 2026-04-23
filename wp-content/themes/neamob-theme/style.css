@@ -447,6 +447,14 @@ body .cky-prefrence-btn-wrapper .cky-btn {
   #masthead .site-header__inner .menu-item-has-children > .sub-menu:hover {
     display: flex;
   }
+  .blog-section .blog-card__title {
+    height: 58px;
+    overflow: hidden;
+  }
+  .blog-section .blog-card__excerpt {
+    height: 58px;
+    overflow: hidden;
+  }
 }
 body.privacy-policy .site-main .page-header,
 body.cookie-policy .site-main .page-header,
