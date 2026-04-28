@@ -33,11 +33,13 @@ $value_tags = get_field('value_tags');
     <div class="hero-section__bg">
         <?php
         $bg_url = $hero_bg_image ?: get_template_directory_uri() . '/assets/images/hp.webp';
-        $bg_url_mobile = get_template_directory_uri() . '/assets/images/hp-mobile.png';
+        $bg_url_mobile = get_template_directory_uri() . '/assets/images/hp-mobile.webp';
+        $bg_url_mobile_fallback = get_template_directory_uri() . '/assets/images/hp-mobile.png';
         ?>
         <picture>
-            <source media="(max-width: 750px)" srcset="<?php echo esc_url($bg_url_mobile); ?>">
-            <img src="<?php echo esc_url($bg_url); ?>" alt="" class="hero-section__bg-img">
+            <source media="(max-width: 750px)" srcset="<?php echo esc_url($bg_url_mobile); ?>" type="image/webp">
+            <source media="(max-width: 750px)" srcset="<?php echo esc_url($bg_url_mobile_fallback); ?>">
+            <img src="<?php echo esc_url($bg_url); ?>" alt="" class="hero-section__bg-img" width="3024" height="1680" fetchpriority="high">
         </picture>
     </div>
     <div class="container">

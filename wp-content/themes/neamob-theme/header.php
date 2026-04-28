@@ -25,6 +25,10 @@ f.parentNode.insertBefore(j, f);
 })(window, document, 'script', 'dataLayer', 'GTM-TQB84FGB');
         </script>
         <!-- End Google Tag Manager -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+        <link rel="preconnect" href="https://unpkg.com" crossorigin>
         <link rel="profile" href="https://gmpg.org/xfn/11">
         <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url(get_template_directory_uri() . '/assets/icons/favicon-32x32.png'); ?>">
         <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url(get_template_directory_uri() . '/assets/icons/favicon-16x16.png'); ?>">

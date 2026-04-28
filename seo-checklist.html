@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neamob — SEO Meta Descriptions Checklist</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; padding: 40px 20px; }
+  h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .subtitle { color: #64748b; font-size: 14px; margin-bottom: 40px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #475569; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #1e293b; }
+  .card { background: #1a1f2e; border: 1px solid #1e293b; border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 16px; }
+  .card:hover { border-color: #334155; }
+  .card-left { flex: 1; min-width: 0; }
+  .card-name { font-size: 13px; font-weight: 600; color: #94a3b8; margin-bottom: 4px; }
+  .card-url { font-size: 11px; color: #475569; margin-bottom: 6px; font-family: monospace; }
+  .card-desc { font-size: 14px; color: #cbd5e1; line-height: 1.55; }
+  .char-count { font-size: 11px; color: #475569; margin-left: 6px; }
+  .card-actions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 7px; font-size: 12px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: all .15s; white-space: nowrap; }
+  .btn-edit { background: #1d4ed8; color: #fff; }
+  .btn-edit:hover { background: #2563eb; }
+  .btn-copy { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+  .btn-copy:hover { background: #334155; color: #e2e8f0; }
+  .btn-copy.copied { background: #14532d; color: #4ade80; border-color: #16a34a; }
+  .progress { position: fixed; top: 0; left: 0; right: 0; background: #1a1f2e; border-bottom: 1px solid #1e293b; padding: 10px 20px; display: flex; align-items: center; gap: 16px; z-index: 100; }
+  .progress-text { font-size: 13px; color: #94a3b8; }
+  .progress-bar { flex: 1; height: 4px; background: #1e293b; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #2563eb; border-radius: 2px; transition: width .3s; }
+  .done-badge { font-size: 11px; font-weight: 700; background: #14532d; color: #4ade80; padding: 3px 8px; border-radius: 20px; }
+  .card.is-done { opacity: 0.45; }
+  .card.is-done .btn-copy { background: #14532d; color: #4ade80; border-color: #16a34a; }
+  body { padding-top: 60px; }
+</style>
+</head>
+<body>
+
+<div class="progress">
+  <span class="progress-text">Заполнено: <strong id="done-count">0</strong> / <strong id="total-count">0</strong></span>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <span class="done-badge" id="done-pct">0%</span>
+</div>
+
+<h1>SEO Meta Descriptions</h1>
+<p class="subtitle">Открывай страницу → нажми Edit → Rank Math → General → Meta Description → вставляй текст → Update</p>
+
+<!-- PAGES -->
+<div class="section">
+  <div class="section-title">Страницы</div>
+
+  <div class="card" data-id="home">
+    <div class="card-left">
+      <div class="card-name">Home</div>
+      <div class="card-url">https://www.neamob.com/</div>
+      <div class="card-desc">Neamob is a full-service marketing agency specializing in media campaigns, growth strategy, creative design, and data analytics. We help brands grow smarter.<span class="char-count">160 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="about">
+    <div class="card-left">
+      <div class="card-name">About Us</div>
+      <div class="card-url">https://www.neamob.com/about-us/</div>
+      <div class="card-desc">Meet the Neamob team — remote-first strategists, analysts, designers, and media buyers who turn complex data into clear, actionable marketing results.<span class="char-count">151 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/about-us/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="services">
+    <div class="card-left">
+      <div class="card-name">Services</div>
+      <div class="card-url">https://www.neamob.com/services/</div>
+      <div class="card-desc">Explore Neamob's full range of marketing services: paid media, growth strategy, creative design, data analytics, and business intelligence.<span class="char-count">141 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/services/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="growth">
+    <div class="card-left">
+      <div class="card-name">Growth Strategy & Planning</div>
+      <div class="card-url">https://www.neamob.com/services/growth-strategy-planning/</div>
+      <div class="card-desc">Build a marketing growth strategy grounded in data. Neamob maps your competitive landscape, models revenue scenarios, and optimizes your channel mix for ROI.<span class="char-count">158 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/services/growth-strategy-planning/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="media">
+    <div class="card-left">
+      <div class="card-name">Media Campaigns</div>
+      <div class="card-url">https://www.neamob.com/services/media-campaigns/</div>
+      <div class="card-desc">Expert paid media management across Google, Meta, Amazon, and LinkedIn. Neamob optimizes every campaign in real-time so your media budget works harder.<span class="char-count">151 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/services/media-campaigns/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="creative">
+    <div class="card-left">
+      <div class="card-name">Creative & Design</div>
+      <div class="card-url">https://www.neamob.com/services/creative-design/</div>
+      <div class="card-desc">Data-driven creative and design services for marketing teams. From brand identity to conversion-focused ad assets — designed to perform across every channel.<span class="char-count">158 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/services/creative-design/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="analytics">
+    <div class="card-left">
+      <div class="card-name">Data Analytics & Insights</div>
+      <div class="card-url">https://www.neamob.com/services/data-analytics-insights/</div>
+      <div class="card-desc">Stop guessing, start knowing. Neamob consolidates your marketing data into automated Looker Studio dashboards with insights that drive smarter decisions.<span class="char-count">152 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/services/data-analytics-insights/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="bi">
+    <div class="card-left">
+      <div class="card-name">Business Intelligence</div>
+      <div class="card-url">https://www.neamob.com/business-intelligence/</div>
+      <div class="card-desc">Build a unified BI infrastructure for your marketing team. Neamob architects automated reporting systems where every metric is consistent, reliable, and actionable.<span class="char-count">163 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/business-intelligence/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="portfolio">
+    <div class="card-left">
+      <div class="card-name">Portfolio</div>
+      <div class="card-url">https://www.neamob.com/portfolio/</div>
+      <div class="card-desc">Explore Neamob's portfolio of marketing projects spanning paid media, creative design, data analytics, and growth strategy across diverse global brands.<span class="char-count">152 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/portfolio/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="case-studies">
+    <div class="card-left">
+      <div class="card-name">Case Studies</div>
+      <div class="card-url">https://www.neamob.com/case-studies/</div>
+      <div class="card-desc">See measurable results Neamob has delivered for clients — from 358% lead growth for CCFA to 35% profit growth for Sensibo. Real campaigns, real outcomes.<span class="char-count">154 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/case-studies/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="rehab-cs">
+    <div class="card-left">
+      <div class="card-name">Rehab Center Case Study (страница)</div>
+      <div class="card-url">https://www.neamob.com/neamob-rehabilitation-center-case-study/</div>
+      <div class="card-desc">How Neamob helped a leading Canadian rehabilitation center achieve 210% revenue growth and 268% qualified lead increase through performance digital marketing.<span class="char-count">157 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/neamob-rehabilitation-center-case-study/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="blog-page">
+    <div class="card-left">
+      <div class="card-name">Blog</div>
+      <div class="card-url">https://www.neamob.com/blog/</div>
+      <div class="card-desc">The Neamob blog: expert insights on paid media, data analytics, creative strategy, and business intelligence for performance-driven marketing teams.<span class="char-count">149 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/blog/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="careers">
+    <div class="card-left">
+      <div class="card-name">Careers</div>
+      <div class="card-url">https://www.neamob.com/careers/</div>
+      <div class="card-desc">Join Neamob's remote-first marketing team. Open roles in analytics, media, design, and strategy for people who love data, creativity, and real collaboration.<span class="char-count">159 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/careers/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="contact">
+    <div class="card-left">
+      <div class="card-name">Contact</div>
+      <div class="card-url">https://www.neamob.com/contact/</div>
+      <div class="card-desc">Get in touch with Neamob. Whether you need a marketing strategy, a media campaign, or a BI system — let's talk about what we can build together.<span class="char-count">146 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/contact/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="privacy">
+    <div class="card-left">
+      <div class="card-name">Privacy Policy</div>
+      <div class="card-url">https://www.neamob.com/privacy-policy/</div>
+      <div class="card-desc">Read Neamob's Privacy Policy to understand how we collect, use, and protect your personal data in accordance with applicable data protection regulations.<span class="char-count">152 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/privacy-policy/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="cookie">
+    <div class="card-left">
+      <div class="card-name">Cookie Policy</div>
+      <div class="card-url">https://www.neamob.com/cookie-policy/</div>
+      <div class="card-desc">Learn how Neamob uses cookies on this website, what types of cookies are set, and how you can control your cookie preferences at any time.<span class="char-count">138 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/cookie-policy/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+</div>
+
+<!-- CASE STUDIES -->
+<div class="section">
+  <div class="section-title">Case Studies</div>
+
+  <div class="card" data-id="cs-sensibo">
+    <div class="card-left">
+      <div class="card-name">Sensibo — Performance Marketing</div>
+      <div class="card-url">https://www.neamob.com/case-study/scaling-sensibos-smart-home-business-35-profit-growth-through-performance-marketing/</div>
+      <div class="card-desc">How Neamob helped Sensibo achieve 35.4% gross profit growth and 21% ROAS increase through multi-channel performance marketing across Shopify and Amazon.<span class="char-count">152 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/case-study/scaling-sensibos-smart-home-business-35-profit-growth-through-performance-marketing/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="cs-ccfa">
+    <div class="card-left">
+      <div class="card-name">CCFA — Qualified Leads</div>
+      <div class="card-url">https://www.neamob.com/case-study/driving-qualified-leads-for-canadian-centre-for-addictions-through-strategic-digital-marketing/</div>
+      <div class="card-desc">How Neamob delivered a 358% increase in qualified leads for the Canadian Centre for Addictions in just one month through data-driven digital marketing.<span class="char-count">151 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/case-study/driving-qualified-leads-for-canadian-centre-for-addictions-through-strategic-digital-marketing/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+</div>
+
+<!-- BLOG POSTS -->
+<div class="section">
+  <div class="section-title">Блог-посты</div>
+
+  <div class="card" data-id="post-ai">
+    <div class="card-left">
+      <div class="card-name">The Future of AI in Digital Marketing</div>
+      <div class="card-url">https://www.neamob.com/the-future-of-ai-in-digital-marketing/</div>
+      <div class="card-desc">AI Overviews are changing paid search fundamentally. Here's what marketing executives need to understand now about AI's impact on Google Ads strategy.<span class="char-count">151 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/the-future-of-ai-in-digital-marketing/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="post-attribution">
+    <div class="card-left">
+      <div class="card-name">Attribution Models Explained</div>
+      <div class="card-url">https://www.neamob.com/attribution-models-explained-which-one-should-you-use/</div>
+      <div class="card-desc">Not all attribution models are equal. Learn which attribution model fits your marketing funnel, and how to stop misallocating budget across channels.<span class="char-count">149 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/attribution-models-explained-which-one-should-you-use/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="post-design-systems">
+    <div class="card-left">
+      <div class="card-name">Design Systems for Marketing Teams</div>
+      <div class="card-url">https://www.neamob.com/design-systems-for-marketing-teams-a-practical-guide/</div>
+      <div class="card-desc">A practical guide to building design systems for marketing teams. Learn how Neamob scales creative production without sacrificing brand consistency.<span class="char-count">149 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/design-systems-for-marketing-teams-a-practical-guide/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="post-data-driven">
+    <div class="card-left">
+      <div class="card-name">How to Build a Data-Driven Marketing Strategy</div>
+      <div class="card-url">https://www.neamob.com/how-to-build-a-data-driven-marketing-strategy/</div>
+      <div class="card-desc">A step-by-step guide to building a data-driven marketing strategy. Learn how Neamob structures goal-setting, tracking, reporting, and budget optimization.<span class="char-count">155 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/how-to-build-a-data-driven-marketing-strategy/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="post-creatives">
+    <div class="card-left">
+      <div class="card-name">7 Mistakes in Creatives That Reduce Ad Effectiveness</div>
+      <div class="card-url">https://www.neamob.com/7-mistakes-in-creatives-that-reduce-the-effectiveness-of-ads/</div>
+      <div class="card-desc">Avoid the 7 most common creative mistakes that kill ad performance. Neamob breaks down what to fix in your visuals, copy, and format to improve ROAS.<span class="char-count">150 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/7-mistakes-in-creatives-that-reduce-the-effectiveness-of-ads/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="post-reporting-1">
+    <div class="card-left">
+      <div class="card-name">Effective Automation of Reporting (Part 1)</div>
+      <div class="card-url">https://www.neamob.com/effective-automation-of-reporting-data-analysis-in-a-marketing-agency/</div>
+      <div class="card-desc">Learn how Neamob automates marketing data collection, reporting pipelines, and analysis to eliminate manual work and deliver faster, more reliable insights.<span class="char-count">156 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/effective-automation-of-reporting-data-analysis-in-a-marketing-agency/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="post-reporting-2">
+    <div class="card-left">
+      <div class="card-name">Effective Automation of Reporting (Part 2)</div>
+      <div class="card-url">https://www.neamob.com/effective-automation-of-reporting-data-analysis-in-a-marketing-agency-2/</div>
+      <div class="card-desc">Part 2: How Neamob builds automated marketing dashboards using Looker Studio, BigQuery, and custom connectors to turn raw data into real-time insights.<span class="char-count">151 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/effective-automation-of-reporting-data-analysis-in-a-marketing-agency-2/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="section">
+  <div class="section-title">Категории блога</div>
+
+  <div class="card" data-id="cat-campaigns">
+    <div class="card-left">
+      <div class="card-name">Campaign Management</div>
+      <div class="card-url">https://www.neamob.com/category/campaign-management/</div>
+      <div class="card-desc">Articles on paid campaign management: Google Ads, Meta, PMax, forecasting, and media strategy from the Neamob team.<span class="char-count">115 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/category/campaign-management/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="cat-analytics">
+    <div class="card-left">
+      <div class="card-name">Analytics & Reporting</div>
+      <div class="card-url">https://www.neamob.com/category/analytics-reporting/</div>
+      <div class="card-desc">In-depth articles on marketing analytics, attribution, BI reporting, and data-driven decision-making from the Neamob team.<span class="char-count">121 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/category/analytics-reporting/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="cat-creative">
+    <div class="card-left">
+      <div class="card-name">Creative & Design (Category)</div>
+      <div class="card-url">https://www.neamob.com/category/creative-design/</div>
+      <div class="card-desc">Practical articles on ad creative performance, design systems, and creative reporting for paid media teams. Published by Neamob.<span class="char-count">128 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/category/creative-design/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+</div>
+
+<!-- JOBS -->
+<div class="section">
+  <div class="section-title">Вакансии</div>
+
+  <div class="card" data-id="job-bi-analyst">
+    <div class="card-left">
+      <div class="card-name">BI Analyst</div>
+      <div class="card-url">https://www.neamob.com/careers/bi-analyst/</div>
+      <div class="card-desc">Neamob is hiring a BI Analyst. Join a remote marketing team and build dashboards, automate reporting, and turn complex data into clear business insights.<span class="char-count">152 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/careers/bi-analyst/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="job-bi-engineer">
+    <div class="card-left">
+      <div class="card-name">BI Engineer</div>
+      <div class="card-url">https://www.neamob.com/careers/bi-engineer/</div>
+      <div class="card-desc">Open role: BI Engineer at Neamob. Build and maintain scalable BI infrastructure, data pipelines, and reporting systems for a fast-moving marketing agency.<span class="char-count">154 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/careers/bi-engineer/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="job-meta">
+    <div class="card-left">
+      <div class="card-name">Meta / Social Campaign Manager</div>
+      <div class="card-url">https://www.neamob.com/careers/meta-social-campaign-manager/</div>
+      <div class="card-desc">Neamob is looking for a Meta & Social Campaign Manager. Manage paid social campaigns, optimize performance, and work with a data-driven remote marketing team.<span class="char-count">159 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/careers/meta-social-campaign-manager/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="job-designer-1">
+    <div class="card-left">
+      <div class="card-name">Marketing Designer</div>
+      <div class="card-url">https://www.neamob.com/careers/marketing-designer/</div>
+      <div class="card-desc">Join Neamob as a Marketing Designer. Create high-performing ad creatives, landing pages, and brand assets for global performance marketing campaigns.<span class="char-count">150 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/careers/marketing-designer/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+
+  <div class="card" data-id="job-designer-2">
+    <div class="card-left">
+      <div class="card-name">Marketing Designer 2</div>
+      <div class="card-url">https://www.neamob.com/careers/marketing-designer-2/</div>
+      <div class="card-desc">Neamob is hiring a Marketing Designer. Work with a remote team on brand identity, ad creatives, and digital assets that are designed to convert and perform.<span class="char-count">156 chars</span></div>
+    </div>
+    <div class="card-actions">
+      <a class="btn btn-edit" href="https://www.neamob.com/careers/marketing-designer-2/" target="_blank">↗ Открыть</a>
+      <button class="btn btn-copy" onclick="copyDesc(this)">Копировать</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'neamob-seo-done';
+  const done = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify([...done])); }
+
+  function updateProgress() {
+    const cards = document.querySelectorAll('.card');
+    const total = cards.length;
+    const count = done.size;
+    const pct = Math.round(count / total * 100);
+    document.getElementById('done-count').textContent = count;
+    document.getElementById('total-count').textContent = total;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('done-pct').textContent = pct + '%';
+  }
+
+  function copyDesc(btn) {
+    const card = btn.closest('.card');
+    const text = card.querySelector('.card-desc').childNodes[0].textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Скопировано';
+      btn.classList.add('copied');
+      const id = card.dataset.id;
+      done.add(id);
+      card.classList.add('is-done');
+      save();
+      updateProgress();
+      setTimeout(() => {
+        btn.textContent = 'Копировать';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  document.querySelectorAll('.card').forEach(card => {
+    if (done.has(card.dataset.id)) card.classList.add('is-done');
+  });
+  updateProgress();
+</script>
+</body>
+</html>

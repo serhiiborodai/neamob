@@ -146,12 +146,20 @@ function neamob_enqueue_scripts()
         true
     );
 
-    // Theme custom JS
+    // Theme custom JS (minified if available)
+    $main_js_min = get_template_directory() . '/js/main.min.js';
+    $main_js_src = file_exists($main_js_min)
+        ? get_template_directory_uri() . '/js/main.min.js'
+        : get_template_directory_uri() . '/js/main.js';
+    $main_js_ver = file_exists($main_js_min)
+        ? filemtime($main_js_min)
+        : filemtime(get_template_directory() . '/js/main.js');
+
     wp_enqueue_script(
         'neamob-script',
-        get_template_directory_uri() . '/js/main.js',
+        $main_js_src,
         ['swiper-js', 'lenis-js'],
-        filemtime(get_template_directory() . '/js/main.js'),
+        $main_js_ver,
         true
     );
 
