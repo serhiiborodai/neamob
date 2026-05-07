@@ -153,6 +153,7 @@
   font-family: $font-family;
   font-size: $font-size-base;
   color: rgba($bg-white, 0.6);
+  cursor: pointer;
 }
 
 .testimonial-pagination__current {
@@ -187,7 +188,7 @@
 }
 
 // ==========================================================================
-// Navigation Arrows (optional)
+// Navigation Arrows
 // ==========================================================================
 
 .testimonial-nav {
@@ -196,33 +197,39 @@
   gap: $spacing-3;
 }
 
-.testimonial-nav__btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px solid rgba($bg-white, 0.2);
-  background: transparent;
-  color: $bg-white;
+.testimonial-nav__btn,
+.testimonial-nav__prev,
+.testimonial-nav__next {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: $transition;
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
 
   &:hover {
-    border-color: $primary-color;
-    background: rgba($primary-color, 0.1);
-  }
-
-  &:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
+    opacity: 1;
   }
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 17px;
+    display: block;
   }
+}
+
+// hide cursor dot when hovering nav area
+.testimonials-section:has(.testimonial-pagination:hover) .testimonial-cursor {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none;
 }
 
 // ==========================================================================

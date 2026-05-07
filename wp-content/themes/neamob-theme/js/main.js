@@ -390,6 +390,16 @@
                 swiperEl.addEventListener('click', function () {
                     swiper.slideNext();
                 });
+
+                var paginationEl = container.querySelector('.testimonial-pagination');
+                if (paginationEl) {
+                    paginationEl.addEventListener('mouseenter', function () {
+                        cursorEl.classList.remove('is-visible');
+                    });
+                    paginationEl.addEventListener('mouseleave', function () {
+                        cursorEl.classList.add('is-visible');
+                    });
+                }
             }
         });
 
