@@ -3529,7 +3529,6 @@ body.page-simple .site-main .page-content ul li:before {
 .blog-latest__image {
   flex: 0 0 580px;
   border-radius: 10px;
-  background: #fff;
   overflow: hidden;
   height: 380px;
 }
