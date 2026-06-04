@@ -3536,6 +3536,7 @@ body.page-simple .site-main .page-content ul li:before {
 .blog-latest__image img {
   min-width: 100%;
   min-height: 100%;
+  border-radius: inherit;
 }
 .blog-latest__content {
   position: relative;
