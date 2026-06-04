@@ -3530,7 +3530,7 @@ body.page-simple .site-main .page-content ul li:before {
   flex: 0 0 580px;
   border-radius: 10px;
   overflow: hidden;
-  height: 380px;
+  max-height: 380px;
 }
 .blog-latest__image img {
   min-width: 100%;
