@@ -3532,6 +3532,9 @@ body.page-simple .site-main .page-content ul li:before {
   overflow: hidden;
   max-height: 380px;
 }
+.blog-latest__image picture {
+  display: inline;
+}
 .blog-latest__image img {
   min-width: 100%;
   min-height: 100%;

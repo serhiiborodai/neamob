@@ -30,6 +30,10 @@
     overflow: hidden;
     max-height: 380px;
 
+    picture {
+      display: inline;
+    }
+
     img {
       min-width: 100%;
       min-height: 100%;
