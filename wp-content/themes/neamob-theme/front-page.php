@@ -61,23 +61,27 @@ if (!empty($logo_slider_partners)):
 ?>
     <section class="logo-slider">
         <div class="logo-slider__bg"></div>
-        <div class="logo-slider__track">
-            <div class="logo-slider__group">
-                <?php foreach ($logo_slider_partners as $p):
-                    $logo_url = get_field('partner_logo', $p->ID);
-                    if (!$logo_url) continue;
-                    $partner_url = get_field('partner_url', $p->ID);
-                ?>
-                <div class="logo-slider__item">
-                    <?php if ($partner_url): ?>
-                        <a href="<?php echo esc_url($partner_url); ?>" target="_blank" rel="noopener noreferrer"><img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>"></a>
-                    <?php else: ?>
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
-                    <?php endif; ?>
-                </div>
-                <?php endforeach; ?>
+<div class="logo-slider__track__n">
+    <div class="logo-slider__belt">
+        <?php for ($i = 0; $i < 3; $i++): ?>
+        <div class="logo-slider__group" <?php echo $i === 1 ? 'aria-hidden="true"' : ''; ?>>
+            <?php foreach ($logo_slider_partners as $p):
+                $logo_url = get_field('partner_logo', $p->ID);
+                if (!$logo_url) continue;
+                $partner_url = get_field('partner_url', $p->ID);
+            ?>
+            <div class="logo-slider__item">
+                <?php if ($partner_url): ?>
+                    <a href="<?php echo esc_url($partner_url); ?>" target="_blank" rel="noopener noreferrer" <?php echo $i === 1 ? 'tabindex="-1"' : ''; ?>><img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>"></a>
+                <?php else: ?>
+                    <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
+                <?php endif; ?>
             </div>
+            <?php endforeach; ?>
         </div>
+        <?php endfor; ?>
+    </div>
+</div>
     </section>
 <?php endif; ?>
 
@@ -672,5 +676,178 @@ endif;
 <!-- Contact Form Section -->
 <?php get_template_part('template-parts/contact-form'); ?>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.logo-slider__track__n').forEach((track) => {
+    const belt = track.querySelector('.logo-slider__belt');
+    if (!belt) return;
+
+    const groups = belt.querySelectorAll('.logo-slider__group');
+    if (groups.length < 3) return;
+
+    const DURATION_SEC = 40;
+
+    let groupWidth = 0;
+    let speed = 0;
+    let ready = false;
+
+    function measureAndPosition() {
+      const newWidth = groups[0].getBoundingClientRect().width;
+      if (!newWidth) return;
+
+      const ratio = groupWidth ? track.scrollLeft / groupWidth : 1;
+
+      groupWidth = newWidth;
+      speed = groupWidth / DURATION_SEC;
+      track.scrollLeft = groupWidth * ratio;
+      ready = true;
+    }
+
+    measureAndPosition();
+    if (groupWidth) {
+      track.scrollLeft = groupWidth;
+    }
+
+    const images = belt.querySelectorAll('img');
+    let loadedCount = 0;
+
+    function onImageDone() {
+      loadedCount++;
+      if (loadedCount === images.length) {
+        measureAndPosition();
+      }
+    }
+
+    if (images.length === 0) {
+      measureAndPosition();
+    } else {
+      images.forEach((img) => {
+        if (img.complete) {
+          onImageDone();
+        } else {
+          img.addEventListener('load', onImageDone);
+          img.addEventListener('error', onImageDone);
+        }
+      });
+    }
+
+    const resizeObserver = new ResizeObserver(() => measureAndPosition());
+    resizeObserver.observe(groups[0]);
+
+    let isInteracting = false;
+    let isAutoScrolling = false;
+    let resumeTimer = null;
+    let lastTs = null;
+
+    function pause() {
+      clearTimeout(resumeTimer);
+      isInteracting = true;
+      track.classList.add('is-interacting');
+    }
+
+    function scheduleResume(delay = 1200) {
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        isInteracting = false;
+        lastTs = null;
+        track.classList.remove('is-interacting');
+      }, delay);
+    }
+
+    function frame(ts) {
+      if (ready && !isInteracting) {
+        if (lastTs !== null) {
+          const dt = (ts - lastTs) / 1000;
+          isAutoScrolling = true;
+          track.scrollLeft += speed * dt;
+          isAutoScrolling = false;
+        }
+        lastTs = ts;
+      } else {
+        lastTs = null;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    track.addEventListener('scroll', () => {
+      if (!ready || !groupWidth) return;
+      if (track.scrollLeft <= 0) {
+        track.scrollLeft += groupWidth;
+      } else if (track.scrollLeft >= groupWidth * 2) {
+        track.scrollLeft -= groupWidth;
+      }
+      if (!isAutoScrolling) {
+        scheduleResume();
+      }
+    });
+
+    track.addEventListener('mouseenter', pause);
+    track.addEventListener('mouseleave', () => scheduleResume(0));
+
+    track.addEventListener('touchstart', pause, { passive: true });
+    track.addEventListener('touchend', scheduleResume);
+    track.addEventListener('wheel', () => {
+      pause();
+      scheduleResume();
+    }, { passive: true });
+
+    let isDown = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    track.addEventListener('mousedown', (e) => {
+      isDown = true;
+      track.classList.add('is-dragging');
+      pause();
+      startX = e.pageX;
+      startScroll = track.scrollLeft;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      track.scrollLeft = startScroll - (e.pageX - startX);
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (!isDown) return;
+      isDown = false;
+      track.classList.remove('is-dragging');
+      scheduleResume();
+    });
+  });
+});
+</script>
+<style>
+.logo-slider__track__n {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  cursor: grab;
+}
+.logo-slider__track__n::-webkit-scrollbar { display: none; }
+.logo-slider__track__n.is-dragging { cursor: grabbing; }
+
+.logo-slider__belt {
+  display: flex;
+  width: max-content;
+}
+.logo-slider__track__n.is-interacting .logo-slider__belt {
+  animation-play-state: paused;
+}
+.logo-slider__item img {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;     
+  pointer-events: none;       
+}
+
+.logo-slider__item a {
+  -webkit-user-select: none;
+  user-select: none;
+}	
+	
+</style>
 <?php get_footer(); ?>
 
