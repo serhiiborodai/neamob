@@ -41,3 +41,9 @@ latest.zip
 
 # Google Sheets service account credentials (keep on server only)
 wp-content/themes/neamob-theme/inc/google-sheets-credentials.json
+
+# Wordfence runtime logs (server-only)
+wp-content/wflogs/
+
+# Generated WebP cache
+wp-content/webp-express/webp-images/
