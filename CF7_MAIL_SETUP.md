@@ -30,7 +30,34 @@
 
 ---
 
-## 2. Array to string conversion в шаблоне письма
+---
+
+## 3. Капча на всех формах (Contact Form 7)
+
+На сайте три CF7-формы: **Contact Form** (id 60), **Job Application** (61), **Case Study Download** (6261).
+
+Включено в `wp-content/mu-plugins/neamob-security.php`:
+
+- honeypot + лимит **8 отправок / час с IP** (работает сразу)
+- reCAPTCHA v3 через встроенную интеграцию CF7 (нужны ключи в `wp-config.php`)
+
+### Ключи reCAPTCHA v3
+
+1. Создай ключи: [Google reCAPTCHA Admin](https://www.google.com/recaptcha/admin) → тип **v3**, домены `neamob.com`, `www.neamob.com`
+2. В **production** `wp-config.php` (не в git):
+
+```php
+define('WPCF7_RECAPTCHA_SITEKEY', '6Lc...');
+define('WPCF7_RECAPTCHA_SECRET', '6Lc...');
+```
+
+3. После сохранения mu-plugin автоматически добавит тег `[recaptcha]` во все CF7-формы.
+
+Проверка: отправь тест с формы — в ответе CF7 не должно быть `spam`; в исходнике страницы есть `google.com/recaptcha/api.js`.
+
+---
+
+## 4. Array to string conversion в шаблоне письма
 
 Ошибка появляется, когда в макет письма подставляют поле, которое возвращает массив (чекбоксы, множественный select и т.п.) как строку.
 
@@ -62,6 +89,6 @@
 
 ---
 
-## 3. JS — реакция формы
+## 5. JS — реакция формы
 
 Обработчики CF7 (`wpcf7mailsent`, `wpcf7mailfailed` и др.) привязаны к `document`. Реакция формы (индикатор отправки, сообщение об ошибке) должна работать после правки JS.

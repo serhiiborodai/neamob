@@ -31,7 +31,7 @@ function neamob_sheets_get_sheet_name(int $form_id): ?string
  */
 function neamob_sheets_skip_field(string $key): bool
 {
-    $skip = ['_wpcf7', '_wpcf7_version', '_wpcf7_locale', '_wpcf7_unit_tag', '_wpcf7_container_post', '_wpcf7_posted_data_hash', 'g-recaptcha-response', '_wpnonce'];
+    $skip = ['_wpcf7', '_wpcf7_version', '_wpcf7_locale', '_wpcf7_unit_tag', '_wpcf7_container_post', '_wpcf7_posted_data_hash', 'g-recaptcha-response', '_wpcf7_recaptcha_response', 'neamob_website', '_wpnonce'];
     if (in_array($key, $skip, true)) {
         return true;
     }
