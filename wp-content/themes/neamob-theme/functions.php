@@ -105,10 +105,10 @@ function neamob_enqueue_scripts()
 {
     $theme_version = wp_get_theme()->get('Version');
 
-    // Google Fonts - Raleway & DM Sans
+    // Google Fonts - Raleway, DM Sans & Playfair Display (hero serif accent)
     wp_enqueue_style(
         'google-fonts',
-        'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800&display=swap',
+        'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&family=Raleway:wght@400;500;600;700;800&display=swap',
         [],
         null
     );

@@ -10,12 +10,23 @@
 get_header();
 
 // Get ACF fields with defaults
-$hero_title = get_field('hero_title') ?: 'We make the<br>complex simple';
-$hero_text = get_field('hero_text') ?: 'At NeaMob Tech we specialize in transforming complex data into clear insights and compelling actionable strategies.';
-$hero_button_text = get_field('hero_button_text') ?: "Let's Chat";
+$hero_title = get_field('hero_title') ?: 'We make the <em>complex</em> simple';
+$hero_text = get_field('hero_text') ?: 'Data-driven strategy, measured in outcomes: revenue, qualified leads, cost per lead. Not reports — results.';
+$hero_button_text = get_field('hero_button_text') ?: 'Book a Free Audit';
 $hero_button_link = get_field('hero_button_link');
-$hero_button_url = $hero_button_link ? $hero_button_link['url'] : '/contact';
+$hero_button_url = $hero_button_link ? $hero_button_link['url'] : '#contact-form';
 $hero_bg_image = get_field('hero_bg_image');
+$hero_stats = get_field('hero_stats');
+if (empty($hero_stats) || !is_array($hero_stats)) {
+    $hero_stats = [
+        ['stat_value' => '+210%', 'stat_label' => 'Monthly revenue growth', 'stat_source' => 'SENSIBO • 6 MONTHS'],
+        ['stat_value' => '4.2x', 'stat_label' => 'ROAS improvement', 'stat_source' => 'ACME RETAIL • 4 MONTHS'],
+        ['stat_value' => '-41%', 'stat_label' => 'Cost per lead', 'stat_source' => 'BLOOM & CO. • 3 MONTHS'],
+        ['stat_value' => '+358%', 'stat_label' => 'Qualified leads YoY', 'stat_source' => 'CCFA • 6 MONTHS'],
+    ];
+}
+$logo_wall_title = get_field('logo_wall_title') ?: 'Growth partners, past and present';
+$hero_bg_default = get_template_directory_uri() . '/assets/images/redesign/hero-bg.png';
 
 $value_title = get_field('value_title') ?: 'We focus on what brings value & the bottom line';
 $value_text = get_field('value_text') ?: 'We transform raw data into insights with analytics, visualization, and infrastructure to drive smarter decisions and better performance.';
@@ -29,61 +40,79 @@ $value_image = get_field('value_image');
 $value_tags = get_field('value_tags');
 ?>
 
-<!-- Hero Section -->
-<section class="hero-section">
+<!-- Hero Section (Redesign) -->
+<section class="hero-section hero-section--v2">
     <div class="hero-section__bg">
-        <?php
-        $bg_url = $hero_bg_image ?: get_template_directory_uri() . '/assets/images/hp.webp';
-        $bg_url_mobile = get_template_directory_uri() . '/assets/images/hp-mobile.webp';
-        $bg_url_mobile_fallback = get_template_directory_uri() . '/assets/images/hp-mobile.png';
-        ?>
-        <picture>
-            <source media="(max-width: 750px)" srcset="<?php echo esc_url($bg_url_mobile); ?>" type="image/webp">
-            <source media="(max-width: 750px)" srcset="<?php echo esc_url($bg_url_mobile_fallback); ?>">
-            <img src="<?php echo esc_url($bg_url); ?>" alt="" class="hero-section__bg-img" width="3024" height="1680" fetchpriority="high">
-        </picture>
+        <?php $bg_url = $hero_bg_image ?: $hero_bg_default; ?>
+        <img src="<?php echo esc_url($bg_url); ?>" alt="" class="hero-section__bg-img" width="3024" height="1680" fetchpriority="high">
     </div>
     <div class="container">
-        <div class="hero-section__content">
-            <h1 class="hero-section__title"><?php echo wp_kses_post($hero_title); ?></h1>
-            <p class="hero-section__text"><?php echo esc_html($hero_text); ?></p>
-            <a href="#contact-form" class="btn btn--hero">
-                <span class="btn__dot"></span>
-                <span><?php echo esc_html($hero_button_text); ?></span>
-            </a>
+        <div class="hero-section__grid">
+            <div class="hero-section__content">
+                <h1 class="hero-section__title"><?php echo wp_kses($hero_title, ['em' => [], 'br' => []]); ?></h1>
+                <p class="hero-section__text"><?php echo esc_html($hero_text); ?></p>
+                <a href="<?php echo esc_url($hero_button_url); ?>" class="btn btn--hero btn--hero-v2">
+                    <span class="btn__dot"></span>
+                    <span><?php echo esc_html($hero_button_text); ?></span>
+                </a>
+            </div>
+            <?php if (!empty($hero_stats)): ?>
+            <div class="hero-section__stats">
+                <?php foreach ($hero_stats as $stat):
+                    $value = trim($stat['stat_value'] ?? '');
+                    $label = trim($stat['stat_label'] ?? '');
+                    $source = trim($stat['stat_source'] ?? '');
+                    if ($value === '' && $label === '') {
+                        continue;
+                    }
+                ?>
+                <article class="hero-stat-card">
+                    <?php if ($value): ?>
+                        <div class="hero-stat-card__value"><?php echo esc_html($value); ?></div>
+                    <?php endif; ?>
+                    <?php if ($label): ?>
+                        <div class="hero-stat-card__label"><?php echo esc_html($label); ?></div>
+                    <?php endif; ?>
+                    <?php if ($source): ?>
+                        <div class="hero-stat-card__source"><?php echo esc_html($source); ?></div>
+                    <?php endif; ?>
+                </article>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
 
-<!-- Logo Slider -->
+<!-- Client Logo Wall -->
 <?php
 $logo_slider_partners = neamob_get_partners_for_slider();
 if (!empty($logo_slider_partners)):
 ?>
-    <section class="logo-slider">
-        <div class="logo-slider__bg"></div>
-<div class="logo-slider__track__n">
-    <div class="logo-slider__belt">
-        <?php for ($i = 0; $i < 3; $i++): ?>
-        <div class="logo-slider__group" <?php echo $i === 1 ? 'aria-hidden="true"' : ''; ?>>
+<section class="logo-wall">
+    <div class="container">
+        <p class="logo-wall__title"><?php echo esc_html($logo_wall_title); ?></p>
+        <div class="logo-wall__grid">
             <?php foreach ($logo_slider_partners as $p):
                 $logo_url = get_field('partner_logo', $p->ID);
-                if (!$logo_url) continue;
+                if (!$logo_url) {
+                    continue;
+                }
                 $partner_url = get_field('partner_url', $p->ID);
             ?>
-            <div class="logo-slider__item">
+            <div class="logo-wall__item">
                 <?php if ($partner_url): ?>
-                    <a href="<?php echo esc_url($partner_url); ?>" target="_blank" rel="noopener noreferrer" <?php echo $i === 1 ? 'tabindex="-1"' : ''; ?>><img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>"></a>
+                    <a href="<?php echo esc_url($partner_url); ?>" target="_blank" rel="noopener noreferrer">
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>" loading="lazy">
+                    </a>
                 <?php else: ?>
-                    <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>">
+                    <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>" loading="lazy">
                 <?php endif; ?>
             </div>
             <?php endforeach; ?>
         </div>
-        <?php endfor; ?>
     </div>
-</div>
-    </section>
+</section>
 <?php endif; ?>
 
 <!-- Services Section (What We Do) -->
@@ -677,178 +706,5 @@ endif;
 <!-- Contact Form Section -->
 <?php get_template_part('template-parts/contact-form'); ?>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.logo-slider__track__n').forEach((track) => {
-    const belt = track.querySelector('.logo-slider__belt');
-    if (!belt) return;
-
-    const groups = belt.querySelectorAll('.logo-slider__group');
-    if (groups.length < 3) return;
-
-    const DURATION_SEC = 40;
-
-    let groupWidth = 0;
-    let speed = 0;
-    let ready = false;
-
-    function measureAndPosition() {
-      const newWidth = groups[0].getBoundingClientRect().width;
-      if (!newWidth) return;
-
-      const ratio = groupWidth ? track.scrollLeft / groupWidth : 1;
-
-      groupWidth = newWidth;
-      speed = groupWidth / DURATION_SEC;
-      track.scrollLeft = groupWidth * ratio;
-      ready = true;
-    }
-
-    measureAndPosition();
-    if (groupWidth) {
-      track.scrollLeft = groupWidth;
-    }
-
-    const images = belt.querySelectorAll('img');
-    let loadedCount = 0;
-
-    function onImageDone() {
-      loadedCount++;
-      if (loadedCount === images.length) {
-        measureAndPosition();
-      }
-    }
-
-    if (images.length === 0) {
-      measureAndPosition();
-    } else {
-      images.forEach((img) => {
-        if (img.complete) {
-          onImageDone();
-        } else {
-          img.addEventListener('load', onImageDone);
-          img.addEventListener('error', onImageDone);
-        }
-      });
-    }
-
-    const resizeObserver = new ResizeObserver(() => measureAndPosition());
-    resizeObserver.observe(groups[0]);
-
-    let isInteracting = false;
-    let isAutoScrolling = false;
-    let resumeTimer = null;
-    let lastTs = null;
-
-    function pause() {
-      clearTimeout(resumeTimer);
-      isInteracting = true;
-      track.classList.add('is-interacting');
-    }
-
-    function scheduleResume(delay = 1200) {
-      clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(() => {
-        isInteracting = false;
-        lastTs = null;
-        track.classList.remove('is-interacting');
-      }, delay);
-    }
-
-    function frame(ts) {
-      if (ready && !isInteracting) {
-        if (lastTs !== null) {
-          const dt = (ts - lastTs) / 1000;
-          isAutoScrolling = true;
-          track.scrollLeft += speed * dt;
-          isAutoScrolling = false;
-        }
-        lastTs = ts;
-      } else {
-        lastTs = null;
-      }
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-
-    track.addEventListener('scroll', () => {
-      if (!ready || !groupWidth) return;
-      if (track.scrollLeft <= 0) {
-        track.scrollLeft += groupWidth;
-      } else if (track.scrollLeft >= groupWidth * 2) {
-        track.scrollLeft -= groupWidth;
-      }
-      if (!isAutoScrolling) {
-        scheduleResume();
-      }
-    });
-
-    track.addEventListener('mouseenter', pause);
-    track.addEventListener('mouseleave', () => scheduleResume(0));
-
-    track.addEventListener('touchstart', pause, { passive: true });
-    track.addEventListener('touchend', scheduleResume);
-    track.addEventListener('wheel', () => {
-      pause();
-      scheduleResume();
-    }, { passive: true });
-
-    let isDown = false;
-    let startX = 0;
-    let startScroll = 0;
-
-    track.addEventListener('mousedown', (e) => {
-      isDown = true;
-      track.classList.add('is-dragging');
-      pause();
-      startX = e.pageX;
-      startScroll = track.scrollLeft;
-    });
-
-    window.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      track.scrollLeft = startScroll - (e.pageX - startX);
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (!isDown) return;
-      isDown = false;
-      track.classList.remove('is-dragging');
-      scheduleResume();
-    });
-  });
-});
-</script>
-<style>
-.logo-slider__track__n {
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  cursor: grab;
-}
-.logo-slider__track__n::-webkit-scrollbar { display: none; }
-.logo-slider__track__n.is-dragging { cursor: grabbing; }
-
-.logo-slider__belt {
-  display: flex;
-  width: max-content;
-}
-.logo-slider__track__n.is-interacting .logo-slider__belt {
-  animation-play-state: paused;
-}
-.logo-slider__item img {
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-user-drag: none;     
-  pointer-events: none;       
-}
-
-.logo-slider__item a {
-  -webkit-user-select: none;
-  user-select: none;
-}	
-	
-</style>
 <?php get_footer(); ?>
 

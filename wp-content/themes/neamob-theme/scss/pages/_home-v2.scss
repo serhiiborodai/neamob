@@ -1,0 +1,259 @@
+// ==========================================================================
+// Homepage Redesign (admin preview only — body.redesign-preview)
+// ==========================================================================
+
+.redesign-preview {
+    // ------------------------------------------------------------------
+    // Hero v2
+    // ------------------------------------------------------------------
+    .hero-section--v2 {
+        height: auto;
+        min-height: 720px;
+        overflow: hidden;
+
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            padding: 140px 0 96px;
+            height: auto;
+        }
+
+        .hero-section__bg {
+            inset: 0;
+            position: absolute;
+
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(90deg, rgba(5, 10, 24, 0.55) 0%, rgba(5, 10, 24, 0.15) 55%, rgba(5, 10, 24, 0.35) 100%);
+                pointer-events: none;
+            }
+        }
+
+        .hero-section__bg-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center right;
+        }
+
+        .hero-section__grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
+            gap: 48px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section__content {
+            max-width: 560px;
+        }
+
+        .hero-section__title {
+            font-family: $font-family-heading;
+            font-size: 56px;
+            font-weight: 500;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            color: #fff;
+
+            em {
+                font-family: 'Playfair Display', Georgia, serif;
+                font-style: italic;
+                font-weight: 500;
+            }
+        }
+
+        .hero-section__text {
+            width: 100%;
+            max-width: 480px;
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .btn--hero-v2 {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            width: auto;
+            min-width: 220px;
+            padding: 14px 28px 14px 22px;
+            border-radius: 999px;
+            background: $primary-color;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            transition: $transition;
+
+            &::before {
+                display: none;
+            }
+
+            .btn__dot {
+                display: block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #fff;
+                flex-shrink: 0;
+            }
+
+            &:hover {
+                background: $primary-dark;
+                opacity: 1;
+            }
+        }
+
+        .hero-section__stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .hero-stat-card {
+            padding: 22px 22px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+        }
+
+        .hero-stat-card__value {
+            font-family: $font-family-heading;
+            font-size: 34px;
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .hero-stat-card__label {
+            font-size: 15px;
+            line-height: 1.35;
+            color: rgba(255, 255, 255, 0.92);
+            margin-bottom: 14px;
+        }
+
+        .hero-stat-card__source {
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        @media (max-width: 1024px) {
+            min-height: auto;
+
+            .container {
+                padding: 120px 0 72px;
+            }
+
+            .hero-section__grid {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+
+            .hero-section__stats {
+                max-width: 520px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-section__title {
+                font-size: 40px;
+            }
+
+            .hero-section__stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stat-card__value {
+                font-size: 28px;
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Logo wall (replaces marquee slider)
+    // ------------------------------------------------------------------
+    .logo-wall {
+        padding: 56px 0 64px;
+        background: #f3f5f8;
+
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        &__title {
+            margin: 0 0 36px;
+            text-align: center;
+            font-family: $font-family;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #8a96a8;
+        }
+
+        &__grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 28px 32px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        &__item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 52px;
+
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            img {
+                display: block;
+                max-width: 100%;
+                max-height: 48px;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+                filter: none;
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            &__grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            padding: 40px 0 48px;
+
+            &__grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            &__grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    }
+}
