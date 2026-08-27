@@ -6,6 +6,9 @@
  */
 ?>
 
+    <?php if (function_exists('neamob_is_redesign_preview') && neamob_is_redesign_preview()): ?>
+        <?php get_template_part('template-parts/footer-v2'); ?>
+    <?php else: ?>
     <footer id="colophon" class="site-footer">
         <!-- Footer Main -->
         <div class="footer-main">
@@ -96,6 +99,7 @@
             </div>
         </div>
     </footer>
+    <?php endif; ?>
 </div><!-- #page -->
 
 <?php wp_footer(); ?>

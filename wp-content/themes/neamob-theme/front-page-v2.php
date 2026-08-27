@@ -26,7 +26,12 @@ if (empty($hero_stats) || !is_array($hero_stats)) {
     ];
 }
 $logo_wall_title = get_field('logo_wall_title') ?: 'Growth partners, past and present';
-$hero_bg_default = get_template_directory_uri() . '/assets/images/redesign/hero-bg.png';
+$services_section_title = get_field('services_section_title') ?: 'Our services';
+$cta_short_title = get_field('cta_short_title') ?: 'Ready to see your numbers grow?';
+$cta_short_text = get_field('cta_short_text') ?: 'Fill out the form and our team will get back to you within 48 hours.';
+$hero_bg_default = get_template_directory_uri() . '/assets/images/hp.webp';
+$hero_bg_mobile = get_template_directory_uri() . '/assets/images/hp-mobile.webp';
+$hero_bg_mobile_fallback = get_template_directory_uri() . '/assets/images/hp-mobile.png';
 
 $value_title = get_field('value_title') ?: 'We focus on what brings value & the bottom line';
 $value_text = get_field('value_text') ?: 'We transform raw data into insights with analytics, visualization, and infrastructure to drive smarter decisions and better performance.';
@@ -44,7 +49,11 @@ $value_tags = get_field('value_tags');
 <section class="hero-section hero-section--v2">
     <div class="hero-section__bg">
         <?php $bg_url = $hero_bg_image ?: $hero_bg_default; ?>
-        <img src="<?php echo esc_url($bg_url); ?>" alt="" class="hero-section__bg-img" width="3024" height="1680" fetchpriority="high">
+        <picture>
+            <source media="(max-width: 750px)" srcset="<?php echo esc_url($hero_bg_mobile); ?>" type="image/webp">
+            <source media="(max-width: 750px)" srcset="<?php echo esc_url($hero_bg_mobile_fallback); ?>">
+            <img src="<?php echo esc_url($bg_url); ?>" alt="" class="hero-section__bg-img" width="3024" height="1680" fetchpriority="high">
+        </picture>
     </div>
     <div class="container">
         <div class="hero-section__grid">
@@ -86,27 +95,27 @@ $value_tags = get_field('value_tags');
 
 <!-- Client Logo Wall -->
 <?php
-$logo_slider_partners = neamob_get_partners_for_slider();
-if (!empty($logo_slider_partners)):
+$client_logos = neamob_get_client_logos();
+if (!empty($client_logos)):
 ?>
 <section class="logo-wall">
     <div class="container">
         <p class="logo-wall__title"><?php echo esc_html($logo_wall_title); ?></p>
         <div class="logo-wall__grid">
-            <?php foreach ($logo_slider_partners as $p):
-                $logo_url = get_field('partner_logo', $p->ID);
+            <?php foreach ($client_logos as $logo_post):
+                $logo_url = get_the_post_thumbnail_url($logo_post->ID, 'medium');
                 if (!$logo_url) {
                     continue;
                 }
-                $partner_url = get_field('partner_url', $p->ID);
+                $link = get_field('client_logo_url', $logo_post->ID);
             ?>
             <div class="logo-wall__item">
-                <?php if ($partner_url): ?>
-                    <a href="<?php echo esc_url($partner_url); ?>" target="_blank" rel="noopener noreferrer">
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>" loading="lazy">
+                <?php if ($link): ?>
+                    <a href="<?php echo esc_url($link); ?>" target="_blank" rel="noopener noreferrer">
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($logo_post->post_title); ?>" loading="lazy">
                     </a>
                 <?php else: ?>
-                    <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($p->post_title); ?>" loading="lazy">
+                    <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($logo_post->post_title); ?>" loading="lazy">
                 <?php endif; ?>
             </div>
             <?php endforeach; ?>
@@ -115,80 +124,45 @@ if (!empty($logo_slider_partners)):
 </section>
 <?php endif; ?>
 
-<!-- Services Section (What We Do) -->
+<!-- Services Section (Redesign grid) -->
 <?php
-$services = neamob_get_service_pages();
-if ($services->have_posts()):
-    ?>
-        <section class="services-section"> <div class="container">
-            <p class="services-section__label">What We Do</p>
-            <div class="services-section__grid">
-                <div class="services-section__content">
-                    <div class="services-accordion">
-                        <?php $index = 0; ?>
-                        <?php while ($services->have_posts()):
-                            $services->the_post();
-                            // Как в 3748621: страницы сервисов + те же поля, что до ACF-sync
-                            $pid = get_the_ID();
-                            $short_desc = get_field('service_short_description', $pid)
-                                ?: get_field('service_hero_subtitle', $pid)
-                                ?: get_the_excerpt($pid);
-                            if (empty($short_desc)) {
-                                $cnt = get_post_field('post_content', $pid);
-                                $short_desc = $cnt ? wp_trim_words(strip_tags($cnt), 35, '') : '';
-                            }
-                            // Если мета в БД есть, а ACF после sync не подхватывает — читаем напрямую
-                            if ($short_desc === '' || $short_desc === null) {
-                                foreach (['service_short_description', 'service_hero_subtitle', 'service_accordion_text'] as $_meta_key) {
-                                    $_raw = get_post_meta($pid, $_meta_key, true);
-                                    if (is_string($_raw) && $_raw !== '') {
-                                        $short_desc = $_raw;
-                                        break;
-                                    }
-                                }
-                            }
-                            ?>
-                                <div class="services-accordion__item<?php echo $index === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $index; ?>"> <div class="services-accordion__header">
-                                    <div class="services-accordion__icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                                    </div>
-                                    <h3 class="services-accordion__title"><?php the_title(); ?></h3>
-                                </div>
-                                <div class="services-accordion__body">
-                                    <div class="services-accordion__body-inner">
-                                        <p class="services-accordion__text"><?php echo esc_html($short_desc); ?></p>
-                                        <a href="<?php echo esc_url(get_permalink()); ?>" class="services-accordion__link">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php $index++; ?>
-                        <?php endwhile; ?>
+$service_pages = neamob_get_redesign_service_pages();
+if (!empty($service_pages)):
+?>
+<section class="services-section-v2">
+    <div class="container">
+        <div class="services-section-v2__layout">
+            <h2 class="services-section-v2__title"><?php echo esc_html($services_section_title); ?></h2>
+            <div class="services-section-v2__grid">
+                <?php foreach ($service_pages as $service_page):
+                    $pid = $service_page->ID;
+                    $slug = $service_page->post_name;
+                    $icon = neamob_get_service_card_icon($slug);
+                    $short_desc = get_field('service_short_description', $pid)
+                        ?: get_field('service_hero_subtitle', $pid)
+                        ?: get_the_excerpt($pid);
+                    if (empty($short_desc)) {
+                        $cnt = get_post_field('post_content', $pid);
+                        $short_desc = $cnt ? wp_trim_words(strip_tags($cnt), 35, '') : '';
+                    }
+                ?>
+                <article class="service-card-v2">
+                    <div class="service-card-v2__icon" style="--icon-bg: <?php echo esc_attr($icon['bg']); ?>">
+                        <img src="<?php echo esc_url($icon['url']); ?>" alt="" width="24" height="24" loading="lazy">
                     </div>
-                </div>
-                <div class="services-section__media">
-                    <?php
-                    $page_to_cpt = [20 => 38, 21 => 39, 22 => 40, 23 => 41];
-                    $cpt_ids = array_values($page_to_cpt);
-                    $idx = 0;
-                    foreach ($cpt_ids as $cpt_id):
-                        $img_url = get_the_post_thumbnail_url($cpt_id, 'medium_large');
-                        ?>
-                        <div class="services-section__image<?php echo $idx === 0 ? ' is-active' : ''; ?>" data-index="<?php echo $idx; ?>">
-                            <?php if ($img_url): ?>
-                                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr(get_the_title($cpt_id)); ?>">
-                            <?php else: ?>
-                                <div class="services-section__placeholder" aria-hidden="true"></div>
-                            <?php endif; ?>
-                        </div>
-                    <?php $idx++; endforeach; ?>
-                </div>
+                    <h3 class="service-card-v2__title"><?php echo esc_html(get_the_title($pid)); ?></h3>
+                    <p class="service-card-v2__text"><?php echo esc_html($short_desc); ?></p>
+                    <a href="<?php echo esc_url(get_permalink($pid)); ?>" class="service-card-v2__link">
+                        <span class="service-card-v2__link-dot"></span>
+                        Read More
+                    </a>
+                </article>
+                <?php endforeach; ?>
             </div>
         </div>
-    </section>
-    <?php
-    wp_reset_postdata();
-endif;
-?>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- Value Section -->
 <section class="value-section">
@@ -702,6 +676,9 @@ endif;
         ?>
     </div>
 </div>
+
+<!-- CTA Short Form (Redesign) -->
+<?php get_template_part('template-parts/cta-short-form'); ?>
 
 <!-- Contact Form Section -->
 <?php get_template_part('template-parts/contact-form'); ?>

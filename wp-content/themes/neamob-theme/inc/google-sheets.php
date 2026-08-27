@@ -23,6 +23,14 @@ function neamob_sheets_get_sheet_name(int $form_id): ?string
         61   => 'Job Application',
         6261 => 'Case Study Download',
     ];
+
+    if (function_exists('neamob_get_home_cta_short_form_id')) {
+        $short_id = neamob_get_home_cta_short_form_id();
+        if ($short_id && $form_id === $short_id) {
+            return 'Home CTA Short';
+        }
+    }
+
     return $map[$form_id] ?? null;
 }
 
