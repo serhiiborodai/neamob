@@ -15,6 +15,7 @@ require_once get_template_directory() . '/inc/acf-fields.php';
 require_once get_template_directory() . '/inc/gallery-metabox.php';
 require_once get_template_directory() . '/inc/faq-metabox.php';
 require_once get_template_directory() . '/inc/google-sheets.php';
+require_once get_template_directory() . '/inc/redesign-preview.php';
 
 /**
  * Fix relative URLs in wp-admin by setting <base> to admin_url().

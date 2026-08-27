@@ -213,6 +213,13 @@ function neamob_register_acf_fields() {
             ],
             [
                 [
+                    'param' => 'page_template',
+                    'operator' => '==',
+                    'value' => 'front-page-v2.php',
+                ],
+            ],
+            [
+                [
                     'param' => 'page_type',
                     'operator' => '==',
                     'value' => 'front_page',
@@ -332,6 +339,13 @@ function neamob_register_acf_fields() {
             ],
             [
                 [
+                    'param' => 'page_template',
+                    'operator' => '==',
+                    'value' => 'front-page-v2.php',
+                ],
+            ],
+            [
+                [
                     'param' => 'page_type',
                     'operator' => '==',
                     'value' => 'front_page',
@@ -367,6 +381,13 @@ function neamob_register_acf_fields() {
         'location' => [
             [
                 ['param' => 'page_type', 'operator' => '==', 'value' => 'front_page'],
+            ],
+            [
+                [
+                    'param' => 'page_template',
+                    'operator' => '==',
+                    'value' => 'front-page-v2.php',
+                ],
             ],
         ],
         'menu_order' => 3,
@@ -1631,6 +1652,13 @@ function neamob_register_portfolio_fields() {
                     'param' => 'page_template',
                     'operator' => '==',
                     'value' => 'page-portfolio.php',
+                ],
+            ],
+            [
+                [
+                    'param' => 'page_template',
+                    'operator' => '==',
+                    'value' => 'page-portfolio-v2.php',
                 ],
             ],
         ],

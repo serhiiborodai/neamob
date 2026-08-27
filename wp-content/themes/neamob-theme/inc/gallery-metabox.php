@@ -22,7 +22,12 @@ function neamob_gallery_metaboxes() {
     }
 
     $portfolio_page = get_page_by_path('portfolio');
-    if ($portfolio_page && $post->ID === $portfolio_page->ID) {
+    $portfolio_redesign = get_page_by_path('portfolio-redesign');
+    $portfolio_page_ids = array_filter([
+        $portfolio_page ? (int) $portfolio_page->ID : 0,
+        $portfolio_redesign ? (int) $portfolio_redesign->ID : 0,
+    ]);
+    if (in_array((int) $post->ID, $portfolio_page_ids, true)) {
         add_meta_box(
             'neamob_portfolio_static',
             'Portfolio — Static',
