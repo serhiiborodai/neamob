@@ -1528,16 +1528,16 @@
             position: relative;
             gap: 16px;
 
-            // Figma: muted grey dash on left for inactive
+            // Figma: left dash — same size for all tabs
             &::before {
                 content: '';
                 position: absolute;
                 left: 12px;
                 top: 50%;
                 transform: translateY(-50%);
-                width: 12px;
-                height: 2px;
-                border-radius: 1px;
+                width: 41px;
+                height: 4px;
+                border-radius: 4px;
                 background: rgba(255, 255, 255, 0.28);
                 display: block;
             }
@@ -1546,11 +1546,7 @@
                 background: #1a283c;
                 color: #fff;
 
-                // Figma: bright blue dash for active tab
                 &::before {
-                    width: 41px;
-                    height: 4px;
-                    border-radius: 4px;
                     background: $primary-color;
                 }
 

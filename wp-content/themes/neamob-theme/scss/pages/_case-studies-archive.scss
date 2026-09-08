@@ -32,6 +32,8 @@
         &__image {
             flex: 0 0 580px;
             height: 380px;
+            overflow: hidden;
+            border-radius: 8px;
         }
 
         &__tags {

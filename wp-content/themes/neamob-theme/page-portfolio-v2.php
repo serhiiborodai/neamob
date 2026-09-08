@@ -68,10 +68,10 @@ if (!empty($client_logos)) {
         echo '<div class="portfolio-logos__item">';
         if ($link) {
             echo '<a href="' . esc_url($link) . '" target="_blank" rel="noopener noreferrer">';
-            echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr($logo_post->post_title) . '" loading="lazy">';
+            echo '<img src="' . esc_url(add_query_arg('v', '2', $logo_url)) . '" alt="' . esc_attr($logo_post->post_title) . '" loading="lazy">';
             echo '</a>';
         } else {
-            echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr($logo_post->post_title) . '" loading="lazy">';
+            echo '<img src="' . esc_url(add_query_arg('v', '2', $logo_url)) . '" alt="' . esc_attr($logo_post->post_title) . '" loading="lazy">';
         }
         echo '</div>';
     }

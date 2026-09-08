@@ -3989,9 +3989,9 @@ body.page-simple .site-main .page-content ul li:before {
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  width: 12px;
-  height: 2px;
-  border-radius: 1px;
+  width: 41px;
+  height: 4px;
+  border-radius: 4px;
   background: rgba(255, 255, 255, 0.28);
   display: block;
 }
@@ -4000,9 +4000,6 @@ body.page-simple .site-main .page-content ul li:before {
   color: #fff;
 }
 .redesign-preview .testimonials-v2__tab.is-active::before {
-  width: 41px;
-  height: 4px;
-  border-radius: 4px;
   background: #0094ff;
 }
 .redesign-preview .testimonials-v2__tab.is-active .testimonials-v2__tab-text span {
@@ -7811,6 +7808,8 @@ body.page-simple .site-main .page-content ul li:before {
 .case-studies-archive .case-featured__image {
   flex: 0 0 580px;
   height: 380px;
+  overflow: hidden;
+  border-radius: 8px;
 }
 .case-studies-archive .case-featured__tags {
   display: flex;

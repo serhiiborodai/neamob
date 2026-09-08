@@ -136,10 +136,10 @@ if (!empty($client_logos)):
             <div class="logo-wall__item">
                 <?php if ($link): ?>
                     <a href="<?php echo esc_url($link); ?>" target="_blank" rel="noopener noreferrer">
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($logo_post->post_title); ?>" loading="lazy">
+                        <img src="<?php echo esc_url(add_query_arg('v', '2', $logo_url)); ?>" alt="<?php echo esc_attr($logo_post->post_title); ?>" loading="lazy">
                     </a>
                 <?php else: ?>
-                    <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($logo_post->post_title); ?>" loading="lazy">
+                    <img src="<?php echo esc_url(add_query_arg('v', '2', $logo_url)); ?>" alt="<?php echo esc_attr($logo_post->post_title); ?>" loading="lazy">
                 <?php endif; ?>
             </div>
             <?php endforeach; ?>

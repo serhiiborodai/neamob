@@ -33,8 +33,9 @@ $faq_cta_link = get_field('faq_cta_link');
 $faq_cta_url = ($faq_cta_link && !empty($faq_cta_link['url'])) ? $faq_cta_link['url'] : '#contact-form';
 
 // BI visuals: laptop + stats card (from Downloads 000 1.png / Frame 2100226115.png)
-$laptop_url = get_template_directory_uri() . '/assets/images/value-laptop.png';
-$stats_card_url = get_template_directory_uri() . '/assets/images/value-stats-card.png';
+// ?v= busts stale WebP Express 404 caches; .dontreplace siblings skip <picture> rewrite.
+$laptop_url = add_query_arg('v', '2', get_template_directory_uri() . '/assets/images/value-laptop.png');
+$stats_card_url = add_query_arg('v', '2', get_template_directory_uri() . '/assets/images/value-stats-card.png');
 ?>
 
 <!-- Value / BI Section (Redesign) -->
