@@ -33,9 +33,13 @@
         initAnimations();
         initServicesAccordion();
         initTestimonialsSlider();
+        initTestimonialsV2();
         initFaqAccordion();
         initContactForm();
         initCaseStudyForm();
+        initAuditForm();
+        initHeaderMegaMenus();
+        initPortfolioBlockVideos();
     });
 
     function initLogoSliderClone() {
@@ -298,7 +302,10 @@
             var t = e.target.closest('a, button');
             if (!t) return;
             var text = (t.textContent || '').trim();
-            if (text === "Let's Chat" || text === 'Book Free Audit') {
+            var href = (t.getAttribute('href') || '');
+            var isChat = /^let['’]s chat$/i.test(text);
+            var isFormHash = href === '#contact-form' || /#contact-form$/.test(href);
+            if (text === 'Book Free Audit' || isChat || isFormHash) {
                 scrollToForm(e);
             }
         });
@@ -466,6 +473,44 @@
             }
         });
     }
+
+    /**
+     * Testimonials v2 — tab list + content panels (redesign homepage)
+     */
+    function initTestimonialsV2() {
+        document.querySelectorAll('.testimonials-v2').forEach(function (section) {
+            var tabs = section.querySelectorAll('.testimonials-v2__tab');
+            var slides = section.querySelectorAll('.testimonials-v2__slide');
+            if (!tabs.length || !slides.length) return;
+
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    var index = tab.getAttribute('data-index');
+                    tabs.forEach(function (t) {
+                        t.classList.remove('is-active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
+                    slides.forEach(function (s) {
+                        s.classList.remove('is-active');
+                    });
+                    tab.classList.add('is-active');
+                    tab.setAttribute('aria-selected', 'true');
+                    var activeSlide = section.querySelector('.testimonials-v2__slide[data-index="' + index + '"]');
+                    if (activeSlide) {
+                        activeSlide.classList.add('is-active');
+                    }
+                });
+            });
+        });
+    }
+
+    window.neamobPlayPartnerVideo = function (el) {
+        var videoId = el.dataset.videoId;
+        var container = el.closest('.partner-card__video, .partner-card-v2__video');
+        if (!container || !videoId) return;
+        container.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        container.classList.add('is-playing');
+    };
 
     /**
      * Initialize FAQ Accordion
@@ -796,6 +841,123 @@
                     closeForm();
                     if (url) window.open(url, '_blank');
                 }, 500);
+            }
+        });
+    }
+
+    /**
+     * Header “Book a Free Audit” — light modal with CTA short form (Figma 6454:24966).
+     */
+    /**
+     * Redesign header mega menus — keep open across the gap between
+     * the nav trigger and the absolutely positioned panel.
+     */
+    function initHeaderMegaMenus() {
+        if (!document.body.classList.contains('redesign-preview')) return;
+
+        var items = document.querySelectorAll('.menu-item--services, .menu-item--work, .menu-item--about');
+        if (!items.length) return;
+
+        var closeDelay = 180;
+        var timer = null;
+
+        function closeAll(except) {
+            items.forEach(function (item) {
+                if (item !== except) item.classList.remove('is-mega-open');
+            });
+        }
+
+        items.forEach(function (item) {
+            var mega = item.querySelector('.services-mega, .work-mega, .about-mega, .nav-mega');
+            if (!mega) return;
+
+            function open() {
+                clearTimeout(timer);
+                timer = null;
+                closeAll(item);
+                item.classList.add('is-mega-open');
+            }
+
+            function scheduleClose() {
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    item.classList.remove('is-mega-open');
+                    timer = null;
+                }, closeDelay);
+            }
+
+            item.addEventListener('mouseenter', open);
+            item.addEventListener('mouseleave', scheduleClose);
+            mega.addEventListener('mouseenter', open);
+            mega.addEventListener('mouseleave', scheduleClose);
+
+            item.addEventListener('focusin', open);
+            item.addEventListener('focusout', function (e) {
+                if (!item.contains(e.relatedTarget)) scheduleClose();
+            });
+        });
+    }
+
+    /**
+     * Portfolio redesign YouTube embeds in content blocks.
+     */
+    function initPortfolioBlockVideos() {
+        if (!document.body.classList.contains('redesign-preview')) return;
+
+        document.querySelectorAll('.portfolio-block-v2 .video-wrapper').forEach(function (wrapper) {
+            wrapper.addEventListener('click', function () {
+                var videoId = this.getAttribute('data-video-id');
+                if (!videoId) return;
+                this.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+            });
+        });
+    }
+
+    function initAuditForm() {
+        var overlay = document.getElementById('audit-form-overlay');
+        if (!overlay) return;
+
+        function openForm(e) {
+            if (e) e.preventDefault();
+            overlay.hidden = false;
+            overlay.classList.add('is-active');
+            document.body.style.overflow = 'hidden';
+            var first = overlay.querySelector('input, select, textarea');
+            if (first) {
+                setTimeout(function () { first.focus(); }, 50);
+            }
+        }
+
+        function closeForm() {
+            overlay.classList.remove('is-active');
+            overlay.hidden = true;
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('[data-open-audit-form]').forEach(function (btn) {
+            btn.addEventListener('click', openForm);
+        });
+
+        overlay.querySelectorAll('[data-close-audit-form]').forEach(function (el) {
+            el.addEventListener('click', closeForm);
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && overlay.classList.contains('is-active')) {
+                closeForm();
+            }
+        });
+
+        if (window.location.hash === '#audit-form') {
+            openForm();
+        }
+
+        document.addEventListener('wpcf7mailsent', function (ev) {
+            var formEl = overlay.querySelector('.wpcf7');
+            if (!formEl) return;
+            var unitTag = ev.detail && ev.detail.unitTag;
+            if (unitTag && formEl.id === unitTag.replace(/^#/, '')) {
+                setTimeout(closeForm, 1200);
             }
         });
     }

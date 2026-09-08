@@ -17,6 +17,7 @@ require_once get_template_directory() . '/inc/faq-metabox.php';
 require_once get_template_directory() . '/inc/google-sheets.php';
 require_once get_template_directory() . '/inc/redesign-preview.php';
 require_once get_template_directory() . '/inc/client-logos.php';
+require_once get_template_directory() . '/inc/comparison-table.php';
 
 /**
  * Fix relative URLs in wp-admin by setting <base> to admin_url().
@@ -107,9 +108,14 @@ function neamob_enqueue_scripts()
     $theme_version = wp_get_theme()->get('Version');
 
     // Google Fonts - Raleway, DM Sans & Playfair Display (hero serif accent)
+    // Redesign preview also needs Poppins (Figma NeaMob Website design system).
+    $google_fonts = 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&family=Raleway:wght@400;500;600;700;800&display=swap';
+    if (function_exists('neamob_is_redesign_preview') && neamob_is_redesign_preview()) {
+        $google_fonts = 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;1,500;1,600&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Raleway:wght@400;500;600;700;800&display=swap';
+    }
     wp_enqueue_style(
         'google-fonts',
-        'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&family=Raleway:wght@400;500;600;700;800&display=swap',
+        $google_fonts,
         [],
         null
     );
@@ -1040,3 +1046,39 @@ add_action('wp_head', function () {
     echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . '</script>' . "\n";
 }, 20);
 
+
+/**
+ * Insert mid-content CTA banner before the last H2 — redesign blog preview only.
+ */
+function neamob_insert_single_post_mid_cta(string $content): string
+{
+    if (is_admin() || !is_singular('post') || !in_the_loop() || !is_main_query()) {
+        return $content;
+    }
+
+    if (!function_exists('neamob_is_redesign_preview') || !neamob_is_redesign_preview()) {
+        return $content;
+    }
+
+    if ($content === '' || str_contains($content, 'single-post__cta')) {
+        return $content;
+    }
+
+    if (!preg_match_all('/<h2\b[^>]*>/i', $content, $matches, PREG_OFFSET_CAPTURE)) {
+        return $content;
+    }
+
+    $last = end($matches[0]);
+    $pos = (int) $last[1];
+
+    $cta = '<div class="single-post__cta">'
+        . '<p class="single-post__cta-text">Ready to take your marketing to the next level?</p>'
+        . '<a href="#contact-form" class="single-post__cta-btn">'
+        . '<span class="single-post__cta-dot" aria-hidden="true"></span>'
+        . 'Let\'s chat'
+        . '</a>'
+        . '</div>';
+
+    return substr($content, 0, $pos) . $cta . substr($content, $pos);
+}
+add_filter('the_content', 'neamob_insert_single_post_mid_cta', 12);

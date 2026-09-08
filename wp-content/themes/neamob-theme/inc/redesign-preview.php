@@ -162,6 +162,33 @@ function neamob_redesign_preview_body_class(array $classes): array
 add_filter('body_class', 'neamob_redesign_preview_body_class');
 
 /**
+ * Hide WP admin bar on redesign previews so layout matches mockups 1:1.
+ */
+function neamob_redesign_preview_hide_admin_bar(): void
+{
+    if (neamob_is_redesign_preview()) {
+        show_admin_bar(false);
+    }
+}
+add_action('wp', 'neamob_redesign_preview_hide_admin_bar');
+add_filter('show_admin_bar', static function ($show) {
+    return neamob_is_redesign_preview() ? false : $show;
+});
+
+/**
+ * Audit booking popup (Figma 6454:24966) — available on all redesign previews.
+ */
+function neamob_redesign_audit_form_overlay(): void
+{
+    if (!neamob_is_redesign_preview()) {
+        return;
+    }
+
+    get_template_part('template-parts/audit-form-overlay');
+}
+add_action('wp_footer', 'neamob_redesign_audit_form_overlay', 5);
+
+/**
  * Copy post meta from one post to another (for creating redesign page copies).
  */
 function neamob_copy_post_meta(int $source_id, int $target_id, array $skip_keys = []): void

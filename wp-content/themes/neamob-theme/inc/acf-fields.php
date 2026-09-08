@@ -267,6 +267,19 @@ function neamob_register_acf_fields() {
                 'rows' => 2,
                 'default_value' => 'Fill out the form and our team will get back to you within 48 hours.',
             ],
+            [
+                'key' => 'field_faq_cta_text',
+                'label' => 'FAQ CTA Button Text',
+                'name' => 'faq_cta_text',
+                'type' => 'text',
+                'default_value' => 'Book a Free Audit',
+            ],
+            [
+                'key' => 'field_faq_cta_link',
+                'label' => 'FAQ CTA Button Link',
+                'name' => 'faq_cta_link',
+                'type' => 'link',
+            ],
         ],
         'location' => [
             [
@@ -360,8 +373,34 @@ function neamob_register_acf_fields() {
                 'return_format' => 'url',
             ],
             [
+                'key' => 'field_value_report_groups',
+                'label' => 'Report Columns (Redesign)',
+                'name' => 'value_report_groups',
+                'type' => 'repeater',
+                'max' => 3,
+                'layout' => 'block',
+                'button_label' => 'Add Column',
+                'instructions' => 'Three columns shown below the BI section on redesign homepage (Money / Channels / Growth).',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_value_report_group_title',
+                        'label' => 'Column Title',
+                        'name' => 'group_title',
+                        'type' => 'text',
+                    ],
+                    [
+                        'key' => 'field_value_report_group_items',
+                        'label' => 'Items',
+                        'name' => 'group_items',
+                        'type' => 'textarea',
+                        'rows' => 2,
+                        'instructions' => 'Separate items with · (middle dot)',
+                    ],
+                ],
+            ],
+            [
                 'key' => 'field_value_tags',
-                'label' => 'Report Tags',
+                'label' => 'Report Tags (Legacy homepage)',
                 'name' => 'value_tags',
                 'type' => 'repeater',
                 'layout' => 'table',
@@ -1162,6 +1201,40 @@ function neamob_register_acf_fields() {
                 'type' => 'true_false',
                 'ui' => 1,
                 'instructions' => 'If enabled, this case study will appear on the homepage and will be hidden from the Case Studies archive page.',
+            ],
+            [
+                'key' => 'field_case_homepage_card_image',
+                'label' => 'Homepage Card Image',
+                'name' => 'homepage_card_image',
+                'type' => 'image',
+                'return_format' => 'url',
+                'instructions' => 'Top image on homepage case study card (redesign). Falls back to featured image.',
+                'conditional_logic' => [
+                    [
+                        [
+                            'field' => 'field_case_show_on_homepage',
+                            'operator' => '==',
+                            'value' => '1',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'key' => 'field_case_coming_soon',
+                'label' => 'Coming Soon (Homepage)',
+                'name' => 'case_coming_soon',
+                'type' => 'true_false',
+                'ui' => 1,
+                'instructions' => 'Show as "Coming Soon" card without Read More link on redesign homepage.',
+                'conditional_logic' => [
+                    [
+                        [
+                            'field' => 'field_case_show_on_homepage',
+                            'operator' => '==',
+                            'value' => '1',
+                        ],
+                    ],
+                ],
             ],
             [
                 'key' => 'field_case_homepage_description',

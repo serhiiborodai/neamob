@@ -234,20 +234,6 @@ function neamob_ensure_home_cta_short_form(): void
         'post_status'    => 'publish',
     ]);
 
-    if (!empty($existing)) {
-        return;
-    }
-
-    $form_id = wp_insert_post([
-        'post_type'   => 'wpcf7_contact_form',
-        'post_title'  => 'Home CTA Short',
-        'post_status' => 'publish',
-    ], true);
-
-    if (is_wp_error($form_id)) {
-        return;
-    }
-
     $form_markup = <<<'CF7'
 <div class="cta-short-form__row">
 <div class="cta-short-form__field">
@@ -260,14 +246,32 @@ function neamob_ensure_home_cta_short_form(): void
 </div>
 <div class="cta-short-form__field">
 <label><span class="required">*</span>Interest</label>
-[select* your-interest include_blank "Strategy & Planning" "Analytics & Reporting" "Creative & Design" "Media Buying" "Other"]
+[select* your-interest first_as_label "Select..." "Strategy & Planning" "Analytics & Reporting" "Creative & Design" "Media Buying" "Other"]
 </div>
 <div class="cta-short-form__submit">
 [submit "Submit"]
 </div>
 </div>
+
 [recaptcha]
 CF7;
+
+    if (!empty($existing)) {
+        // Keep markup in sync with redesign (label→field gap / Select label).
+        // Always keep [recaptcha] — required for production.
+        update_post_meta($existing[0]->ID, '_form', $form_markup);
+        return;
+    }
+
+    $form_id = wp_insert_post([
+        'post_type'   => 'wpcf7_contact_form',
+        'post_title'  => 'Home CTA Short',
+        'post_status' => 'publish',
+    ], true);
+
+    if (is_wp_error($form_id)) {
+        return;
+    }
 
     $mail = [
         'active'             => true,
@@ -290,6 +294,18 @@ CF7;
     ]);
 }
 add_action('init', 'neamob_ensure_home_cta_short_form', 20);
+
+/**
+ * CF7 wraps every line in <p>/<br> — breaks redesign label→input gap.
+ */
+function neamob_cf7_disable_autop($autop)
+{
+    if (function_exists('neamob_is_redesign_preview') && neamob_is_redesign_preview()) {
+        return false;
+    }
+    return $autop;
+}
+add_filter('wpcf7_autop_or_not', 'neamob_cf7_disable_autop');
 
 /**
  * Get Home CTA Short CF7 form ID.

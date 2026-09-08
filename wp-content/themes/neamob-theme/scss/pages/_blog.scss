@@ -479,6 +479,137 @@
   }
 }
 
+// ------------------------------------------------------------------
+// Blog post redesign preview — admin-only (body.redesign-preview)
+// ------------------------------------------------------------------
+.redesign-preview #page .single-post {
+  .container {
+    padding-top: 29px;
+  }
+
+  .back-to-blog {
+    top: 12px;
+    left: 20px;
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    svg {
+      left: -18px;
+      top: 1px;
+    }
+  }
+
+  &__toc {
+    padding-top: 55px;
+  }
+
+  .toc-title {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 17px;
+  }
+
+  .toc-link {
+    padding: 9px 0 8px 20px;
+    font-size: 15px;
+  }
+
+  &__meta {
+    margin-bottom: 27px;
+  }
+
+  &__category {
+    background: #ebf5ff;
+    color: #0094ff;
+    font-size: 11px;
+    padding: 3px 7px 0;
+    font-weight: 600;
+    height: 19px;
+
+    &--blue {
+      background: #ebf5ff;
+      color: #0094ff;
+    }
+  }
+
+  &__date {
+    font-size: 11px;
+    padding: 3px 0 0;
+  }
+
+  &__title {
+    font-size: 56px;
+    line-height: 1.16;
+    margin-bottom: 10px;
+  }
+
+  &__body {
+    font-size: 18px;
+    line-height: 1.66;
+  }
+
+  // Mid-content CTA — before last H2
+  &__cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin: 40px 0;
+    padding: 28px 32px;
+    border-radius: 16px;
+    background: #061526;
+    box-sizing: border-box;
+  }
+
+  &__cta-text {
+    margin: 0;
+    max-width: 420px;
+    font-family: 'Poppins', 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #fff;
+  }
+
+  &__cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 4px;
+    height: 44px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    background: #0094ff;
+    color: #fff;
+    font-family: 'Poppins', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    box-sizing: border-box;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #0078cc;
+      color: #fff;
+    }
+  }
+
+  &__cta-dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    flex-shrink: 0;
+    margin: 0 4px 0 0;
+  }
+}
+
 @media screen and (max-width: 1199px) {
   .blog-hero {
     .container {
@@ -619,6 +750,21 @@
         line-height: 1.35;
         margin-bottom: 13px;
       }
+    }
+  }
+
+  .redesign-preview #page .single-post {
+    &__cta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 24px 20px;
+      margin: 32px 0;
+    }
+
+    &__cta-text {
+      font-size: 18px;
+      max-width: none;
     }
   }
 

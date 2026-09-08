@@ -1,86 +1,129 @@
 <?php
 /**
  * Template Name: Portfolio (Redesign)
- * Admin-only preview copy for portfolio page redesign.
+ * Admin-only preview — body.redesign-preview (/portfolio-redesign/).
+ *
+ * @package Neamob_Theme
  */
+
 get_header();
 
-// Get ACF fields
 $hero_title = get_field('portfolio_title') ?: 'Portfolio';
-$hero_description = get_field('portfolio_description');
-$portfolio_categories = get_field('portfolio_categories') ?: ['All', 'Static', 'Video', 'UGC-Video'];
+$hero_description = get_field('portfolio_description_v2')
+    ?: '1,200+ creatives shipped for 30+ brands, including:';
+$hero_cta_text = 'Book a Free Audit';
 
-// Blocks
-$blocks = get_field('portfolio_blocks');
-
-// Get portfolio items from admin gallery meta boxes (per category)
-$gallery_sources = [
-    'static'    => neamob_get_gallery_images('_neamob_portfolio_static'),
-    'video'     => neamob_get_gallery_images('_neamob_portfolio_video'),
-    'ugc-video' => neamob_get_gallery_images('_neamob_portfolio_ugc'),
-];
+$theme_uri = get_template_directory_uri();
+$assets_dir = get_template_directory() . '/assets/images/portfolio-redesign';
+$assets_url = $theme_uri . '/assets/images/portfolio-redesign';
+$data_file = $assets_dir . '/gallery-data.json';
 
 $portfolio_items = [];
-$has_gallery = false;
-
-foreach ($gallery_sources as $category => $images) {
-    if (!empty($images)) $has_gallery = true;
-    foreach ($images as $img) {
-        $ext = strtolower(pathinfo($img['url'], PATHINFO_EXTENSION));
-        $is_video = in_array($ext, ['mp4', 'mov', 'webm']);
-        $portfolio_items[] = [
-            'url'      => $img['url'],
-            'category' => $category,
-            'is_video' => $is_video,
-        ];
-    }
-}
-
-if (!$has_gallery) {
-    $upload_dir = wp_upload_dir();
-    $portfolio_base = $upload_dir['basedir'] . '/portfolio';
-    $portfolio_url = $upload_dir['baseurl'] . '/portfolio';
-
-    $media_folders = [
-        'static'  => 'static',
-        'ugc'     => 'ugc-video',
-        'videos'  => 'video',
-    ];
-
-    foreach ($media_folders as $folder => $tab_category) {
-        $dir = $portfolio_base . '/' . $folder;
-        if (!is_dir($dir)) continue;
-        $files = array_diff(scandir($dir), ['.', '..']);
-        foreach ($files as $file) {
-            if (strpos($file, '._') === 0) continue;
-            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-            $is_video = in_array($ext, ['mp4', 'mov', 'webm']);
+if (is_readable($data_file)) {
+    $decoded = json_decode((string) file_get_contents($data_file), true);
+    if (is_array($decoded)) {
+        foreach ($decoded as $row) {
+            if (empty($row['file'])) {
+                continue;
+            }
+            $path = $assets_dir . '/' . $row['file'];
+            if (!is_file($path)) {
+                continue;
+            }
+            $ext = strtolower(pathinfo($row['file'], PATHINFO_EXTENSION));
+            $is_video = in_array($ext, ['mp4', 'mov', 'webm'], true);
+            $industry = isset($row['industry']) ? (string) $row['industry'] : '';
             $portfolio_items[] = [
-                'url'      => $portfolio_url . '/' . $folder . '/' . rawurlencode($file),
-                'category' => $tab_category,
+                'url'      => $assets_url . '/' . $row['file'],
+                'client'   => isset($row['client']) ? (string) $row['client'] : '',
+                'title'    => isset($row['title']) ? (string) $row['title'] : '',
+                'industry' => $industry,
+                'category' => sanitize_title($industry),
+                'media'    => isset($row['category']) ? (string) $row['category'] : 'static',
                 'is_video' => $is_video,
             ];
         }
     }
 }
 
-shuffle($portfolio_items);
+$portfolio_categories = ['All', 'DTC & E-com', 'Health & Wellness', 'Apps & Tech'];
+
+$client_logos = function_exists('neamob_get_client_logos') ? neamob_get_client_logos() : [];
+$blocks = get_field('portfolio_blocks');
+$fallback_img_1 = $theme_uri . '/assets/images/portfolio/portfolio-1.png';
+$fallback_img_2 = $theme_uri . '/assets/images/portfolio/portfolio-2.png';
+$fallback_single = $theme_uri . '/assets/images/portfolio/single-image.png';
+$fallback_video_thumb = $theme_uri . '/assets/images/portfolio/video-thumbnail.png';
+$fallback_play = $theme_uri . '/assets/images/portfolio/play-button.png';
+
+$logo_items_html = '';
+if (!empty($client_logos)) {
+    ob_start();
+    foreach ($client_logos as $logo_post) {
+        $logo_url = get_the_post_thumbnail_url($logo_post->ID, 'medium');
+        if (!$logo_url) {
+            continue;
+        }
+        $link = get_field('client_logo_url', $logo_post->ID);
+        echo '<div class="portfolio-logos__item">';
+        if ($link) {
+            echo '<a href="' . esc_url($link) . '" target="_blank" rel="noopener noreferrer">';
+            echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr($logo_post->post_title) . '" loading="lazy">';
+            echo '</a>';
+        } else {
+            echo '<img src="' . esc_url($logo_url) . '" alt="' . esc_attr($logo_post->post_title) . '" loading="lazy">';
+        }
+        echo '</div>';
+    }
+    $logo_items_html = ob_get_clean();
+}
 ?>
 
-<main class="portfolio-page">
-    <!-- Hero Section -->
-    <section class="portfolio-hero">
+<main class="portfolio-page portfolio-page-v2">
+    <section class="portfolio-hero-v2">
+        <div class="portfolio-hero-v2__bg" aria-hidden="true">
+            <img
+                class="portfolio-hero-v2__bg-img"
+                src="<?php echo esc_url($theme_uri . '/assets/images/portfolio-redesign/hero-bg.png'); ?>"
+                alt=""
+                width="1536"
+                height="1024"
+            >
+        </div>
         <div class="container">
-            <h1 class="portfolio-hero__title"><?php echo esc_html($hero_title); ?></h1>
+            <h1 class="portfolio-hero-v2__title"><?php echo esc_html($hero_title); ?></h1>
             <?php if ($hero_description): ?>
-                <p class="portfolio-hero__description"><?php echo wp_kses_post($hero_description); ?></p>
+                <p class="portfolio-hero-v2__text"><?php echo esc_html($hero_description); ?></p>
             <?php endif; ?>
+        </div>
 
-            <!-- Category Tabs -->
+        <?php if ($logo_items_html !== ''): ?>
+        <div class="portfolio-logos" aria-hidden="false">
+            <div class="portfolio-logos__track">
+                <div class="portfolio-logos__group">
+                    <?php echo $logo_items_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_* above ?>
+                </div>
+                <div class="portfolio-logos__group" aria-hidden="true">
+                    <?php echo $logo_items_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <div class="container portfolio-hero-v2__cta-wrap">
+            <a href="#audit-form" class="btn btn--hero btn--hero-v2 portfolio-hero-v2__cta" data-open-audit-form>
+                <span class="btn__dot" aria-hidden="true"></span>
+                <span><?php echo esc_html($hero_cta_text); ?></span>
+            </a>
+        </div>
+    </section>
+
+    <section class="portfolio-gallery-wrap">
+        <div class="container">
             <div class="portfolio-tabs">
-                <?php 
+                <?php
                 $cats = is_array($portfolio_categories) ? $portfolio_categories : explode(',', $portfolio_categories);
-                foreach ($cats as $index => $cat): 
+                foreach ($cats as $index => $cat):
                     $cat = trim($cat);
                 ?>
                     <button class="portfolio-tabs__btn <?php echo $index === 0 ? 'active' : ''; ?>" data-filter="<?php echo esc_attr(sanitize_title($cat)); ?>">
@@ -88,10 +131,8 @@ shuffle($portfolio_items);
                     </button>
                 <?php endforeach; ?>
             </div>
-
         </div>
 
-        <!-- Portfolio Gallery (full-width, outside container) -->
         <section class="portfolio-gallery" id="portfolioGallery">
             <div class="portfolio-gallery__cursor">
                 <svg class="portfolio-gallery__cursor-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -101,18 +142,40 @@ shuffle($portfolio_items);
             <div class="portfolio-gallery__track">
                 <?php foreach ($portfolio_items as $item): ?>
                 <div class="portfolio-gallery__item<?php echo $item['is_video'] ? ' portfolio-gallery__item--video' : ''; ?>" data-category="<?php echo esc_attr($item['category']); ?>">
-                    <?php if ($item['is_video']): ?>
-                        <video src="<?php echo esc_url($item['url']); ?>" autoplay muted loop playsinline preload="metadata"></video>
-                    <?php else: ?>
-                        <img src="<?php echo esc_url($item['url']); ?>" alt="Portfolio" loading="lazy">
-                    <?php endif; ?>
+                    <div class="portfolio-gallery__media">
+                        <?php if ($item['is_video']): ?>
+                            <video src="<?php echo esc_url($item['url']); ?>" autoplay muted loop playsinline preload="metadata"></video>
+                        <?php else: ?>
+                            <img src="<?php echo esc_url($item['url']); ?>" alt="<?php echo esc_attr($item['client'] ?: 'Portfolio'); ?>" loading="lazy">
+                        <?php endif; ?>
+                    </div>
+                    <div class="portfolio-gallery__body">
+                        <?php if ($item['client']): ?>
+                            <p class="portfolio-gallery__client"><?php echo esc_html($item['client']); ?></p>
+                        <?php endif; ?>
+                        <?php if ($item['title']): ?>
+                            <p class="portfolio-gallery__text"><?php echo esc_html($item['title']); ?></p>
+                        <?php endif; ?>
+                        <?php if ($item['industry']): ?>
+                            <span class="portfolio-gallery__tag"><?php echo esc_html($item['industry']); ?></span>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <?php endforeach; ?>
             </div>
         </section>
+
+        <div class="container">
+            <div class="portfolio-cta-v2">
+                <p class="portfolio-cta-v2__text">Ready to take your marketing to the next level?</p>
+                <a href="#audit-form" class="btn btn--hero btn--hero-v2 portfolio-cta-v2__btn" data-open-audit-form>
+                    <span class="btn__dot" aria-hidden="true"></span>
+                    <span>Book a Free Audit</span>
+                </a>
+            </div>
+        </div>
     </section>
 
-    <!-- Portfolio Blocks -->
     <?php if ($blocks): foreach ($blocks as $block): ?>
     <section class="portfolio-block" id="<?php echo esc_attr(sanitize_title($block['block_label'])); ?>">
         <div class="container">
@@ -121,7 +184,7 @@ shuffle($portfolio_items);
                     <span class="portfolio-block__label"><?php echo esc_html($block['block_label']); ?></span>
                     <h2 class="portfolio-block__title"><?php echo esc_html($block['block_title']); ?></h2>
                     <p class="portfolio-block__text"><?php echo wp_kses_post($block['block_text']); ?></p>
-                    <?php if ($block['block_link'] && !empty($block['block_link']['url'])): 
+                    <?php if ($block['block_link'] && !empty($block['block_link']['url'])):
                         $link = $block['block_link'];
                         $link_url = $link['url'];
                         $link_href = (strpos($link_url, 'http') === 0) ? $link_url : home_url($link_url);
@@ -132,20 +195,20 @@ shuffle($portfolio_items);
                         </a>
                     <?php endif; ?>
                 </div>
-                
+
                 <div class="portfolio-block__media">
                     <?php if ($block['block_layout'] === 'video' && $block['block_video_url']): ?>
                         <div class="portfolio-block__video">
-                            <?php 
+                            <?php
                             $video_id = '';
                             if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $block['block_video_url'], $matches)) {
                                 $video_id = $matches[1];
                             }
                             ?>
                             <div class="video-wrapper" data-video-id="<?php echo esc_attr($video_id); ?>">
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/video-thumbnail.png" alt="Video thumbnail" class="video-thumbnail">
+                                <img src="<?php echo esc_url($fallback_video_thumb); ?>" alt="Video thumbnail" class="video-thumbnail">
                                 <button class="video-play-btn">
-                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/play-button.png" alt="Play">
+                                    <img src="<?php echo esc_url($fallback_play); ?>" alt="Play">
                                 </button>
                             </div>
                         </div>
@@ -154,12 +217,12 @@ shuffle($portfolio_items);
                             <?php if ($block['block_image_1']): ?>
                                 <img src="<?php echo esc_url($block['block_image_1']['url']); ?>" alt="<?php echo esc_attr($block['block_image_1']['alt']); ?>">
                             <?php else: ?>
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/portfolio-1.png" alt="Portfolio">
+                                <img src="<?php echo esc_url($fallback_img_1); ?>" alt="Portfolio">
                             <?php endif; ?>
                             <?php if ($block['block_image_2']): ?>
                                 <img src="<?php echo esc_url($block['block_image_2']['url']); ?>" alt="<?php echo esc_attr($block['block_image_2']['alt']); ?>">
                             <?php else: ?>
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/portfolio-2.png" alt="Portfolio">
+                                <img src="<?php echo esc_url($fallback_img_2); ?>" alt="Portfolio">
                             <?php endif; ?>
                         </div>
                     <?php else: ?>
@@ -167,7 +230,7 @@ shuffle($portfolio_items);
                             <?php if ($block['block_image_1']): ?>
                                 <img src="<?php echo esc_url($block['block_image_1']['url']); ?>" alt="<?php echo esc_attr($block['block_image_1']['alt']); ?>">
                             <?php else: ?>
-                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/portfolio/single-image.png" alt="Portfolio">
+                                <img src="<?php echo esc_url($fallback_single); ?>" alt="Portfolio">
                             <?php endif; ?>
                         </div>
                     <?php endif; ?>
@@ -176,11 +239,10 @@ shuffle($portfolio_items);
         </div>
     </section>
     <?php endforeach; endif; ?>
-
 </main>
 
 <script>
-var portfolioItemsData = <?php echo json_encode($portfolio_items); ?>;
+var portfolioItemsData = <?php echo wp_json_encode($portfolio_items); ?>;
 
 document.addEventListener('DOMContentLoaded', function() {
     var gallery = document.getElementById('portfolioGallery');
@@ -193,6 +255,13 @@ document.addEventListener('DOMContentLoaded', function() {
     var cleanupDesktop = null;
     var currentFilter = 'all';
 
+    function esc(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/"/g, '&quot;');
+    }
+
     function buildItemsHTML(filter) {
         var items = filter === 'all'
             ? portfolioItemsData
@@ -201,13 +270,18 @@ document.addEventListener('DOMContentLoaded', function() {
         var html = '';
         items.forEach(function(item) {
             var cls = 'portfolio-gallery__item' + (item.is_video ? ' portfolio-gallery__item--video' : '');
-            html += '<div class="' + cls + '" data-category="' + item.category + '">';
+            html += '<div class="' + cls + '" data-category="' + esc(item.category) + '">';
+            html += '<div class="portfolio-gallery__media">';
             if (item.is_video) {
-                html += '<video src="' + item.url + '" autoplay muted loop playsinline preload="metadata"></video>';
+                html += '<video src="' + esc(item.url) + '" autoplay muted loop playsinline preload="metadata"></video>';
             } else {
-                html += '<img src="' + item.url + '" alt="Portfolio" loading="lazy">';
+                html += '<img src="' + esc(item.url) + '" alt="' + esc(item.client || 'Portfolio') + '" loading="lazy">';
             }
-            html += '</div>';
+            html += '</div><div class="portfolio-gallery__body">';
+            if (item.client) html += '<p class="portfolio-gallery__client">' + esc(item.client) + '</p>';
+            if (item.title) html += '<p class="portfolio-gallery__text">' + esc(item.title) + '</p>';
+            if (item.industry) html += '<span class="portfolio-gallery__tag">' + esc(item.industry) + '</span>';
+            html += '</div></div>';
         });
         return { html: html, count: items.length };
     }
@@ -356,8 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (nowDesktop !== isDesktop) setup();
     });
 
-    // Tab filtering
-    var tabs = document.querySelectorAll('.portfolio-tabs__btn');
+    var tabs = document.querySelectorAll('.portfolio-page-v2 .portfolio-tabs__btn');
     tabs.forEach(function(tab) {
         tab.addEventListener('click', function() {
             tabs.forEach(function(t) { t.classList.remove('active'); });
@@ -369,8 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Video play for portfolio blocks (YouTube embeds below gallery)
-    document.querySelectorAll('.video-wrapper').forEach(function(wrapper) {
+    document.querySelectorAll('.portfolio-page-v2 .video-wrapper').forEach(function(wrapper) {
         wrapper.addEventListener('click', function() {
             var videoId = this.dataset.videoId;
             if (videoId) {
@@ -381,10 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<?php 
-// Contact Form before footer
+<?php
 get_template_part('template-parts/contact-form');
-
-get_footer(); 
+get_footer();
 ?>
-
