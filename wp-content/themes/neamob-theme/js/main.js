@@ -34,6 +34,7 @@
         initServicesAccordion();
         initTestimonialsSlider();
         initTestimonialsV2();
+        initHomeV2MobileCarousels();
         initFaqAccordion();
         initContactForm();
         initCaseStudyForm();
@@ -485,6 +486,7 @@
 
             tabs.forEach(function (tab) {
                 tab.addEventListener('click', function () {
+                    if (section.classList.contains('is-mobile-swiper')) return;
                     var index = tab.getAttribute('data-index');
                     tabs.forEach(function (t) {
                         t.classList.remove('is-active');
@@ -501,6 +503,162 @@
                     }
                 });
             });
+        });
+    }
+
+    /**
+     * Home redesign mobile carousels — Case studies, Blog, Partners, Testimonials.
+     * Desktop keeps grid/tabs; Swiper only below 641px with pill/dot pagination.
+     */
+    function initHomeV2MobileCarousels() {
+        if (typeof Swiper === 'undefined') return;
+
+        var mq = window.matchMedia('(max-width: 640px)');
+
+        function bindCarousel(root) {
+            var track = root.querySelector('[data-home-v2-track]');
+            var slides = Array.prototype.slice.call(root.querySelectorAll('[data-home-v2-slide]'));
+            var pagination = root.querySelector('[data-home-v2-pagination]');
+            var swiper = null;
+
+            if (!track || slides.length < 2) {
+                if (pagination) pagination.style.display = 'none';
+                return;
+            }
+
+            function enable() {
+                if (swiper) return;
+                root.classList.add('swiper', 'is-mobile-swiper');
+                track.classList.add('swiper-wrapper');
+                slides.forEach(function (slide) {
+                    slide.classList.add('swiper-slide');
+                });
+                swiper = new Swiper(root, {
+                    slidesPerView: 1,
+                    spaceBetween: 16,
+                    speed: 420,
+                    pagination: pagination
+                        ? {
+                              el: pagination,
+                              clickable: true,
+                          }
+                        : undefined,
+                });
+            }
+
+            function disable() {
+                if (!swiper) return;
+                swiper.destroy(true, true);
+                swiper = null;
+                root.classList.remove('swiper', 'is-mobile-swiper');
+                track.classList.remove('swiper-wrapper');
+                slides.forEach(function (slide) {
+                    slide.classList.remove('swiper-slide');
+                    slide.removeAttribute('style');
+                });
+                track.removeAttribute('style');
+            }
+
+            function sync() {
+                if (mq.matches) enable();
+                else disable();
+            }
+
+            sync();
+            if (typeof mq.addEventListener === 'function') {
+                mq.addEventListener('change', sync);
+            } else if (typeof mq.addListener === 'function') {
+                mq.addListener(sync);
+            }
+        }
+
+        document.querySelectorAll('[data-home-v2-carousel]').forEach(bindCarousel);
+
+        document.querySelectorAll('.testimonials-v2').forEach(function (section) {
+            var panel = section.querySelector('.testimonials-v2__panel');
+            var track = section.querySelector('[data-home-v2-testimonials-track]');
+            var slides = Array.prototype.slice.call(section.querySelectorAll('[data-home-v2-testimonials-slide]'));
+            var pagination = section.querySelector('[data-home-v2-testimonials-pagination]');
+            var tabs = section.querySelectorAll('.testimonials-v2__tab');
+            var swiper = null;
+
+            if (!panel || !track || slides.length < 2) {
+                if (pagination) pagination.style.display = 'none';
+                return;
+            }
+
+            function setTabActive(index) {
+                tabs.forEach(function (tab) {
+                    var isActive = tab.getAttribute('data-index') === String(index);
+                    tab.classList.toggle('is-active', isActive);
+                    tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+            }
+
+            function enable() {
+                if (swiper) return;
+                section.classList.add('is-mobile-swiper');
+                track.classList.add('swiper');
+                var wrapper = document.createElement('div');
+                wrapper.className = 'swiper-wrapper';
+                slides.forEach(function (slide) {
+                    slide.classList.add('swiper-slide', 'is-active');
+                    wrapper.appendChild(slide);
+                });
+                track.appendChild(wrapper);
+                swiper = new Swiper(track, {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    speed: 420,
+                    autoHeight: true,
+                    pagination: pagination
+                        ? {
+                              el: pagination,
+                              clickable: true,
+                          }
+                        : undefined,
+                    on: {
+                        slideChange: function () {
+                            setTabActive(this.realIndex);
+                        },
+                    },
+                });
+            }
+
+            function disable() {
+                if (!swiper) return;
+                var activeIndex = swiper.realIndex;
+                swiper.destroy(true, true);
+                swiper = null;
+                section.classList.remove('is-mobile-swiper');
+                var wrapper = track.querySelector('.swiper-wrapper');
+                if (wrapper) {
+                    slides.forEach(function (slide) {
+                        slide.classList.remove('swiper-slide');
+                        slide.removeAttribute('style');
+                        track.appendChild(slide);
+                    });
+                    wrapper.remove();
+                }
+                track.classList.remove('swiper');
+                track.removeAttribute('style');
+                slides.forEach(function (slide, i) {
+                    slide.classList.toggle('is-active', i === activeIndex);
+                });
+                setTabActive(activeIndex);
+            }
+
+            function sync() {
+                if (mq.matches) enable();
+                else disable();
+            }
+
+            sync();
+            if (typeof mq.addEventListener === 'function') {
+                mq.addEventListener('change', sync);
+            } else if (typeof mq.addListener === 'function') {
+                mq.addListener(sync);
+            }
         });
     }
 

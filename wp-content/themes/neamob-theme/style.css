@@ -4040,6 +4040,16 @@ body.page-simple .site-main .page-content ul li:before {
     font-size: 26px;
     line-height: 1.2;
   }
+  .redesign-preview .case-studies-section--v2 .home-v2-carousel.is-mobile-swiper .case-studies-grid--v2 {
+    display: flex;
+    gap: 0;
+  }
+  .redesign-preview .case-studies-section--v2 .home-v2-carousel.is-mobile-swiper .case-card-v2 {
+    max-width: none;
+    width: 100%;
+    height: auto;
+    min-height: 487px;
+  }
 }
 .redesign-preview .case-card-v2 {
   background: #fff;
@@ -4351,12 +4361,15 @@ body.page-simple .site-main .page-content ul li:before {
     height: auto;
     max-height: none;
     min-height: auto;
+    display: flex;
+    flex-direction: column;
   }
   .redesign-preview .testimonials-v2__tabs {
     display: none;
   }
   .redesign-preview .testimonials-v2__content {
-    padding: 46px 30px 57px;
+    padding: 46px 30px 24px;
+    height: auto;
   }
   .redesign-preview .testimonials-v2__counter {
     margin-bottom: 21px;
@@ -4366,6 +4379,10 @@ body.page-simple .site-main .page-content ul li:before {
   }
   .redesign-preview .testimonials-v2__author {
     margin-top: 85px;
+  }
+  .redesign-preview .testimonials-v2.is-mobile-swiper .testimonials-v2__slide {
+    display: flex !important;
+    height: auto;
   }
 }
 .redesign-preview .comparison-section--v2 {
@@ -4464,6 +4481,11 @@ body.page-simple .site-main .page-content ul li:before {
   }
   .redesign-preview .blog-section--v2 .blog-section__title {
     font-size: 26px;
+  }
+  .redesign-preview .blog-section--v2 .home-v2-carousel.is-mobile-swiper .blog-grid--v2 {
+    display: flex;
+    gap: 0;
+    padding-top: 0;
   }
 }
 .redesign-preview .blog-card--v2 {
@@ -4643,6 +4665,18 @@ body.page-simple .site-main .page-content ul li:before {
   .redesign-preview .our-partners--v2 .our-partners__title {
     font-size: 26px;
     margin-bottom: 29px;
+  }
+  .redesign-preview .our-partners--v2 .home-v2-carousel.is-mobile-swiper .our-partners__grid--v2 {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    justify-content: flex-start;
+  }
+  .redesign-preview .our-partners--v2 .home-v2-carousel.is-mobile-swiper .partner-card-v2 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 .redesign-preview .partner-card-v2 {
@@ -5436,6 +5470,42 @@ body.page-simple .site-main .page-content ul li:before {
     line-height: 26px;
     margin-bottom: 20px;
   }
+}
+.redesign-preview .home-v2-pagination {
+  display: none;
+  position: static;
+  margin: 20px auto 0;
+  width: auto;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.redesign-preview .home-v2-pagination .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  margin: 0 !important;
+  border-radius: 999px;
+  background: #9aa8b8;
+  opacity: 1;
+  transition: width 0.25s ease, background-color 0.25s ease;
+}
+.redesign-preview .home-v2-pagination .swiper-pagination-bullet-active {
+  width: 28px;
+  background: #6b7c93;
+}
+.redesign-preview .home-v2-pagination--on-dark .swiper-pagination-bullet {
+  background: rgba(220, 225, 233, 0.55);
+}
+.redesign-preview .home-v2-pagination--on-dark .swiper-pagination-bullet-active {
+  background: #c5cedb;
+}
+.redesign-preview .home-v2-carousel.is-mobile-swiper > .home-v2-pagination {
+  display: flex;
+}
+.redesign-preview .testimonials-v2.is-mobile-swiper .testimonials-v2__pagination.home-v2-pagination {
+  display: flex;
+  margin: 0 auto 28px;
 }
 
 .careers-hero .container {

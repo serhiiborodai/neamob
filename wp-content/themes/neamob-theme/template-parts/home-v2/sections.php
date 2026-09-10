@@ -103,55 +103,58 @@ if ($case_studies->have_posts()):
                 View More
             </a>
         </div>
-        <div class="case-studies-grid case-studies-grid--v2">
-            <?php while ($case_studies->have_posts()):
-                $case_studies->the_post();
-                $client_name = get_field('client_name') ?: get_post_meta(get_the_ID(), '_case_study_client_name', true);
-                $client_logo = get_field('client_logo') ?: get_post_meta(get_the_ID(), '_case_study_client_logo', true);
-                if (is_array($client_logo) && isset($client_logo['url'])) {
-                    $client_logo = $client_logo['url'];
-                }
-                $badge_value = get_field('badge_value') ?: get_post_meta(get_the_ID(), '_case_study_badge_value', true);
-                $badge_text = get_field('badge_text') ?: get_post_meta(get_the_ID(), '_case_study_badge_text', true);
-                $coming_soon = (bool) get_field('case_coming_soon');
-                $card_image = get_field('homepage_card_image') ?: get_the_post_thumbnail_url(get_the_ID(), 'card-image');
-                $hp_desc = get_field('homepage_description') ?: get_field('case_excerpt') ?: wp_trim_words(get_the_excerpt(), 50);
-                $read_more_url = get_field('case_read_more_url');
-                $card_class = 'case-card-v2' . ($coming_soon ? ' case-card-v2--soon' : '');
-            ?>
-            <article class="<?php echo esc_attr($card_class); ?>">
-                <div class="case-card-v2__media">
-                    <?php if ($card_image): ?>
-                        <img src="<?php echo esc_url($card_image); ?>" alt="<?php echo esc_attr($client_name ?: get_the_title()); ?>" loading="lazy">
-                    <?php else: ?>
-                        <div class="case-card-v2__media-placeholder" aria-hidden="true"></div>
-                    <?php endif; ?>
-                </div>
-                <div class="case-card-v2__body">
-                    <div class="case-card-v2__header">
-                        <div class="case-card-v2__logo">
-                            <?php if ($client_logo): ?>
-                                <img src="<?php echo esc_url($client_logo); ?>" alt="<?php echo esc_attr($client_name); ?>">
-                            <?php elseif ($client_name): ?>
-                                <span><?php echo esc_html($client_name); ?></span>
-                            <?php endif; ?>
-                        </div>
-                        <?php if ($badge_value && $badge_text): ?>
-                            <div class="case-card-v2__badge"><?php echo esc_html(trim($badge_value . ' ' . $badge_text)); ?></div>
+        <div class="home-v2-carousel" data-home-v2-carousel>
+            <div class="case-studies-grid case-studies-grid--v2" data-home-v2-track>
+                <?php while ($case_studies->have_posts()):
+                    $case_studies->the_post();
+                    $client_name = get_field('client_name') ?: get_post_meta(get_the_ID(), '_case_study_client_name', true);
+                    $client_logo = get_field('client_logo') ?: get_post_meta(get_the_ID(), '_case_study_client_logo', true);
+                    if (is_array($client_logo) && isset($client_logo['url'])) {
+                        $client_logo = $client_logo['url'];
+                    }
+                    $badge_value = get_field('badge_value') ?: get_post_meta(get_the_ID(), '_case_study_badge_value', true);
+                    $badge_text = get_field('badge_text') ?: get_post_meta(get_the_ID(), '_case_study_badge_text', true);
+                    $coming_soon = (bool) get_field('case_coming_soon');
+                    $card_image = get_field('homepage_card_image') ?: get_the_post_thumbnail_url(get_the_ID(), 'card-image');
+                    $hp_desc = get_field('homepage_description') ?: get_field('case_excerpt') ?: wp_trim_words(get_the_excerpt(), 50);
+                    $read_more_url = get_field('case_read_more_url');
+                    $card_class = 'case-card-v2' . ($coming_soon ? ' case-card-v2--soon' : '');
+                ?>
+                <article class="<?php echo esc_attr($card_class); ?>" data-home-v2-slide>
+                    <div class="case-card-v2__media">
+                        <?php if ($card_image): ?>
+                            <img src="<?php echo esc_url($card_image); ?>" alt="<?php echo esc_attr($client_name ?: get_the_title()); ?>" loading="lazy">
+                        <?php else: ?>
+                            <div class="case-card-v2__media-placeholder" aria-hidden="true"></div>
                         <?php endif; ?>
                     </div>
-                    <p class="case-card-v2__text"><?php echo wp_kses_post($hp_desc); ?></p>
-                    <?php if ($coming_soon): ?>
-                        <span class="case-card-v2__soon">Coming Soon</span>
-                    <?php elseif ($read_more_url): ?>
-                        <a href="<?php echo esc_url($read_more_url); ?>" class="case-card-v2__link">
-                            <span class="case-card-v2__link-dot"></span>
-                            Read More
-                        </a>
-                    <?php endif; ?>
-                </div>
-            </article>
-            <?php endwhile; ?>
+                    <div class="case-card-v2__body">
+                        <div class="case-card-v2__header">
+                            <div class="case-card-v2__logo">
+                                <?php if ($client_logo): ?>
+                                    <img src="<?php echo esc_url($client_logo); ?>" alt="<?php echo esc_attr($client_name); ?>">
+                                <?php elseif ($client_name): ?>
+                                    <span><?php echo esc_html($client_name); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <?php if ($badge_value && $badge_text): ?>
+                                <div class="case-card-v2__badge"><?php echo esc_html(trim($badge_value . ' ' . $badge_text)); ?></div>
+                            <?php endif; ?>
+                        </div>
+                        <p class="case-card-v2__text"><?php echo wp_kses_post($hp_desc); ?></p>
+                        <?php if ($coming_soon): ?>
+                            <span class="case-card-v2__soon">Coming Soon</span>
+                        <?php elseif ($read_more_url): ?>
+                            <a href="<?php echo esc_url($read_more_url); ?>" class="case-card-v2__link">
+                                <span class="case-card-v2__link-dot"></span>
+                                Read More
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </article>
+                <?php endwhile; ?>
+            </div>
+            <div class="swiper-pagination home-v2-pagination" data-home-v2-pagination></div>
         </div>
     </div>
 </section>
@@ -218,9 +221,9 @@ if (!empty($testimonial_items)):
                 </button>
                 <?php endforeach; ?>
             </div>
-            <div class="testimonials-v2__content">
+            <div class="testimonials-v2__content" data-home-v2-testimonials-track>
                 <?php foreach ($testimonial_items as $i => $item): ?>
-                <article class="testimonials-v2__slide<?php echo $i === 0 ? ' is-active' : ''; ?>" data-index="<?php echo esc_attr((string) $i); ?>">
+                <article class="testimonials-v2__slide<?php echo $i === 0 ? ' is-active' : ''; ?>" data-index="<?php echo esc_attr((string) $i); ?>" data-home-v2-testimonials-slide>
                     <div class="testimonials-v2__counter">
                         <span class="testimonials-v2__counter-current"><?php echo esc_html(str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT)); ?></span>
                         <span class="testimonials-v2__counter-sep">/</span>
@@ -243,6 +246,9 @@ if (!empty($testimonial_items)):
                 </article>
                 <?php endforeach; ?>
             </div>
+            <?php if ($total > 1): ?>
+                <div class="swiper-pagination home-v2-pagination home-v2-pagination--on-dark testimonials-v2__pagination" data-home-v2-testimonials-pagination></div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
@@ -290,33 +296,36 @@ if ($blog_posts->have_posts()):
                 View More
             </a>
         </div>
-        <div class="blog-grid blog-grid--v2">
-            <?php while ($blog_posts->have_posts()):
-                $blog_posts->the_post();
-                $categories = get_the_category();
-                $category = !empty($categories) ? $categories[0] : null;
-                $cat_color = $category ? neamob_get_category_color($category) : 'blue';
-            ?>
-            <article class="blog-card blog-card--v2">
-                <a href="<?php the_permalink(); ?>" class="blog-card__image <?php echo !has_post_thumbnail() ? 'blog-card__image--placeholder' : ''; ?>">
-                    <?php if (has_post_thumbnail()) {
-                        the_post_thumbnail('card-image');
-                    } ?>
-                </a>
-                <div class="blog-card__meta">
-                    <?php if ($category): ?>
-                        <a href="<?php echo esc_url(get_category_link($category->term_id)); ?>" class="blog-card__category blog-card__category--<?php echo esc_attr($cat_color); ?>"><?php echo esc_html($category->name); ?></a>
-                    <?php endif; ?>
-                    <span class="blog-card__date"><?php echo esc_html(get_the_date('d M, Y')); ?></span>
-                </div>
-                <h3 class="blog-card__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                <p class="blog-card__excerpt"><?php echo esc_html(wp_trim_words(get_the_excerpt(), 15)); ?></p>
-                <div class="blog-card__author">
-                    <div class="blog-card__author-avatar"><?php echo get_avatar(get_the_author_meta('ID'), 64); ?></div>
-                    <span class="blog-card__author-name"><?php the_author(); ?></span>
-                </div>
-            </article>
-            <?php endwhile; ?>
+        <div class="home-v2-carousel" data-home-v2-carousel>
+            <div class="blog-grid blog-grid--v2" data-home-v2-track>
+                <?php while ($blog_posts->have_posts()):
+                    $blog_posts->the_post();
+                    $categories = get_the_category();
+                    $category = !empty($categories) ? $categories[0] : null;
+                    $cat_color = $category ? neamob_get_category_color($category) : 'blue';
+                ?>
+                <article class="blog-card blog-card--v2" data-home-v2-slide>
+                    <a href="<?php the_permalink(); ?>" class="blog-card__image <?php echo !has_post_thumbnail() ? 'blog-card__image--placeholder' : ''; ?>">
+                        <?php if (has_post_thumbnail()) {
+                            the_post_thumbnail('card-image');
+                        } ?>
+                    </a>
+                    <div class="blog-card__meta">
+                        <?php if ($category): ?>
+                            <a href="<?php echo esc_url(get_category_link($category->term_id)); ?>" class="blog-card__category blog-card__category--<?php echo esc_attr($cat_color); ?>"><?php echo esc_html($category->name); ?></a>
+                        <?php endif; ?>
+                        <span class="blog-card__date"><?php echo esc_html(get_the_date('d M, Y')); ?></span>
+                    </div>
+                    <h3 class="blog-card__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                    <p class="blog-card__excerpt"><?php echo esc_html(wp_trim_words(get_the_excerpt(), 15)); ?></p>
+                    <div class="blog-card__author">
+                        <div class="blog-card__author-avatar"><?php echo get_avatar(get_the_author_meta('ID'), 64); ?></div>
+                        <span class="blog-card__author-name"><?php the_author(); ?></span>
+                    </div>
+                </article>
+                <?php endwhile; ?>
+            </div>
+            <div class="swiper-pagination home-v2-pagination" data-home-v2-pagination></div>
         </div>
     </div>
 </section>
@@ -333,7 +342,8 @@ $has_partners = !empty($partner_cards);
 <section class="our-partners our-partners--v2">
     <div class="container">
         <h2 class="our-partners__title">Our Partners</h2>
-        <div class="our-partners__grid our-partners__grid--v2">
+        <div class="home-v2-carousel" data-home-v2-carousel>
+        <div class="our-partners__grid our-partners__grid--v2" data-home-v2-track>
             <?php if ($has_partners):
                 $card_index = 0;
                 foreach ($partner_cards as $p):
@@ -353,7 +363,7 @@ $has_partners = !empty($partner_cards);
                     $card_class = 'partner-card-v2' . ($card_type === 'video' ? ' partner-card-v2--video' : '');
                     $card_id = 'partner-video-v2-' . $card_index;
             ?>
-            <div class="<?php echo esc_attr($card_class); ?>">
+            <div class="<?php echo esc_attr($card_class); ?>" data-home-v2-slide>
                 <div class="partner-card-v2__logo">
                     <?php if ($logo_url):
                         $partner_url = get_field('partner_url', $p->ID);
@@ -402,7 +412,7 @@ $has_partners = !empty($partner_cards);
             </div>
             <?php $card_index++; endforeach; wp_reset_postdata();
             else: ?>
-            <div class="partner-card-v2">
+            <div class="partner-card-v2" data-home-v2-slide>
                 <div class="partner-card-v2__logo">
                     <a href="https://www.vokal.io/" target="_blank" rel="noopener noreferrer">
                         <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/logos/three_partners/p1.png'); ?>" alt="Vokal" width="112" height="40">
@@ -413,7 +423,7 @@ $has_partners = !empty($partner_cards);
                 </div>
                 <p class="partner-card-v2__text">Vokal is a digital agency driving measurable growth through strategic digital value creation and performance marketing.</p>
             </div>
-            <div class="partner-card-v2">
+            <div class="partner-card-v2" data-home-v2-slide>
                 <div class="partner-card-v2__logo">
                     <a href="https://illumin.com/" target="_blank" rel="noopener noreferrer">
                         <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/logos/three_partners/p3.png'); ?>" alt="illumin Partners" width="246" height="40">
@@ -431,7 +441,7 @@ $has_partners = !empty($partner_cards);
                     </div>
                 </div>
             </div>
-            <div class="partner-card-v2 partner-card-v2--video">
+            <div class="partner-card-v2 partner-card-v2--video" data-home-v2-slide>
                 <div class="partner-card-v2__logo">
                     <a href="https://www.snappper.com/" target="_blank" rel="noopener noreferrer">
                         <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/logos/three_partners/p2.png'); ?>" alt="Snappper" width="176" height="48">
@@ -444,6 +454,8 @@ $has_partners = !empty($partner_cards);
                 <p class="partner-card-v2__text">Snappper is an award-winning creative and video production agency crafting engaging branded content with proven reach and results.</p>
             </div>
             <?php endif; ?>
+        </div>
+        <div class="swiper-pagination home-v2-pagination" data-home-v2-pagination></div>
         </div>
     </div>
 </section>

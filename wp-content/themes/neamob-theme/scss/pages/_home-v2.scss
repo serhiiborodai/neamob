@@ -1596,6 +1596,20 @@
                 font-size: 26px;
                 line-height: 1.2;
             }
+
+            .home-v2-carousel.is-mobile-swiper {
+                .case-studies-grid--v2 {
+                    display: flex;
+                    gap: 0;
+                }
+
+                .case-card-v2 {
+                    max-width: none;
+                    width: 100%;
+                    height: auto;
+                    min-height: 487px;
+                }
+            }
         }
     }
 
@@ -1968,6 +1982,8 @@
                 height: auto;
                 max-height: none;
                 min-height: auto;
+                display: flex;
+                flex-direction: column;
             }
 
             &__tabs {
@@ -1975,7 +1991,8 @@
             }
 
             &__content {
-                padding: 46px 30px 57px;
+                padding: 46px 30px 24px;
+                height: auto;
             }
 
             &__counter {
@@ -1988,6 +2005,13 @@
 
             &__author {
                 margin-top: 85px;
+            }
+
+            &.is-mobile-swiper {
+                .testimonials-v2__slide {
+                    display: flex !important;
+                    height: auto;
+                }
             }
         }
     }
@@ -2115,6 +2139,14 @@
 
             .blog-section__title {
                 font-size: 26px;
+            }
+
+            .home-v2-carousel.is-mobile-swiper {
+                .blog-grid--v2 {
+                    display: flex;
+                    gap: 0;
+                    padding-top: 0;
+                }
             }
         }
     }
@@ -2326,6 +2358,22 @@
             .our-partners__title {
                 font-size: 26px;
                 margin-bottom: 29px;
+            }
+
+            .home-v2-carousel.is-mobile-swiper {
+                .our-partners__grid--v2 {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    gap: 0;
+                    justify-content: flex-start;
+                }
+
+                .partner-card-v2 {
+                    flex: 0 0 100%;
+                    max-width: 100%;
+                    width: 100%;
+                    box-sizing: border-box;
+                }
             }
         }
     }
@@ -3283,5 +3331,51 @@
                 margin-bottom: 20px;
             }
         }
+    }
+
+    // Mobile carousel pagination — active pill + inactive dots (Case / Blog / Partners / Testimonials)
+    .home-v2-pagination {
+        display: none;
+        position: static;
+        margin: 20px auto 0;
+        width: auto;
+        height: auto;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+            margin: 0 !important;
+            border-radius: 999px;
+            background: #9aa8b8;
+            opacity: 1;
+            transition: width 0.25s ease, background-color 0.25s ease;
+        }
+
+        .swiper-pagination-bullet-active {
+            width: 28px;
+            background: #6b7c93;
+        }
+
+        &--on-dark {
+            .swiper-pagination-bullet {
+                background: rgba(220, 225, 233, 0.55);
+            }
+
+            .swiper-pagination-bullet-active {
+                background: #c5cedb;
+            }
+        }
+    }
+
+    .home-v2-carousel.is-mobile-swiper > .home-v2-pagination {
+        display: flex;
+    }
+
+    .testimonials-v2.is-mobile-swiper .testimonials-v2__pagination.home-v2-pagination {
+        display: flex;
+        margin: 0 auto 28px;
     }
 }
