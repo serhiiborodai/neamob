@@ -509,11 +509,35 @@
     /**
      * Home redesign mobile carousels — Case studies, Blog, Partners, Testimonials.
      * Desktop keeps grid/tabs; Swiper only below 641px with pill/dot pagination.
+     * Each card is wrapped in a dedicated .swiper-slide so card max-width
+     * cannot shrink the slide (which showed 2 case cards / broke blog).
      */
     function initHomeV2MobileCarousels() {
         if (typeof Swiper === 'undefined') return;
 
         var mq = window.matchMedia('(max-width: 640px)');
+
+        function wrapSlides(slides) {
+            return slides.map(function (slide) {
+                if (slide.parentElement && slide.parentElement.classList.contains('home-v2-carousel__slide')) {
+                    return slide.parentElement;
+                }
+                var wrap = document.createElement('div');
+                wrap.className = 'home-v2-carousel__slide';
+                slide.parentNode.insertBefore(wrap, slide);
+                wrap.appendChild(slide);
+                return wrap;
+            });
+        }
+
+        function unwrapSlides(slides) {
+            slides.forEach(function (slide) {
+                var wrap = slide.parentElement;
+                if (!wrap || !wrap.classList.contains('home-v2-carousel__slide')) return;
+                wrap.parentNode.insertBefore(slide, wrap);
+                wrap.remove();
+            });
+        }
 
         function bindCarousel(root) {
             var track = root.querySelector('[data-home-v2-track]');
@@ -522,21 +546,26 @@
             var swiper = null;
 
             if (!track || slides.length < 2) {
-                if (pagination) pagination.style.display = 'none';
+                if (pagination) pagination.setAttribute('hidden', '');
                 return;
             }
 
             function enable() {
                 if (swiper) return;
+                var slideEls = wrapSlides(slides);
                 root.classList.add('swiper', 'is-mobile-swiper');
                 track.classList.add('swiper-wrapper');
-                slides.forEach(function (slide) {
-                    slide.classList.add('swiper-slide');
+                slideEls.forEach(function (el) {
+                    el.classList.add('swiper-slide');
                 });
+                if (pagination) pagination.removeAttribute('hidden');
                 swiper = new Swiper(root, {
                     slidesPerView: 1,
                     spaceBetween: 16,
                     speed: 420,
+                    watchOverflow: true,
+                    observer: true,
+                    observeParents: true,
                     pagination: pagination
                         ? {
                               el: pagination,
@@ -552,8 +581,12 @@
                 swiper = null;
                 root.classList.remove('swiper', 'is-mobile-swiper');
                 track.classList.remove('swiper-wrapper');
+                track.querySelectorAll('.home-v2-carousel__slide').forEach(function (el) {
+                    el.classList.remove('swiper-slide');
+                    el.removeAttribute('style');
+                });
+                unwrapSlides(slides);
                 slides.forEach(function (slide) {
-                    slide.classList.remove('swiper-slide');
                     slide.removeAttribute('style');
                 });
                 track.removeAttribute('style');
@@ -575,15 +608,14 @@
         document.querySelectorAll('[data-home-v2-carousel]').forEach(bindCarousel);
 
         document.querySelectorAll('.testimonials-v2').forEach(function (section) {
-            var panel = section.querySelector('.testimonials-v2__panel');
             var track = section.querySelector('[data-home-v2-testimonials-track]');
             var slides = Array.prototype.slice.call(section.querySelectorAll('[data-home-v2-testimonials-slide]'));
             var pagination = section.querySelector('[data-home-v2-testimonials-pagination]');
             var tabs = section.querySelectorAll('.testimonials-v2__tab');
             var swiper = null;
 
-            if (!panel || !track || slides.length < 2) {
-                if (pagination) pagination.style.display = 'none';
+            if (!track || slides.length < 2) {
+                if (pagination) pagination.setAttribute('hidden', '');
                 return;
             }
 
@@ -593,24 +625,34 @@
                     tab.classList.toggle('is-active', isActive);
                     tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
                 });
+                slides.forEach(function (slide, i) {
+                    slide.classList.toggle('is-active', i === index);
+                });
             }
 
             function enable() {
                 if (swiper) return;
                 section.classList.add('is-mobile-swiper');
-                track.classList.add('swiper');
                 var wrapper = document.createElement('div');
                 wrapper.className = 'swiper-wrapper';
                 slides.forEach(function (slide) {
-                    slide.classList.add('swiper-slide', 'is-active');
-                    wrapper.appendChild(slide);
+                    var wrap = document.createElement('div');
+                    wrap.className = 'home-v2-carousel__slide swiper-slide';
+                    wrap.appendChild(slide);
+                    slide.classList.add('is-active');
+                    wrapper.appendChild(wrap);
                 });
                 track.appendChild(wrapper);
+                track.classList.add('swiper');
+                if (pagination) pagination.removeAttribute('hidden');
                 swiper = new Swiper(track, {
                     slidesPerView: 1,
                     spaceBetween: 0,
                     speed: 420,
                     autoHeight: true,
+                    watchOverflow: true,
+                    observer: true,
+                    observeParents: true,
                     pagination: pagination
                         ? {
                               el: pagination,
@@ -620,6 +662,7 @@
                     on: {
                         slideChange: function () {
                             setTabActive(this.realIndex);
+                            this.updateAutoHeight(300);
                         },
                     },
                 });
@@ -634,7 +677,6 @@
                 var wrapper = track.querySelector('.swiper-wrapper');
                 if (wrapper) {
                     slides.forEach(function (slide) {
-                        slide.classList.remove('swiper-slide');
                         slide.removeAttribute('style');
                         track.appendChild(slide);
                     });
@@ -642,9 +684,6 @@
                 }
                 track.classList.remove('swiper');
                 track.removeAttribute('style');
-                slides.forEach(function (slide, i) {
-                    slide.classList.toggle('is-active', i === activeIndex);
-                });
                 setTabActive(activeIndex);
             }
 
