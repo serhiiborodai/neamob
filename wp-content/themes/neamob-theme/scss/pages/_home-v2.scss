@@ -80,8 +80,8 @@
     }
 
     // Figma Btn-updated Primary: 209×44, r=12, pad 24/12, gap 4, Poppins Medium 16
-    // No !important — beat legacy via .redesign-preview + #masthead.site-header--v2
-    %v2-primary-cta {
+    // Mixin (not placeholder) so it can be used inside media queries.
+    @mixin v2-primary-cta {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -138,7 +138,7 @@
 
     .btn--cta,
     .btn--cta.btn--cta-v2 {
-        @extend %v2-primary-cta;
+        @include v2-primary-cta;
         transform: none;
 
         &:hover {
@@ -150,7 +150,7 @@
     .btn--hero.btn--hero-v2,
     .btn--hero-v2,
     .faq-section__cta--v2 {
-        @extend %v2-primary-cta;
+        @include v2-primary-cta;
         position: relative;
     }
 
@@ -500,12 +500,12 @@
 
             .services-mega__cta,
             .nav-mega__cta {
-                @extend %v2-primary-cta;
+                @include v2-primary-cta;
             }
 
             .header-cta .btn--cta,
             .header-cta .btn--cta.btn--cta-v2 {
-                @extend %v2-primary-cta;
+                @include v2-primary-cta;
             }
         }
 
@@ -2659,7 +2659,7 @@
         }
 
         .faq-section__cta--v2 {
-            @extend %v2-primary-cta;
+            @include v2-primary-cta;
             text-decoration: none;
         }
 
