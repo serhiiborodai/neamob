@@ -6,18 +6,36 @@
 (function () {
     'use strict';
 
+    var neamobLenis = null;
+
     function initLenis() {
         if (typeof Lenis === 'undefined') return;
-        var lenis = new Lenis({
+        neamobLenis = new Lenis({
             duration: 1.2,
             easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
-            touchMultiplier: 2,
+            // Don't amplify touch — fights horizontal Swiper gestures on mobile
+            touchMultiplier: 1,
         });
+        window.neamobLenis = neamobLenis;
         function raf(time) {
-            lenis.raf(time);
+            neamobLenis.raf(time);
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
+    }
+
+    /** Pause page smooth-scroll while a Swiper is being dragged horizontally. */
+    function bindLenisToSwiper(swiper) {
+        if (!neamobLenis || !swiper) return;
+        swiper.on('touchStart', function () {
+            if (neamobLenis) neamobLenis.stop();
+        });
+        swiper.on('touchEnd', function () {
+            if (neamobLenis) neamobLenis.start();
+        });
+        swiper.on('sliderFirstMove', function () {
+            if (neamobLenis) neamobLenis.stop();
+        });
     }
 
     /**
@@ -566,11 +584,15 @@
                 if (pagination) pagination.removeAttribute('hidden');
                 swiper = new Swiper(root, {
                     slidesPerView: 1,
-                    spaceBetween: 16,
-                    speed: 420,
+                    spaceBetween: 12,
+                    speed: 360,
+                    threshold: 8,
+                    resistanceRatio: 0.65,
                     watchOverflow: true,
-                    observer: true,
-                    observeParents: true,
+                    // Avoid mid-gesture reflows from image/lazy observers
+                    observer: false,
+                    observeParents: false,
+                    touchReleaseOnEdges: true,
                     pagination: pagination
                         ? {
                               el: pagination,
@@ -578,6 +600,7 @@
                           }
                         : undefined,
                 });
+                bindLenisToSwiper(swiper);
             }
 
             function disable() {
@@ -652,12 +675,16 @@
                 if (pagination) pagination.removeAttribute('hidden');
                 swiper = new Swiper(track, {
                     slidesPerView: 1,
-                    spaceBetween: 80,
-                    speed: 420,
-                    autoHeight: true,
+                    spaceBetween: 12,
+                    speed: 360,
+                    threshold: 8,
+                    resistanceRatio: 0.65,
+                    // Fixed height avoids vertical "jump" between quotes of different length
+                    autoHeight: false,
                     watchOverflow: true,
-                    observer: true,
-                    observeParents: true,
+                    observer: false,
+                    observeParents: false,
+                    touchReleaseOnEdges: true,
                     pagination: pagination
                         ? {
                               el: pagination,
@@ -667,10 +694,10 @@
                     on: {
                         slideChange: function () {
                             setTabActive(this.realIndex);
-                            this.updateAutoHeight(300);
                         },
                     },
                 });
+                bindLenisToSwiper(swiper);
             }
 
             function disable() {

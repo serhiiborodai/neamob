@@ -5012,7 +5012,6 @@ body.page-simple .site-main .page-content ul li:before {
   .redesign-preview .case-studies-section--v2 .home-v2-carousel.is-mobile-swiper .home-v2-carousel__slide,
   .redesign-preview .case-studies-section--v2 .home-v2-carousel.is-mobile-swiper .home-v2-carousel__slide.swiper-slide {
     display: block !important;
-    width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
     flex: 0 0 auto !important;
@@ -5408,7 +5407,6 @@ body.page-simple .site-main .page-content ul li:before {
     white-space: normal;
   }
   .redesign-preview .testimonials-v2.is-mobile-swiper .home-v2-carousel__slide.swiper-slide {
-    width: 100% !important;
     max-width: 100%;
     height: auto;
     box-sizing: border-box;
@@ -5657,7 +5655,6 @@ body.page-simple .site-main .page-content ul li:before {
   .redesign-preview .blog-section--v2 .home-v2-carousel.is-mobile-swiper .home-v2-carousel__slide,
   .redesign-preview .blog-section--v2 .home-v2-carousel.is-mobile-swiper .home-v2-carousel__slide.swiper-slide {
     display: block !important;
-    width: 100% !important;
     max-width: 100% !important;
     flex: 0 0 auto !important;
     box-sizing: border-box !important;
@@ -5858,7 +5855,6 @@ body.page-simple .site-main .page-content ul li:before {
     width: 100%;
   }
   .redesign-preview .our-partners--v2 .home-v2-carousel.is-mobile-swiper .home-v2-carousel__slide.swiper-slide {
-    width: 100% !important;
     max-width: 100%;
     box-sizing: border-box;
     flex-shrink: 0;
@@ -6752,6 +6748,7 @@ body.page-simple .site-main .page-content ul li:before {
 .redesign-preview .home-v2-carousel.is-mobile-swiper {
   overflow: hidden;
   width: 100%;
+  touch-action: pan-y;
 }
 .redesign-preview .home-v2-carousel.is-mobile-swiper > .swiper-wrapper,
 .redesign-preview .home-v2-carousel.is-mobile-swiper .swiper-wrapper {
@@ -6759,9 +6756,9 @@ body.page-simple .site-main .page-content ul li:before {
   flex-direction: row !important;
   flex-wrap: nowrap !important;
   box-sizing: border-box;
+  touch-action: pan-y;
 }
 .redesign-preview .home-v2-carousel.is-mobile-swiper .home-v2-carousel__slide.swiper-slide {
-  width: 100% !important;
   max-width: 100%;
   flex-shrink: 0;
   box-sizing: border-box;
