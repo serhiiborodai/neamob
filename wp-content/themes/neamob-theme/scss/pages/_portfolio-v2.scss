@@ -174,14 +174,22 @@
 
         .portfolio-gallery {
             margin-bottom: 69px;
+            position: relative;
         }
 
-        // Keep original marquee gallery; only extend cards with meta
+        .portfolio-gallery__viewport {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        // Desktop marquee: keep original card sizing / cursor / fades from base
         .portfolio-gallery__item {
             display: flex;
             flex-direction: column;
             width: 380px;
             height: auto;
+            flex-shrink: 0;
             background: #fff;
             border: 1px solid rgba(216, 227, 235, 0.7);
             box-shadow: none;
@@ -195,7 +203,7 @@
             flex-shrink: 0;
             overflow: hidden;
             background: #eef2f6;
-            border-radius: 16px;
+            border-radius: 16px 16px 0 0;
 
             img,
             video {
@@ -203,7 +211,7 @@
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                border-radius: 16px;
+                border-radius: 0;
                 user-select: none;
                 -webkit-user-drag: none;
             }
@@ -253,6 +261,115 @@
             line-height: 1.3;
             text-transform: uppercase;
             color: #6c7a90;
+        }
+
+        .portfolio-gallery__pagination.home-v2-pagination {
+            display: none;
+            margin: 24px auto 0;
+        }
+
+        .portfolio-gallery__loader {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.72);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .portfolio-gallery.is-loading .portfolio-gallery__loader {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .portfolio-gallery.is-loading .portfolio-gallery__viewport {
+            opacity: 0.35;
+            transition: opacity 0.2s ease;
+        }
+
+        .portfolio-gallery__spinner {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 10, 24, 0.12);
+            border-top-color: #0094ff;
+            animation: portfolio-gallery-spin 0.7s linear infinite;
+        }
+
+        // Mobile only: paired cards in one slide
+        .portfolio-gallery.is-mobile-swiper {
+            margin: 0 auto 40px;
+            max-width: calc(100% - 40px);
+            width: $pf-container;
+
+            &::before,
+            &::after {
+                display: none !important;
+                content: none !important;
+            }
+
+            .portfolio-gallery__cursor {
+                display: none !important;
+            }
+
+            .portfolio-gallery__pagination.home-v2-pagination {
+                display: flex;
+            }
+
+            .portfolio-gallery__track {
+                gap: 0;
+                will-change: auto;
+            }
+
+            .portfolio-gallery__slide {
+                display: flex;
+                flex-direction: row;
+                align-items: stretch;
+                gap: 20px;
+                width: 100%;
+                box-sizing: border-box;
+                height: auto;
+            }
+
+            .portfolio-gallery__item {
+                flex: 1 1 0;
+                min-width: 0;
+                width: auto;
+                max-width: none;
+            }
+
+            .portfolio-gallery__media {
+                height: auto;
+                aspect-ratio: 1 / 1;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .portfolio-gallery.is-mobile-swiper {
+                max-width: calc(100% - 32px);
+
+                .portfolio-gallery__slide {
+                    flex-direction: column;
+                    gap: 16px;
+                }
+
+                .portfolio-gallery__item {
+                    flex: none;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    @keyframes portfolio-gallery-spin {
+        to {
+            transform: rotate(360deg);
         }
     }
 
@@ -342,20 +459,24 @@
         .portfolio-gallery-wrap {
             padding-top: 32px;
 
-            .portfolio-gallery__item {
-                width: 280px;
-            }
-
-            .portfolio-gallery__media {
-                height: 280px;
-            }
-
             .portfolio-tabs {
                 width: 100%;
+                white-space: nowrap;
+                flex-wrap: wrap;
             }
 
             .portfolio-gallery {
-                margin-bottom: 40px;
+                margin-bottom: 32px;
+            }
+
+            .portfolio-gallery.is-mobile-swiper .portfolio-gallery__media {
+                aspect-ratio: 1 / 1;
+                height: auto;
+            }
+
+            .portfolio-gallery.is-mobile-swiper .portfolio-gallery__body {
+                min-height: 108px;
+                padding: 14px 14px 16px;
             }
         }
 

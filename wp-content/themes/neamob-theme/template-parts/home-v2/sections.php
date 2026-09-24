@@ -84,6 +84,8 @@ $stats_card_url = add_query_arg('v', '2', get_template_directory_uri() . '/asset
 <?php
 $case_studies = neamob_get_case_studies([
     'posts_per_page' => -1,
+    'orderby' => 'menu_order',
+    'order' => 'ASC',
     'meta_query' => [
         [
             'key' => 'show_on_homepage',
@@ -120,38 +122,47 @@ if ($case_studies->have_posts()):
                     $read_more_url = get_field('case_read_more_url');
                     $card_class = 'case-card-v2' . ($coming_soon ? ' case-card-v2--soon' : '');
                 ?>
-                <article class="<?php echo esc_attr($card_class); ?>" data-home-v2-slide>
-                    <div class="case-card-v2__media">
-                        <?php if ($card_image): ?>
-                            <img src="<?php echo esc_url($card_image); ?>" alt="<?php echo esc_attr($client_name ?: get_the_title()); ?>" loading="lazy">
-                        <?php else: ?>
-                            <div class="case-card-v2__media-placeholder" aria-hidden="true"></div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="case-card-v2__body">
-                        <div class="case-card-v2__header">
-                            <div class="case-card-v2__logo">
-                                <?php if ($client_logo): ?>
-                                    <img src="<?php echo esc_url($client_logo); ?>" alt="<?php echo esc_attr($client_name); ?>">
-                                <?php elseif ($client_name): ?>
-                                    <span><?php echo esc_html($client_name); ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <?php if ($badge_value && $badge_text): ?>
-                                <div class="case-card-v2__badge"><?php echo esc_html(trim($badge_value . ' ' . $badge_text)); ?></div>
+                <div class="home-v2-carousel__slide" data-home-v2-slide>
+                    <article class="<?php echo esc_attr($card_class); ?>">
+                        <div class="case-card-v2__media">
+                            <?php if ($card_image): ?>
+                                <img src="<?php echo esc_url($card_image); ?>" alt="<?php echo esc_attr($client_name ?: get_the_title()); ?>" loading="lazy">
+                            <?php else: ?>
+                                <div class="case-card-v2__media-placeholder" aria-hidden="true"></div>
                             <?php endif; ?>
                         </div>
-                        <p class="case-card-v2__text"><?php echo wp_kses_post($hp_desc); ?></p>
-                        <?php if ($coming_soon): ?>
-                            <span class="case-card-v2__soon">Coming Soon</span>
-                        <?php elseif ($read_more_url): ?>
-                            <a href="<?php echo esc_url($read_more_url); ?>" class="case-card-v2__link">
-                                <span class="case-card-v2__link-dot"></span>
-                                Read More
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                </article>
+                        <div class="case-card-v2__body">
+                            <div class="case-card-v2__header">
+                                <div class="case-card-v2__brand">
+                                    <?php if ($client_logo): ?>
+                                        <span class="case-card-v2__logo">
+                                            <img src="<?php echo esc_url($client_logo); ?>" alt="<?php echo esc_attr($client_name ?: ''); ?>">
+                                        </span>
+                                    <?php elseif ($client_name): ?>
+                                        <span class="case-card-v2__logo case-card-v2__logo--text"><?php echo esc_html($client_name); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <?php if ($badge_value && $badge_text): ?>
+                                    <div class="case-card-v2__badge"><?php echo esc_html(trim($badge_value . ' ' . $badge_text)); ?></div>
+                                <?php endif; ?>
+                            </div>
+                            <p class="case-card-v2__text"><?php echo wp_kses_post($hp_desc); ?></p>
+                            <?php if ($coming_soon): ?>
+                                <span class="case-card-v2__soon">Coming Soon</span>
+                            <?php elseif ($read_more_url): ?>
+                                <a href="<?php echo esc_url($read_more_url); ?>" class="case-card-v2__link">
+                                    <span class="case-card-v2__link-dot" aria-hidden="true"></span>
+                                    Read More
+                                </a>
+                            <?php else: ?>
+                                <a href="<?php echo esc_url(get_permalink()); ?>" class="case-card-v2__link">
+                                    <span class="case-card-v2__link-dot" aria-hidden="true"></span>
+                                    Read More
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    </article>
+                </div>
                 <?php endwhile; ?>
             </div>
             <div class="swiper-pagination home-v2-pagination" data-home-v2-pagination></div>
@@ -254,19 +265,49 @@ if (!empty($testimonial_items)):
 </section>
 <?php endif; ?>
 
-<!-- Why Choose Us — Figma title; table as image for now -->
+<!-- Why Choose Us — HTML comparison table -->
 <?php
-$comparison_image = get_field('comparison_image') ?: get_template_directory_uri() . '/assets/images/comparison-table.webp';
+$comparison_rows = function_exists('neamob_get_comparison_table_rows')
+    ? neamob_get_comparison_table_rows()
+    : [];
+$comparison_logo = get_template_directory_uri() . '/assets/icons/redesign/comparison-logo.png';
 ?>
 <section class="comparison-section comparison-section--v2">
     <div class="container">
         <h2 class="comparison-section__title"><?php echo esc_html($comparison_title); ?></h2>
-        <div class="comparison-image comparison-image--v2">
-            <picture>
-                <source media="(max-width: 639px)" srcset="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/comparison-table-mobile.webp">
-                <img src="<?php echo esc_url($comparison_image); ?>" alt="<?php echo esc_attr($comparison_title); ?>" loading="lazy">
-            </picture>
+        <?php if (!empty($comparison_rows)): ?>
+        <div class="comparison-grid comparison-grid--v2" role="region" aria-label="<?php echo esc_attr($comparison_title); ?>">
+            <table class="comparison-grid__table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="comparison-grid__th comparison-grid__th--feature"><span class="screen-reader-text">Feature</span></th>
+                        <th scope="col" class="comparison-grid__th comparison-grid__th--brand">
+                            <img class="comparison-grid__logo" src="<?php echo esc_url($comparison_logo); ?>" alt="NeaMob" width="40" height="40">
+                        </th>
+                        <th scope="col" class="comparison-grid__th">Corporate Agencies</th>
+                        <th scope="col" class="comparison-grid__th">Boutique Agencies</th>
+                        <th scope="col" class="comparison-grid__th">Internal Teams</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($comparison_rows as $row): ?>
+                    <tr class="comparison-grid__row">
+                        <th scope="row" class="comparison-grid__td comparison-grid__td--feature"><?php echo esc_html($row['feature']); ?></th>
+                        <?php foreach (['neamob', 'corporate', 'boutique', 'internal'] as $col):
+                            $yes = !empty($row[$col]);
+                            $icon = neamob_comparison_icon_url($yes);
+                            $label = $yes ? 'Yes' : 'No';
+                        ?>
+                        <td class="comparison-grid__td comparison-grid__td--icon">
+                            <img class="comparison-grid__icon" src="<?php echo esc_url($icon); ?>" alt="<?php echo esc_attr($label); ?>" width="32" height="32" loading="lazy">
+                        </td>
+                        <?php endforeach; ?>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -304,25 +345,27 @@ if ($blog_posts->have_posts()):
                     $category = !empty($categories) ? $categories[0] : null;
                     $cat_color = $category ? neamob_get_category_color($category) : 'blue';
                 ?>
-                <article class="blog-card blog-card--v2" data-home-v2-slide>
-                    <a href="<?php the_permalink(); ?>" class="blog-card__image <?php echo !has_post_thumbnail() ? 'blog-card__image--placeholder' : ''; ?>">
-                        <?php if (has_post_thumbnail()) {
-                            the_post_thumbnail('card-image');
-                        } ?>
-                    </a>
-                    <div class="blog-card__meta">
-                        <?php if ($category): ?>
-                            <a href="<?php echo esc_url(get_category_link($category->term_id)); ?>" class="blog-card__category blog-card__category--<?php echo esc_attr($cat_color); ?>"><?php echo esc_html($category->name); ?></a>
-                        <?php endif; ?>
-                        <span class="blog-card__date"><?php echo esc_html(get_the_date('d M, Y')); ?></span>
-                    </div>
-                    <h3 class="blog-card__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                    <p class="blog-card__excerpt"><?php echo esc_html(wp_trim_words(get_the_excerpt(), 15)); ?></p>
-                    <div class="blog-card__author">
-                        <div class="blog-card__author-avatar"><?php echo get_avatar(get_the_author_meta('ID'), 64); ?></div>
-                        <span class="blog-card__author-name"><?php the_author(); ?></span>
-                    </div>
-                </article>
+                <div class="home-v2-carousel__slide" data-home-v2-slide>
+                    <article class="blog-card blog-card--v2">
+                        <a href="<?php the_permalink(); ?>" class="blog-card__image <?php echo !has_post_thumbnail() ? 'blog-card__image--placeholder' : ''; ?>">
+                            <?php if (has_post_thumbnail()) {
+                                the_post_thumbnail('card-image');
+                            } ?>
+                        </a>
+                        <div class="blog-card__meta">
+                            <?php if ($category): ?>
+                                <a href="<?php echo esc_url(get_category_link($category->term_id)); ?>" class="blog-card__category blog-card__category--<?php echo esc_attr($cat_color); ?>"><?php echo esc_html($category->name); ?></a>
+                            <?php endif; ?>
+                            <span class="blog-card__date"><?php echo esc_html(get_the_date('d M, Y')); ?></span>
+                        </div>
+                        <h3 class="blog-card__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                        <p class="blog-card__excerpt"><?php echo esc_html(wp_trim_words(get_the_excerpt(), 15)); ?></p>
+                        <div class="blog-card__author">
+                            <div class="blog-card__author-avatar"><?php echo get_avatar(get_the_author_meta('ID'), 64); ?></div>
+                            <span class="blog-card__author-name"><?php the_author(); ?></span>
+                        </div>
+                    </article>
+                </div>
                 <?php endwhile; ?>
             </div>
             <div class="swiper-pagination home-v2-pagination" data-home-v2-pagination></div>

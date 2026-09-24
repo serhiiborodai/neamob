@@ -1064,20 +1064,41 @@ function neamob_insert_single_post_mid_cta(string $content): string
         return $content;
     }
 
+    $photo_url = '';
+    $photo_id = (int) get_option('neamob_mid_cta_photo_id');
+    if ($photo_id) {
+        $photo_url = wp_get_attachment_image_url($photo_id, 'large') ?: '';
+    }
+    if ($photo_url === '') {
+        $theme_photo = get_template_directory() . '/assets/images/photo-container.png';
+        if (file_exists($theme_photo)) {
+            $photo_url = get_template_directory_uri() . '/assets/images/photo-container.png';
+        }
+    }
+
+    $case_url = get_post_type_archive_link('case_study') ?: home_url('/case-studies/');
+
+    $cta = '<aside class="single-post__cta">'
+        . '<div class="single-post__cta-content">'
+        . '<h3 class="single-post__cta-title">What this looks like in practice</h3>'
+        . '<p class="single-post__cta-text">One client, 12 months, full transparency: the strategy, the channels, and the results — including the numbers.</p>'
+        . '<a href="' . esc_url($case_url) . '" class="single-post__cta-link">Get the case study</a>'
+        . '</div>';
+
+    if ($photo_url !== '') {
+        $cta .= '<div class="single-post__cta-media">'
+            . '<img src="' . esc_url($photo_url) . '" alt="" loading="lazy" width="580" height="504">'
+            . '</div>';
+    }
+
+    $cta .= '</aside>';
+
     if (!preg_match_all('/<h2\b[^>]*>/i', $content, $matches, PREG_OFFSET_CAPTURE)) {
-        return $content;
+        return $content . $cta;
     }
 
     $last = end($matches[0]);
     $pos = (int) $last[1];
-
-    $cta = '<div class="single-post__cta">'
-        . '<p class="single-post__cta-text">Ready to take your marketing to the next level?</p>'
-        . '<a href="#contact-form" class="single-post__cta-btn">'
-        . '<span class="single-post__cta-dot" aria-hidden="true"></span>'
-        . 'Let\'s chat'
-        . '</a>'
-        . '</div>';
 
     return substr($content, 0, $pos) . $cta . substr($content, $pos);
 }

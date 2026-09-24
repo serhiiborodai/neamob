@@ -133,36 +133,42 @@ if (!empty($client_logos)) {
             </div>
         </div>
 
-        <section class="portfolio-gallery" id="portfolioGallery">
+        <section class="portfolio-gallery" id="portfolioGallery" aria-live="polite">
+            <div class="portfolio-gallery__loader" aria-hidden="true">
+                <span class="portfolio-gallery__spinner"></span>
+            </div>
             <div class="portfolio-gallery__cursor">
                 <svg class="portfolio-gallery__cursor-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
-            <div class="portfolio-gallery__track">
-                <?php foreach ($portfolio_items as $item): ?>
-                <div class="portfolio-gallery__item<?php echo $item['is_video'] ? ' portfolio-gallery__item--video' : ''; ?>" data-category="<?php echo esc_attr($item['category']); ?>">
-                    <div class="portfolio-gallery__media">
-                        <?php if ($item['is_video']): ?>
-                            <video src="<?php echo esc_url($item['url']); ?>" autoplay muted loop playsinline preload="metadata"></video>
-                        <?php else: ?>
-                            <img src="<?php echo esc_url($item['url']); ?>" alt="<?php echo esc_attr($item['client'] ?: 'Portfolio'); ?>" loading="lazy">
-                        <?php endif; ?>
+            <div class="portfolio-gallery__viewport">
+                <div class="portfolio-gallery__track">
+                    <?php foreach ($portfolio_items as $item): ?>
+                    <div class="portfolio-gallery__item<?php echo $item['is_video'] ? ' portfolio-gallery__item--video' : ''; ?>" data-category="<?php echo esc_attr($item['category']); ?>">
+                        <div class="portfolio-gallery__media">
+                            <?php if ($item['is_video']): ?>
+                                <video src="<?php echo esc_url($item['url']); ?>" muted loop playsinline preload="metadata"></video>
+                            <?php else: ?>
+                                <img src="<?php echo esc_url($item['url']); ?>" alt="<?php echo esc_attr($item['client'] ?: 'Portfolio'); ?>" loading="lazy">
+                            <?php endif; ?>
+                        </div>
+                        <div class="portfolio-gallery__body">
+                            <?php if ($item['client']): ?>
+                                <p class="portfolio-gallery__client"><?php echo esc_html($item['client']); ?></p>
+                            <?php endif; ?>
+                            <?php if ($item['title']): ?>
+                                <p class="portfolio-gallery__text"><?php echo esc_html($item['title']); ?></p>
+                            <?php endif; ?>
+                            <?php if ($item['industry']): ?>
+                                <span class="portfolio-gallery__tag"><?php echo esc_html($item['industry']); ?></span>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    <div class="portfolio-gallery__body">
-                        <?php if ($item['client']): ?>
-                            <p class="portfolio-gallery__client"><?php echo esc_html($item['client']); ?></p>
-                        <?php endif; ?>
-                        <?php if ($item['title']): ?>
-                            <p class="portfolio-gallery__text"><?php echo esc_html($item['title']); ?></p>
-                        <?php endif; ?>
-                        <?php if ($item['industry']): ?>
-                            <span class="portfolio-gallery__tag"><?php echo esc_html($item['industry']); ?></span>
-                        <?php endif; ?>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
             </div>
+            <div class="swiper-pagination portfolio-gallery__pagination home-v2-pagination" data-portfolio-pagination hidden></div>
         </section>
 
         <div class="container">
@@ -248,12 +254,16 @@ document.addEventListener('DOMContentLoaded', function() {
     var gallery = document.getElementById('portfolioGallery');
     if (!gallery) return;
 
+    var viewport = gallery.querySelector('.portfolio-gallery__viewport');
     var track = gallery.querySelector('.portfolio-gallery__track');
     var cursorEl = gallery.querySelector('.portfolio-gallery__cursor');
-    var isDesktop = window.innerWidth >= 1200;
+    var pagination = gallery.querySelector('[data-portfolio-pagination]');
+    var mqDesktop = window.matchMedia('(min-width: 1200px)');
     var swiperInstance = null;
     var cleanupDesktop = null;
     var currentFilter = 'all';
+    var refreshTimer = null;
+    var isRefreshing = false;
 
     function esc(str) {
         return String(str || '')
@@ -262,59 +272,70 @@ document.addEventListener('DOMContentLoaded', function() {
             .replace(/"/g, '&quot;');
     }
 
-    function buildItemsHTML(filter) {
-        var items = filter === 'all'
-            ? portfolioItemsData
-            : portfolioItemsData.filter(function(item) { return item.category === filter; });
-
-        var html = '';
-        items.forEach(function(item) {
-            var cls = 'portfolio-gallery__item' + (item.is_video ? ' portfolio-gallery__item--video' : '');
-            html += '<div class="' + cls + '" data-category="' + esc(item.category) + '">';
-            html += '<div class="portfolio-gallery__media">';
-            if (item.is_video) {
-                html += '<video src="' + esc(item.url) + '" autoplay muted loop playsinline preload="metadata"></video>';
-            } else {
-                html += '<img src="' + esc(item.url) + '" alt="' + esc(item.client || 'Portfolio') + '" loading="lazy">';
-            }
-            html += '</div><div class="portfolio-gallery__body">';
-            if (item.client) html += '<p class="portfolio-gallery__client">' + esc(item.client) + '</p>';
-            if (item.title) html += '<p class="portfolio-gallery__text">' + esc(item.title) + '</p>';
-            if (item.industry) html += '<span class="portfolio-gallery__tag">' + esc(item.industry) + '</span>';
-            html += '</div></div>';
+    function filteredItems() {
+        if (currentFilter === 'all') return portfolioItemsData.slice();
+        return portfolioItemsData.filter(function(item) {
+            return item.category === currentFilter;
         });
-        return { html: html, count: items.length };
     }
 
-    function manageVideos(galleryEl, trackEl) {
-        var galleryRect = galleryEl.getBoundingClientRect();
-        var videos = trackEl.querySelectorAll('video');
+    function buildCardHTML(item, autoplayVideo) {
+        var cls = 'portfolio-gallery__item' + (item.is_video ? ' portfolio-gallery__item--video' : '');
+        var html = '<div class="' + cls + '" data-category="' + esc(item.category) + '">';
+        html += '<div class="portfolio-gallery__media">';
+        if (item.is_video) {
+            html += '<video src="' + esc(item.url) + '"' + (autoplayVideo ? ' autoplay' : '') + ' muted loop playsinline preload="metadata"></video>';
+        } else {
+            html += '<img src="' + esc(item.url) + '" alt="' + esc(item.client || 'Portfolio') + '" loading="lazy">';
+        }
+        html += '</div><div class="portfolio-gallery__body">';
+        if (item.client) html += '<p class="portfolio-gallery__client">' + esc(item.client) + '</p>';
+        if (item.title) html += '<p class="portfolio-gallery__text">' + esc(item.title) + '</p>';
+        if (item.industry) html += '<span class="portfolio-gallery__tag">' + esc(item.industry) + '</span>';
+        html += '</div></div>';
+        return html;
+    }
+
+    function buildFlatHTML(items, autoplayVideo) {
+        return items.map(function(item) {
+            return buildCardHTML(item, autoplayVideo);
+        }).join('');
+    }
+
+    // Mobile only: one swiper-slide = pair of cards
+    function buildSlidesHTML(items) {
+        var html = '';
+        for (var i = 0; i < items.length; i += 2) {
+            var pair = items.slice(i, i + 2);
+            html += '<div class="portfolio-gallery__slide swiper-slide">';
+            pair.forEach(function(item) {
+                html += buildCardHTML(item, false);
+            });
+            html += '</div>';
+        }
+        return html;
+    }
+
+    function manageVideos(rootEl, trackEl) {
+        var host = rootEl || viewport || gallery;
+        var list = trackEl || track;
+        if (!host || !list) return;
+        var galleryRect = host.getBoundingClientRect();
+        var videos = list.querySelectorAll('video');
         for (var i = 0; i < videos.length; i++) {
             var vRect = videos[i].getBoundingClientRect();
             var visible = vRect.right > galleryRect.left - 200 && vRect.left < galleryRect.right + 200;
             if (visible && videos[i].paused) {
-                videos[i].play().catch(function(){});
+                videos[i].play().catch(function() {});
             } else if (!visible && !videos[i].paused) {
                 videos[i].pause();
             }
         }
     }
 
-    function initMobileSwiper() {
-        var data = buildItemsHTML(currentFilter);
-        track.innerHTML = data.html;
-
-        var slideItems = track.querySelectorAll('.portfolio-gallery__item');
-        slideItems.forEach(function(item) { item.classList.add('swiper-slide'); });
-        track.classList.add('swiper-wrapper');
-        gallery.classList.add('swiper');
-
-        swiperInstance = new Swiper(gallery, {
-            slidesPerView: 'auto',
-            spaceBetween: 20,
-            loop: true,
-            freeMode: true,
-        });
+    function setLoading(on) {
+        gallery.classList.toggle('is-loading', on);
+        gallery.setAttribute('aria-busy', on ? 'true' : 'false');
     }
 
     function destroyMobileSwiper() {
@@ -322,18 +343,66 @@ document.addEventListener('DOMContentLoaded', function() {
             swiperInstance.destroy(true, true);
             swiperInstance = null;
         }
-        gallery.classList.remove('swiper');
+        gallery.classList.remove('is-mobile-swiper');
+        if (viewport) viewport.classList.remove('swiper');
         track.classList.remove('swiper-wrapper');
-        var slideItems = track.querySelectorAll('.portfolio-gallery__item');
-        slideItems.forEach(function(item) { item.classList.remove('swiper-slide'); });
+        track.removeAttribute('style');
+        track.querySelectorAll('.portfolio-gallery__slide, .portfolio-gallery__item').forEach(function(el) {
+            el.classList.remove('swiper-slide');
+            el.removeAttribute('style');
+        });
+        if (pagination) {
+            pagination.innerHTML = '';
+            pagination.setAttribute('hidden', '');
+            pagination.classList.remove('swiper-pagination-bullets', 'swiper-pagination-horizontal');
+        }
+    }
+
+    function initMobileSwiper() {
+        if (typeof Swiper === 'undefined') return;
+        var items = filteredItems();
+        track.innerHTML = buildSlidesHTML(items);
+        track.classList.add('swiper-wrapper');
+        if (viewport) viewport.classList.add('swiper');
+        gallery.classList.add('is-mobile-swiper');
+
+        if (!items.length) {
+            if (pagination) pagination.setAttribute('hidden', '');
+            return;
+        }
+
+        if (pagination) pagination.removeAttribute('hidden');
+
+        swiperInstance = new Swiper(viewport, {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            speed: 420,
+            watchOverflow: true,
+            observer: true,
+            observeParents: true,
+            pagination: pagination
+                ? {
+                      el: pagination,
+                      clickable: true,
+                  }
+                : undefined,
+            on: {
+                init: function() { manageVideos(viewport, track); },
+                slideChange: function() { manageVideos(viewport, track); },
+                resize: function() { manageVideos(viewport, track); },
+            },
+        });
     }
 
     function initDesktopScroll() {
-        var data = buildItemsHTML(currentFilter);
-        var origHTML = data.html;
-        var oneSetCount = data.count;
+        var items = filteredItems();
+        var oneSetCount = items.length;
+        var origHTML = buildFlatHTML(items, true);
 
-        if (!oneSetCount) { track.innerHTML = ''; return function(){}; }
+        if (!oneSetCount) {
+            track.innerHTML = '';
+            return function() {};
+        }
 
         track.innerHTML = origHTML + origHTML + origHTML;
 
@@ -341,9 +410,11 @@ document.addEventListener('DOMContentLoaded', function() {
         var speed = 0;
         var rafId = null;
         var totalWidth = 0;
-        var mouseX = 0, mouseY = 0;
-        var cursorX = 0, cursorY = 0;
-        var cursorArrow = cursorEl.querySelector('.portfolio-gallery__cursor-arrow');
+        var mouseX = 0;
+        var mouseY = 0;
+        var cursorX = 0;
+        var cursorY = 0;
+        var cursorArrow = cursorEl ? cursorEl.querySelector('.portfolio-gallery__cursor-arrow') : null;
         var videoFrame = 0;
 
         function measureWidth() {
@@ -364,10 +435,12 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (scrollPos < 0) scrollPos += totalWidth;
             track.style.transform = 'translateX(' + (-scrollPos) + 'px)';
 
-            cursorX += (mouseX - cursorX) * 0.12;
-            cursorY += (mouseY - cursorY) * 0.12;
-            cursorEl.style.left = cursorX + 'px';
-            cursorEl.style.top = cursorY + 'px';
+            if (cursorEl) {
+                cursorX += (mouseX - cursorX) * 0.12;
+                cursorY += (mouseY - cursorY) * 0.12;
+                cursorEl.style.left = cursorX + 'px';
+                cursorEl.style.top = cursorY + 'px';
+            }
 
             videoFrame++;
             if (videoFrame % 20 === 0) manageVideos(gallery, track);
@@ -376,9 +449,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         rafId = requestAnimationFrame(animate);
 
-        function onEnter() { cursorEl.classList.add('is-visible'); }
-        function onLeave() { cursorEl.classList.remove('is-visible'); speed = 0; }
-
+        function onEnter() {
+            if (cursorEl) cursorEl.classList.add('is-visible');
+        }
+        function onLeave() {
+            if (cursorEl) cursorEl.classList.remove('is-visible');
+            speed = 0;
+        }
         function onMove(e) {
             var rect = gallery.getBoundingClientRect();
             mouseX = e.clientX - rect.left;
@@ -387,10 +464,14 @@ document.addEventListener('DOMContentLoaded', function() {
             var maxSpeed = 3;
             if (ratio > 0.5) {
                 speed = (ratio - 0.5) * 2 * maxSpeed;
-                cursorArrow.innerHTML = '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+                if (cursorArrow) {
+                    cursorArrow.innerHTML = '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+                }
             } else {
                 speed = -(0.5 - ratio) * 2 * maxSpeed;
-                cursorArrow.innerHTML = '<path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+                if (cursorArrow) {
+                    cursorArrow.innerHTML = '<path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+                }
             }
         }
 
@@ -408,37 +489,51 @@ document.addEventListener('DOMContentLoaded', function() {
             track.innerHTML = '';
             track.style.transform = '';
             speed = 0;
+            if (cursorEl) cursorEl.classList.remove('is-visible');
         };
     }
 
-    function setup() {
-        var nowDesktop = window.innerWidth >= 1200;
-        isDesktop = nowDesktop;
-        if (isDesktop) {
-            destroyMobileSwiper();
-            cleanupDesktop = initDesktopScroll();
-        } else {
-            if (cleanupDesktop) { cleanupDesktop(); cleanupDesktop = null; }
-            initMobileSwiper();
+    function setup(showLoader) {
+        if (isRefreshing) return;
+        isRefreshing = true;
+        if (showLoader) setLoading(true);
+
+        if (cleanupDesktop) {
+            cleanupDesktop();
+            cleanupDesktop = null;
         }
+        destroyMobileSwiper();
+
+        if (refreshTimer) clearTimeout(refreshTimer);
+        refreshTimer = setTimeout(function() {
+            if (mqDesktop.matches) {
+                cleanupDesktop = initDesktopScroll();
+            } else {
+                initMobileSwiper();
+            }
+            requestAnimationFrame(function() {
+                setLoading(false);
+                isRefreshing = false;
+            });
+        }, showLoader ? 220 : 0);
     }
 
-    setup();
+    setup(false);
 
-    window.addEventListener('resize', function() {
-        var nowDesktop = window.innerWidth >= 1200;
-        if (nowDesktop !== isDesktop) setup();
-    });
+    if (typeof mqDesktop.addEventListener === 'function') {
+        mqDesktop.addEventListener('change', function() { setup(false); });
+    } else if (typeof mqDesktop.addListener === 'function') {
+        mqDesktop.addListener(function() { setup(false); });
+    }
 
     var tabs = document.querySelectorAll('.portfolio-page-v2 .portfolio-tabs__btn');
     tabs.forEach(function(tab) {
         tab.addEventListener('click', function() {
+            if (this.classList.contains('active') && !gallery.classList.contains('is-loading')) return;
             tabs.forEach(function(t) { t.classList.remove('active'); });
             this.classList.add('active');
-            currentFilter = this.dataset.filter;
-            if (cleanupDesktop) { cleanupDesktop(); cleanupDesktop = null; }
-            destroyMobileSwiper();
-            setup();
+            currentFilter = this.dataset.filter || 'all';
+            setup(true);
         });
     });
 

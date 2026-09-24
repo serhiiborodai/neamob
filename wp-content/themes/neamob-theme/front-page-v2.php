@@ -11,6 +11,10 @@ get_header();
 
 // Get ACF fields with defaults
 $hero_title = get_field('hero_title') ?: 'We make the <em>complex</em> simple';
+// Figma: "complex" = Playfair Display Medium Italic — wrap if ACF has plain text
+if (is_string($hero_title) && stripos($hero_title, '<em') === false) {
+    $hero_title = preg_replace('/\bcomplex\b/i', '<em>$0</em>', $hero_title, 1);
+}
 // Mockup stacks title as two lines: "We make the" / "complex simple"
 if (is_string($hero_title) && strpos($hero_title, '<br') === false && preg_match('/^(.*?)\s+(<em>.*?<\/em>\s*.*)$/s', $hero_title, $hero_title_parts)) {
     $hero_title = '<span class="hero-section__title-line">' . $hero_title_parts[1] . '</span>'

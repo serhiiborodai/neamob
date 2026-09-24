@@ -251,7 +251,9 @@ endif;
 <!-- Case Studies Section -->
 <?php
 $case_studies = neamob_get_case_studies([
-    'posts_per_page' => -1,
+    'posts_per_page' => 2,
+    'orderby' => 'menu_order',
+    'order' => 'ASC',
     'meta_query' => [
         [
             'key' => 'show_on_homepage',

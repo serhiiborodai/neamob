@@ -90,14 +90,14 @@ f.parentNode.insertBefore(j, f);
                                                 'text' => 'Custom roadmaps built for profit, not vanity metrics.',
                                             ],
                                             [
-                                                'slug' => 'data-analytics-insights',
-                                                'title' => 'Data and analytics',
-                                                'text' => 'Reporting that turns raw data into decisions.',
-                                            ],
-                                            [
                                                 'slug' => 'creative-design',
                                                 'title' => 'Creative and design',
                                                 'text' => 'Ad creative and brand work that earns attention.',
+                                            ],
+                                            [
+                                                'slug' => 'data-analytics-insights',
+                                                'title' => 'Data and analytics',
+                                                'text' => 'Reporting that turns raw data into decisions.',
                                             ],
                                             [
                                                 'slug' => 'media-campaigns',
@@ -130,7 +130,7 @@ f.parentNode.insertBefore(j, f);
                                             <aside class="services-mega__featured">
                                                 <div class="services-mega__featured-copy">
                                                     <p class="services-mega__label">Featured result</p>
-                                                    <p class="services-mega__metric">+358%</p>
+                                                    <p class="services-mega__metric">+468%</p>
                                                     <p class="services-mega__desc">Qualified leads for Canadian Centre for Addictions</p>
                                                 </div>
                                                 <a href="#audit-form" class="btn btn--cta btn--cta-v2 services-mega__cta" data-open-audit-form>
@@ -201,18 +201,19 @@ f.parentNode.insertBefore(j, f);
                                                 'bg' => 'rgba(0, 148, 255, 0.12)',
                                             ],
                                             [
-                                                'href' => home_url('/business-intelligence/'),
+                                                'href' => 'https://adverdly.com/',
                                                 'title' => 'Analysis Tool',
                                                 'text' => 'Analyze your marketing in minutes.',
                                                 'icon' => $theme_uri . '/assets/icons/redesign/analysis-tool.svg',
                                                 'bg' => 'rgba(0, 148, 255, 0.12)',
+                                                'external' => true,
                                             ],
                                         ];
                                         ?>
                                         <div class="nav-mega nav-mega--about about-mega" role="menu" aria-label="About Us">
                                             <div class="nav-mega__grid nav-mega__grid--stack about-mega__grid">
                                                 <?php foreach ($mega_about as $item): ?>
-                                                    <a class="nav-mega__item" href="<?php echo esc_url($item['href']); ?>" role="menuitem">
+                                                    <a class="nav-mega__item" href="<?php echo esc_url($item['href']); ?>" role="menuitem"<?php echo !empty($item['external']) ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
                                                         <span class="nav-mega__head">
                                                             <span class="nav-mega__icon" style="--icon-bg: <?php echo esc_attr($item['bg']); ?>">
                                                                 <img src="<?php echo esc_url($item['icon']); ?>" alt="" width="14" height="14">

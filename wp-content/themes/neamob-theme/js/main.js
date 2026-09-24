@@ -519,6 +519,9 @@
 
         function wrapSlides(slides) {
             return slides.map(function (slide) {
+                if (slide.classList.contains('home-v2-carousel__slide')) {
+                    return slide;
+                }
                 if (slide.parentElement && slide.parentElement.classList.contains('home-v2-carousel__slide')) {
                     return slide.parentElement;
                 }
@@ -532,6 +535,8 @@
 
         function unwrapSlides(slides) {
             slides.forEach(function (slide) {
+                // PHP already wraps slides — leave structure alone on desktop
+                if (slide.classList.contains('home-v2-carousel__slide')) return;
                 var wrap = slide.parentElement;
                 if (!wrap || !wrap.classList.contains('home-v2-carousel__slide')) return;
                 wrap.parentNode.insertBefore(slide, wrap);
@@ -647,7 +652,7 @@
                 if (pagination) pagination.removeAttribute('hidden');
                 swiper = new Swiper(track, {
                     slidesPerView: 1,
-                    spaceBetween: 0,
+                    spaceBetween: 80,
                     speed: 420,
                     autoHeight: true,
                     watchOverflow: true,
@@ -832,6 +837,16 @@
                     submitBtn.style.display = 'none';
                 } else if (eventName === 'wpcf7invalid' || eventName === 'wpcf7submit') {
                     submitBtn.style.display = '';
+                    if (eventName === 'wpcf7invalid' && form) {
+                        // CF7 injects its own tips (sometimes after this event) — prefer custom
+                        dedupeAllFieldTips(form);
+                        revalidateFormFields(form);
+                        dedupeAllFieldTips(form);
+                        setTimeout(function() {
+                            revalidateFormFields(form);
+                            dedupeAllFieldTips(form);
+                        }, 0);
+                    }
                 }
             });
         });
@@ -867,6 +882,45 @@
                 phoneField.addEventListener('blur', function() { validatePhone(phoneField); });
                 phoneField.addEventListener('input', function() { clearFieldError(phoneField); });
             }
+        }
+
+        function revalidateFormFields(form) {
+            form.querySelectorAll('input[name="full-name"], input[name="last-name"]').forEach(function(field) {
+                if (field.classList.contains('wpcf7-not-valid') || !field.value.trim()) {
+                    validateName(field);
+                }
+            });
+            var emailField = form.querySelector('input[name="your-email"]');
+            if (emailField && (emailField.classList.contains('wpcf7-not-valid') || !emailField.value.trim() || emailField.value.indexOf('@') === -1)) {
+                validateEmail(emailField);
+            }
+            var phoneField = form.querySelector('input[name="your-phone"]');
+            if (phoneField && phoneField.classList.contains('wpcf7-not-valid')) {
+                validatePhone(phoneField);
+            }
+        }
+
+        function dedupeFieldTips(wrap) {
+            if (!wrap) return;
+            var tips = wrap.querySelectorAll('.wpcf7-not-valid-tip');
+            if (tips.length < 2) return;
+            var custom = wrap.querySelectorAll('.cf7-custom-error');
+            if (custom.length) {
+                // Keep the latest custom tip; drop CF7 native (+ older custom duplicates)
+                var keep = custom[custom.length - 1];
+                tips.forEach(function(t) {
+                    if (t !== keep) t.remove();
+                });
+                return;
+            }
+            // No custom — keep the last tip only
+            for (var i = 0; i < tips.length - 1; i++) {
+                tips[i].remove();
+            }
+        }
+
+        function dedupeAllFieldTips(form) {
+            form.querySelectorAll('.wpcf7-form-control-wrap').forEach(dedupeFieldTips);
         }
 
         function validateName(field) {
@@ -931,13 +985,14 @@
             tip.setAttribute('role', 'alert');
             tip.textContent = msg;
             wrap.appendChild(tip);
+            dedupeFieldTips(wrap);
         }
 
         function clearFieldError(field) {
             field.classList.remove('wpcf7-not-valid');
             var wrap = field.closest('.wpcf7-form-control-wrap') || field.parentNode;
-            var tips = wrap.querySelectorAll('.cf7-custom-error');
-            tips.forEach(function(t) { t.remove(); });
+            // Remove CF7 native tips too — otherwise they stack under custom ones
+            wrap.querySelectorAll('.wpcf7-not-valid-tip').forEach(function(t) { t.remove(); });
         }
     }
 
@@ -1046,8 +1101,9 @@
      * Header “Book a Free Audit” — light modal with CTA short form (Figma 6454:24966).
      */
     /**
-     * Redesign header mega menus — keep open across the gap between
-     * the nav trigger and the absolutely positioned panel.
+     * Redesign header mega menus —
+     * desktop: hover bridge across trigger → panel gap
+     * mobile/tablet: accordion toggle (Services / Work / About)
      */
     function initHeaderMegaMenus() {
         if (!document.body.classList.contains('redesign-preview')) return;
@@ -1057,6 +1113,11 @@
 
         var closeDelay = 180;
         var timer = null;
+        var desktopMq = window.matchMedia('(min-width: 1200px)');
+
+        function isDesktop() {
+            return desktopMq.matches;
+        }
 
         function closeAll(except) {
             items.forEach(function (item) {
@@ -1066,7 +1127,15 @@
 
         items.forEach(function (item) {
             var mega = item.querySelector('.services-mega, .work-mega, .about-mega, .nav-mega');
-            if (!mega) return;
+            var trigger = item.querySelector('a');
+            // Prefer direct child link (parent label), not nested mega links
+            for (var i = 0; i < item.children.length; i++) {
+                if (item.children[i].tagName === 'A') {
+                    trigger = item.children[i];
+                    break;
+                }
+            }
+            if (!mega || !trigger) return;
 
             function open() {
                 clearTimeout(timer);
@@ -1083,15 +1152,52 @@
                 }, closeDelay);
             }
 
-            item.addEventListener('mouseenter', open);
-            item.addEventListener('mouseleave', scheduleClose);
-            mega.addEventListener('mouseenter', open);
-            mega.addEventListener('mouseleave', scheduleClose);
-
-            item.addEventListener('focusin', open);
-            item.addEventListener('focusout', function (e) {
-                if (!item.contains(e.relatedTarget)) scheduleClose();
+            // Desktop hover / focus
+            item.addEventListener('mouseenter', function () {
+                if (isDesktop()) open();
             });
+            item.addEventListener('mouseleave', function () {
+                if (isDesktop()) scheduleClose();
+            });
+            mega.addEventListener('mouseenter', function () {
+                if (isDesktop()) open();
+            });
+            mega.addEventListener('mouseleave', function () {
+                if (isDesktop()) scheduleClose();
+            });
+            item.addEventListener('focusin', function () {
+                if (isDesktop()) open();
+            });
+            item.addEventListener('focusout', function (e) {
+                if (isDesktop() && !item.contains(e.relatedTarget)) scheduleClose();
+            });
+
+            // Mobile / tablet accordion
+            trigger.addEventListener('click', function (e) {
+                if (isDesktop()) return;
+                e.preventDefault();
+                e.stopPropagation();
+                var willOpen = !item.classList.contains('is-mega-open');
+                closeAll(willOpen ? item : null);
+                if (willOpen) {
+                    item.classList.add('is-mega-open');
+                } else {
+                    item.classList.remove('is-mega-open');
+                }
+            });
+        });
+
+        // Close accordion panels when drawer closes
+        var mainNav = document.querySelector('.main-nav');
+        if (mainNav) {
+            var observer = new MutationObserver(function () {
+                if (!mainNav.classList.contains('to-show')) closeAll(null);
+            });
+            observer.observe(mainNav, { attributes: true, attributeFilter: ['class'] });
+        }
+
+        desktopMq.addEventListener('change', function () {
+            closeAll(null);
         });
     }
 
